@@ -1,0 +1,12 @@
+<table>
+  <tr>
+    <th>Orari</th>
+    <th *ngFor="let staff of storeStaff.staffList">{{staff.name}}</th>
+  </tr>
+  <tr *ngFor="let hour of hours">
+    <th>{{hour}}</th>
+    <td *ngFor="let staff of storeStaff.staffList">
+      <div *ngIf="getAppointment(hour, staff)">Appuntamento!</div>
+    </td>
+  </tr>
+</table>
