@@ -13,19 +13,10 @@ export class StoreAppointments {
     },
     {
       id: '2',
-      hour: '12:00',
-      staffId: '1'
+      hour: '11:00',
+      staffId: '5'
     },
-    {
-      id: '3',
-      hour: '08:00',
-      staffId: '4'
-    },
-    {
-      id: '4',
-      hour: '09:00',
-      staffId: '2'
-    },
+
   ]
 }
 

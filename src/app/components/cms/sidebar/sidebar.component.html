@@ -1,0 +1,37 @@
+<!-- Icon that toggles the sidebar visibility -->
+<i class="pi pi-bars cursor-pointer lg:hidden p-3"
+   style="font-size: 2.5rem"
+   (click)="displaySidebar = !displaySidebar"></i>
+
+<!-- Sidebar container with dynamic width based on `displaySidebar` state -->
+<div class="sidebar flex"
+     [ngStyle]="{'width': displaySidebar ?  '100%' : '0'}">
+
+  <!-- Main content of the sidebar -->
+  <div class="column relative">
+    <!-- Shop header with logo and name -->
+    <div class="p-3 flex align-items-center gap-3 text-white">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaVt9yPCghMIg98VMlCM69-EgECCxk_CE8WQ&s">
+      <h2>Shop name</h2>
+    </div>
+
+    <!-- Navigation section with menu items -->
+    <div class="p-3">
+      <span class="pt-3 pb-2 block text-xs">Navigazione</span>
+      <p class="cursor-pointer py-3"><i class="pi pi-calendar mr-3"></i>Appuntamenti</p>
+      <p class="cursor-pointer py-3"><i class="pi pi-users mr-3"></i>Staff</p>
+      <p class="cursor-pointer py-3"><i class="pi pi-shop mr-3"></i>Servizi</p>
+      <p class="cursor-pointer py-3"><i class="pi pi-box mr-3"></i>Storico appuntamenti</p>
+    </div>
+
+    <!-- Footer section with logout option -->
+    <div class="w-full absolute bottom-0 column-footer">
+      <p class="cursor-pointer p-3"><i class="pi pi-sign-out mr-3"></i>Logout</p>
+    </div>
+  </div>
+
+  <!-- Transparent overlay that closes the sidebar on click or touch -->
+  <div class="transparent"
+       (touchend)="displaySidebar = !displaySidebar"
+       (click)="displaySidebar = !displaySidebar"></div>
+</div>

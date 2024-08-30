@@ -1,8 +1,17 @@
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
 
+// Breakpoints
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1550px;
 
-* {
+$border-radius: 15px;
+
+*:not([class^="p-"]) {
   margin: 0;
   padding: 0;
   box-sizing: border-box;

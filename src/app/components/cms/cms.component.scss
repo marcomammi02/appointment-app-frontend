@@ -1,0 +1,10 @@
+@import "../../../styles";
+
+.router-container {
+  width: 100%;
+
+  @media screen and (min-width: $lg) {
+    width: calc(100% - 16rem);
+    margin-left: 16rem;
+  }
+}

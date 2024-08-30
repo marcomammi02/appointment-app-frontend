@@ -1,0 +1,46 @@
+@import "../../../../styles";
+
+.sidebar {
+  height: 100%;
+  transition: width .5s ease;
+  position: fixed;
+  top: 0;
+  overflow: hidden;
+
+  .column {
+    width: 16rem;
+    height: 100%;
+    background: #17181CFF;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    white-space: nowrap;
+
+    span {
+      color: #c5c5c5;
+    }
+
+    p {
+      color: #c5c5c5;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: $border-radius;
+    }
+  }
+
+  .transparent {
+    width: calc(100% - 16rem);
+    height: 100%;
+  }
+
+  @media screen and (min-width: $lg) {
+    width: 16rem !important;
+  }
+}

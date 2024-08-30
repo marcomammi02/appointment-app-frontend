@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {Staff, StoreStaff} from "../stores/staff.store";
+import {Staff, StoreStaff} from "../../../stores/staff.store";
 import {NgForOf, NgIf} from "@angular/common";
-import {StoreAppointments} from "../stores/appointment.store";
+import {StoreAppointments} from "../../../stores/appointment.store";
 
 @Component({
   selector: 'app-calendar',

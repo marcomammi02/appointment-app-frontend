@@ -1,12 +1,10 @@
 import { Routes } from '@angular/router';
-import {EmployeesComponent} from "./employees/employees.component";
-import {CreateEmployeeComponent} from "./employees/create-employee/create-employee.component";
-import {CalendarComponent} from "./calendar/calendar.component";
+import {CmsComponent} from "./components/cms/cms.component";
+import {CalendarComponent} from "./components/cms/calendar/calendar.component";
 
 export const routes: Routes = [
-  {path: 'employees', children: [
-      {path: '', component: EmployeesComponent},
-      {path: 'create', component: CreateEmployeeComponent},
+  {path: 'private', component: CmsComponent, children: [
+      {path: 'appointments', component: CalendarComponent },
+      {path: '', redirectTo: 'appointments', pathMatch: 'full'}
     ]},
-  {path: 'calendar', component: CalendarComponent},
 ];
