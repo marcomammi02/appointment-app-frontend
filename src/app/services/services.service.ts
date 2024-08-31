@@ -12,8 +12,6 @@ export class ServicesService {
   private apiUrl: string = 'http://localhost:3000/services'
 
   getServices() {
-    return this.http.get(this.apiUrl).subscribe(res => {
-      this.servicesStore.services = res
-    })
+    return this.http.get(this.apiUrl)
   }
 }

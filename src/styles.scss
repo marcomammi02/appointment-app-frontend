@@ -13,7 +13,6 @@ $xxl: 1550px;
 $border-radius: 15px;
 
 // Color palette
-$palette1: #753eff;
 $palette4: #17181CFF;
 $dashboard-bg: rgba(239, 239, 239, 0.29);
 
@@ -21,4 +20,25 @@ $dashboard-bg: rgba(239, 239, 239, 0.29);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.dialog-background {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.62);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .dialog {
+    width: 90%;
+    height: 80%;
+    background: #fff;
+    border-radius: $border-radius;
+
+    @media screen and (min-width: $md) {
+      width: 675px;
+      height: 555px;
+    }
+  }
 }

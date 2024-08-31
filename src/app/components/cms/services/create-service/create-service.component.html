@@ -1,0 +1,44 @@
+<div class="dialog-background">
+  <div class="dialog p-3 md:px-8">
+    <h2 class="text-center mb-2">Creazione</h2>
+    <p class="text-center mb-5">Inserisci i dati relativi al servizio</p>
+    <form class="flex flex-column gap-5" [formGroup]="form">
+
+      <div>
+        <p-floatLabel>
+          <input pInputText id="name" formControlName="name"/>
+          <label for="name">Nome *</label>
+        </p-floatLabel>
+      </div>
+
+      <div>
+        <p-floatLabel>
+          <textarea
+            formControlName="description"
+            id="float-input"
+            rows="6" cols="30"
+            pInputTextarea>
+          </textarea>
+          <label for="float-input">Descrizione *</label>
+        </p-floatLabel>
+      </div>
+
+      <div class="flex justify-content-between">
+        <p-floatLabel>
+          <p-dropdown
+            [options]="durations"
+            formControlName="duration"
+            optionLabel="name"
+            id="float-label" (onChange)="prova()"/>
+          <label for="float-label">Durata *</label>
+        </p-floatLabel>
+
+        <p-floatLabel>
+          <p-inputNumber id="price" formControlName="price" currency="EUR"/>
+          <label for="price">Prezzo *</label>
+        </p-floatLabel>
+      </div>
+
+    </form>
+  </div>
+</div>

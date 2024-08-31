@@ -1,0 +1,29 @@
+@import "../../../../../styles";
+
+:host ::ng-deep {
+  .p-dropdown, .p-inputnumber-input {
+    border-radius: 10px !important;
+
+    &:hover {
+      border-color: #d1d5db;
+    }
+  }
+}
+
+input, textarea {
+  border-radius: 10px !important;
+  width: 100%;
+
+  &:hover {
+    border-color: #d1d5db;
+  }
+}
+
+label {
+  margin-top: -8px !important;
+}
+
+textarea {
+  resize: none;
+}
+
