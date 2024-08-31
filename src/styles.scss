@@ -9,7 +9,13 @@ $lg: 992px;
 $xl: 1200px;
 $xxl: 1550px;
 
+// Border radius
 $border-radius: 15px;
+
+// Color palette
+$palette1: #753eff;
+$palette4: #17181CFF;
+$dashboard-bg: rgba(239, 239, 239, 0.29);
 
 *:not([class^="p-"]) {
   margin: 0;

@@ -1,0 +1,15 @@
+@import "../../../../styles";
+
+div {
+  background: rgb(254,174,54);
+  background: linear-gradient(90deg, rgba(254,174,54,1) 0%, rgba(255,98,0,1) 100%);
+  border-radius: $border-radius;
+  color: #fff;
+  padding: 10px 25px !important;
+  transition: all .2s ease;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.02);
+  }
+}

@@ -8,7 +8,7 @@
      [ngStyle]="{'width': displaySidebar ?  '100%' : '0'}">
 
   <!-- Main content of the sidebar -->
-  <div class="column relative">
+  <div class="column relative shadow-8">
     <!-- Shop header with logo and name -->
     <div class="p-3 flex align-items-center gap-3 text-white">
       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaVt9yPCghMIg98VMlCM69-EgECCxk_CE8WQ&s">
@@ -18,10 +18,10 @@
     <!-- Navigation section with menu items -->
     <div class="p-3">
       <span class="pt-3 pb-2 block text-xs">Navigazione</span>
-      <p class="cursor-pointer py-3"><i class="pi pi-calendar mr-3"></i>Appuntamenti</p>
-      <p class="cursor-pointer py-3"><i class="pi pi-users mr-3"></i>Staff</p>
-      <p class="cursor-pointer py-3"><i class="pi pi-shop mr-3"></i>Servizi</p>
-      <p class="cursor-pointer py-3"><i class="pi pi-box mr-3"></i>Storico appuntamenti</p>
+      <p class="cursor-pointer py-3" (click)="navigate('appointments')"><i class="pi pi-calendar mr-3"></i>Appuntamenti</p>
+      <p class="cursor-pointer py-3" (click)="navigate('staff')"><i class="pi pi-users mr-3"></i>Staff</p>
+      <p class="cursor-pointer py-3" (click)="navigate('services')"><i class="pi pi-shop mr-3"></i>Servizi</p>
+      <p class="cursor-pointer py-3" (click)="navigate('appointments-history')"><i class="pi pi-box mr-3"></i>Storico appuntamenti</p>
     </div>
 
     <!-- Footer section with logout option -->
