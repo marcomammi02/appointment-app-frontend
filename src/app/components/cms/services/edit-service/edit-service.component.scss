@@ -1,0 +1,38 @@
+@import "../../../../../styles";
+
+:host ::ng-deep {
+  .p-dropdown, .p-inputnumber-input {
+    border-radius: 10px !important;
+    width: 100% !important;
+
+    &:hover {
+      border-color: #d1d5db;
+    }
+  }
+
+  p-inputnumber, .p-inputnumber {
+    width: 100% !important;
+  }
+
+  .p-inputnumber-input, .price-label label {
+    margin-left: 2rem !important;
+  }
+}
+
+input, textarea {
+  border-radius: 10px !important;
+  width: 100%;
+
+  &:hover {
+    border-color: #d1d5db;
+  }
+}
+
+label {
+  margin-top: -8px !important;
+}
+
+textarea {
+  resize: none;
+}
+

@@ -6,4 +6,5 @@ import {ServiceDto} from "../dtos/services.dto";
 })
 export class ServicesStore {
   services: any = []
+  currentService: any = {}
 }

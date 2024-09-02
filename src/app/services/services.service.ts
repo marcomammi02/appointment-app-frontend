@@ -19,4 +19,10 @@ export class ServicesService {
   create(service: CreateServiceDto) {
     return this.http.post(this.apiUrl, service)
   }
+
+  getDetail(id: number) {
+    return this.http.get(`${this.apiUrl}/${id}`).subscribe(res => {
+      this.servicesStore.currentService = res
+    })
+  }
 }

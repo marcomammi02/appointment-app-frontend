@@ -11,10 +11,11 @@ import {NgClass} from "@angular/common";
 import {CreateServiceDto} from "../../../../dtos/services.dto";
 import {ServicesService} from "../../../../services/services.service";
 import {ErrorService, MyError} from "../../../../services/error.service";
+import {ServicesStore} from "../../../../stores/services.store";
 
 
 @Component({
-  selector: 'app-create-service',
+  selector: 'app-edit-service',
   standalone: true,
   imports: [
     InputTextModule,
@@ -28,15 +29,16 @@ import {ErrorService, MyError} from "../../../../services/error.service";
     CancelBtnComponent,
     NgClass
   ],
-  templateUrl: './create-service.component.html',
-  styleUrl: './create-service.component.scss'
+  templateUrl: './edit-service.component.html',
+  styleUrl: './edit-service.component.scss'
 })
-export class CreateServiceComponent implements OnInit {
+export class EditServiceComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
     private servicesService: ServicesService,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private servicesStore: ServicesStore
   ) {
   }
 
@@ -79,7 +81,7 @@ export class CreateServiceComponent implements OnInit {
 
   display!: boolean
 
-  @Output() created: EventEmitter<any> = new EventEmitter<any>
+  @Output() updated: EventEmitter<any> = new EventEmitter<any>
 
   ngOnInit() {
     this.display = false
@@ -88,10 +90,10 @@ export class CreateServiceComponent implements OnInit {
 
   buildForm() {
     this.form = this.formBuilder.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      duration: [null, Validators.required],
-      price: [null, [Validators.required, Validators.min(0)]]
+      name: [this.servicesStore.currentService.name, Validators.required],
+      description: [this.servicesStore.currentService.description, Validators.required],
+      duration: [this.servicesStore.currentService.duration, Validators.required],
+      price: [this.servicesStore.currentService.price, [Validators.required, Validators.min(0)]]
     })
   }
 
@@ -125,7 +127,7 @@ export class CreateServiceComponent implements OnInit {
     this.servicesService.create(service).subscribe(
       res => {
         this.closeDialog()
-        this.created.emit()
+        this.updated.emit()
       },
       err => {
         let error: MyError = {

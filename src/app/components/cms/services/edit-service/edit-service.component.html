@@ -1,14 +1,14 @@
 <div class="dialog-background" [ngClass]="display ? 'open-dialog' : ''">
   <div class="dialog p-3 md:px-8 relative shadow-8 z-5">
     <div class="dialog-content opacity-0" [ngClass]="display ? 'opacity-100' : ''">
-      <h2 class="text-center mb-2">Creazione</h2>
-      <p class="text-center mb-5">Inserisci i dati relativi al servizio</p>
+      <h2 class="text-center mb-2">Servizio</h2>
+      <p class="text-center mb-5">Qui puoi modificare o eliminare il servizio</p>
       <form class="flex flex-column gap-5" [formGroup]="form">
 
         <div>
           <p-floatLabel>
             <input pInputText id="name" formControlName="name"/>
-            <label for="name">Nome *</label>
+            <label for="name">Nome</label>
           </p-floatLabel>
         </div>
 
@@ -20,7 +20,7 @@
             rows="8" cols="30"
             pInputTextarea>
           </textarea>
-            <label for="float-input">Descrizione *</label>
+            <label for="float-input">Descrizione</label>
           </p-floatLabel>
         </div>
 
@@ -32,14 +32,14 @@
                 formControlName="duration"
                 optionLabel="name"
                 id="float-label"/>
-              <label for="float-label">Durata *</label>
+              <label for="float-label">Durata</label>
             </p-floatLabel>
           </div>
 
           <div class="col-7">
             <p-floatLabel class="price-label">
               <p-inputNumber id="price" class="w-full" formControlName="price" currency="EUR" suffix=" €"/>
-              <label for="price">Prezzo *</label>
+              <label for="price">Prezzo</label>
             </p-floatLabel>
           </div>
         </div>
