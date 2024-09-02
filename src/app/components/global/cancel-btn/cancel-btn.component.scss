@@ -1,0 +1,13 @@
+@import "../../../../styles";
+
+div {
+  border: 1px solid #c4c4c4;
+  border-radius: $border-radius;
+  padding: 10px 25px !important;
+  transition: all .2s ease;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.02);
+  }
+}

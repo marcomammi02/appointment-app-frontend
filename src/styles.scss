@@ -24,11 +24,16 @@ $dashboard-bg: rgba(239, 239, 239, 0.29);
 
 .dialog-background {
   position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.62);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+  transition: all .2s ease;
 
   .dialog {
     width: 90%;
@@ -41,4 +46,9 @@ $dashboard-bg: rgba(239, 239, 239, 0.29);
       height: 555px;
     }
   }
+}
+
+.open-dialog {
+  width: 100vw;
+  height: 100vh;
 }

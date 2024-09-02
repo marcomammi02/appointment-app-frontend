@@ -1,5 +1,5 @@
-<div class="dialog-background">
-  <div class="dialog p-3 md:px-8">
+<div class="dialog-background" [ngClass]="display ? 'open-dialog' : ''">
+  <div class="dialog p-3 md:px-8 relative shadow-8 z-5">
     <h2 class="text-center mb-2">Creazione</h2>
     <p class="text-center mb-5">Inserisci i dati relativi al servizio</p>
     <form class="flex flex-column gap-5" [formGroup]="form">
@@ -16,29 +16,37 @@
           <textarea
             formControlName="description"
             id="float-input"
-            rows="6" cols="30"
+            rows="8" cols="30"
             pInputTextarea>
           </textarea>
           <label for="float-input">Descrizione *</label>
         </p-floatLabel>
       </div>
 
-      <div class="flex justify-content-between">
-        <p-floatLabel>
-          <p-dropdown
-            [options]="durations"
-            formControlName="duration"
-            optionLabel="name"
-            id="float-label" (onChange)="prova()"/>
-          <label for="float-label">Durata *</label>
-        </p-floatLabel>
+      <div class="grid">
+        <div class="col-5">
+          <p-floatLabel>
+            <p-dropdown
+              [options]="durations"
+              formControlName="duration"
+              optionLabel="name"
+              id="float-label"/>
+            <label for="float-label">Durata *</label>
+          </p-floatLabel>
+        </div>
 
-        <p-floatLabel>
-          <p-inputNumber id="price" formControlName="price" currency="EUR"/>
-          <label for="price">Prezzo *</label>
-        </p-floatLabel>
+        <div class="col-7">
+          <p-floatLabel class="price-label">
+            <p-inputNumber id="price" class="w-full" formControlName="price" currency="EUR"/>
+            <label for="price">Prezzo *</label>
+          </p-floatLabel>
+        </div>
       </div>
-
     </form>
+
+      <div class="absolute bottom-0 right-0 left-0 flex justify-content-end gap-3 p-3">
+        <app-cancel-btn icon="pi pi-times" label="Annulla" (click)="closeDialog()"/>
+        <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="create()"/>
+      </div>
   </div>
 </div>

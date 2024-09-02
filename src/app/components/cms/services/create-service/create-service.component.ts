@@ -1,10 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {InputTextModule} from 'primeng/inputtext';
 import {FloatLabelModule} from "primeng/floatlabel";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {InputNumberModule} from "primeng/inputnumber";
 import {DropdownModule} from "primeng/dropdown";
+import {PrimaryBtnComponent} from "../../../global/primary-btn/primary-btn.component";
+import {CancelBtnComponent} from "../../../global/cancel-btn/cancel-btn.component";
+import {NgClass} from "@angular/common";
+import {CreateServiceDto} from "../../../../dtos/services.dto";
+import {ServicesService} from "../../../../services/services.service";
+import {ThisReceiver} from "@angular/compiler";
 
 
 @Component({
@@ -17,14 +23,17 @@ import {DropdownModule} from "primeng/dropdown";
     InputTextareaModule,
     ReactiveFormsModule,
     InputNumberModule,
-    DropdownModule
+    DropdownModule,
+    PrimaryBtnComponent,
+    CancelBtnComponent,
+    NgClass
   ],
   templateUrl: './create-service.component.html',
   styleUrl: './create-service.component.scss'
 })
 export class CreateServiceComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private servicesService: ServicesService) {
   }
 
   form!: FormGroup
@@ -64,6 +73,10 @@ export class CreateServiceComponent implements OnInit {
     {name: '8 h', minutes: 480},
   ];
 
+  display: boolean = false
+
+  @Output() created: EventEmitter<any> = new EventEmitter<any>
+
   ngOnInit() {
     this.buildForm()
   }
@@ -77,7 +90,28 @@ export class CreateServiceComponent implements OnInit {
     })
   }
 
-  prova() {
-    console.log(this.form.value.duration)
+  openDialog() {
+    this.display = true
+    this.buildForm()
+  }
+
+  closeDialog() {
+    this.display = false
+  }
+
+  create() {
+    let v = this.form.value
+    const service: CreateServiceDto = {
+      name: v.name,
+      description: v.description,
+      duration: v.duration.minutes,
+      price: v.price,
+      shopId: 3   // Example
+    }
+
+    this.servicesService.create(service).subscribe(res => {
+      this.closeDialog()
+      this.created.emit()
+    })
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {PrimaryBtnComponent} from "../../global/primary-btn/primary-btn.component";
 import {ServicesService} from "../../../services/services.service";
 import {CommonModule} from "@angular/common";
@@ -15,10 +15,15 @@ import {CreateServiceComponent} from "./create-service/create-service.component"
   styleUrl: './services.component.scss'
 })
 export class ServicesComponent implements OnInit {
-  constructor(private servicesService: ServicesService, public servicesStore: ServicesStore) {
-  }
+  constructor(private servicesService: ServicesService, public servicesStore: ServicesStore) {}
+
+  @ViewChild(CreateServiceComponent) createComponent: any
 
   ngOnInit() {
+    this.getServices()
+  }
+
+  getServices() {
     this.servicesService.getServices().subscribe(res => {
       this.servicesStore.services = res
     })
@@ -29,5 +34,9 @@ export class ServicesComponent implements OnInit {
     const min = minutes % 60;
     if (hours == 1 && min == 0) return `${hours} h`
     return `${hours} h ${min} min`;
+  }
+
+  openCreation() {
+    this.createComponent.openDialog()
   }
 }

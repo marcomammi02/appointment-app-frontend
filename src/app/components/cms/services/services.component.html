@@ -1,6 +1,6 @@
 <div class="flex justify-content-between mb-3">
   <h1>Servizi</h1>
-  <app-primary-btn icon="pi pi-plus" label="Crea Servizio"/>
+  <app-primary-btn icon="pi pi-plus" label="Crea Servizio" (click)="openCreation()"/>
 </div>
 
 <div class="grid" *ngIf="servicesStore.services.length > 0">
@@ -16,4 +16,4 @@
 </div>
 <div *ngIf="servicesStore.services.length <= 0" class="w-full h-30rem flex align-items-center justify-content-center">Crea qui i tuoi servizi!</div>
 
-<app-create-service />
+<app-create-service (created)="getServices()"/>
