@@ -6,28 +6,31 @@ import {ServicesStore} from "../../../stores/services.store";
 import {CreateServiceComponent} from "./create-service/create-service.component";
 import {EditServiceComponent} from "./edit-service/edit-service.component";
 import {ThLargeIcon} from "primeng/icons/thlarge";
+import {Router, RouterLink} from "@angular/router";
+import {capitalizeFirstLetter} from "../../../services/utility.service";
 
 @Component({
   selector: 'app-services',
   standalone: true,
   imports: [
-    PrimaryBtnComponent, CommonModule, CreateServiceComponent, EditServiceComponent
+    PrimaryBtnComponent, CommonModule, CreateServiceComponent, EditServiceComponent, RouterLink
   ],
   templateUrl: './services.component.html',
   styleUrl: './services.component.scss'
 })
 export class ServicesComponent implements OnInit {
-  constructor(private servicesService: ServicesService, public servicesStore: ServicesStore) {}
-
-  @ViewChild(CreateServiceComponent) createComponent: any
-  @ViewChild(EditServiceComponent) editComponent: any
+  constructor(
+    private servicesService: ServicesService,
+    public servicesStore: ServicesStore,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.getServices()
   }
 
-  getServices() {
-    this.servicesService.getServices().subscribe(res => {
+  async getServices() {
+    await this.servicesService.getServices().subscribe(res => {
       this.servicesStore.services = res
     })
   }
@@ -40,12 +43,5 @@ export class ServicesComponent implements OnInit {
     return `${hours} h ${min} min`;
   }
 
-  openCreation() {
-    this.createComponent.openDialog()
-  }
-
-  openEdit(id: number) {
-    this.servicesService.getDetail(id)
-    this.editComponent.openDialog()
-  }
+  protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
 }

@@ -13,3 +13,10 @@ export interface CreateServiceDto {
   price: number
   shopId: number
 }
+
+export interface UpdateServiceDto {
+  name: string
+  description: string
+  duration: number  // Duration in minutes
+  price: number
+}

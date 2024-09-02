@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {InputTextModule} from 'primeng/inputtext';
 import {FloatLabelModule} from "primeng/floatlabel";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -7,11 +7,14 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {DropdownModule} from "primeng/dropdown";
 import {PrimaryBtnComponent} from "../../../global/primary-btn/primary-btn.component";
 import {CancelBtnComponent} from "../../../global/cancel-btn/cancel-btn.component";
-import {NgClass} from "@angular/common";
-import {CreateServiceDto} from "../../../../dtos/services.dto";
+import {NgClass, NgIf} from "@angular/common";
+import {CreateServiceDto, UpdateServiceDto} from "../../../../dtos/services.dto";
 import {ServicesService} from "../../../../services/services.service";
 import {ErrorService, MyError} from "../../../../services/error.service";
 import {ServicesStore} from "../../../../stores/services.store";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {capitalizeFirstLetter} from "../../../../services/utility.service";
+import {DeleteBtnComponent} from "../../../global/delete-btn/delete-btn.component";
 
 
 @Component({
@@ -27,7 +30,10 @@ import {ServicesStore} from "../../../../stores/services.store";
     DropdownModule,
     PrimaryBtnComponent,
     CancelBtnComponent,
-    NgClass
+    NgClass,
+    RouterLink,
+    NgIf,
+    DeleteBtnComponent
   ],
   templateUrl: './edit-service.component.html',
   styleUrl: './edit-service.component.scss'
@@ -37,97 +43,70 @@ export class EditServiceComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private servicesService: ServicesService,
+    public servicesStore: ServicesStore,
     private errorService: ErrorService,
-    private servicesStore: ServicesStore
+    private router: Router,
+    private route: ActivatedRoute
   ) {
   }
 
   form!: FormGroup
 
-  durations = [
-    {name: '15 min', minutes: 15},
-    {name: '30 min', minutes: 30},
-    {name: '45 min', minutes: 45},
-    {name: '1 h', minutes: 60},
-    {name: '1 h 15 min', minutes: 75},
-    {name: '1 h 30 min', minutes: 90},
-    {name: '1 h 45 min', minutes: 105},
-    {name: '2 h', minutes: 120},
-    {name: '2 h 15 min', minutes: 135},
-    {name: '2 h 30 min', minutes: 150},
-    {name: '2 h 45 min', minutes: 165},
-    {name: '3 h', minutes: 180},
-    {name: '3 h 15 min', minutes: 195},
-    {name: '3 h 30 min', minutes: 210},
-    {name: '3 h 45 min', minutes: 225},
-    {name: '4 h', minutes: 240},
-    {name: '4 h 15 min', minutes: 255},
-    {name: '4 h 30 min', minutes: 270},
-    {name: '4 h 45 min', minutes: 285},
-    {name: '5 h', minutes: 300},
-    {name: '5 h 15 min', minutes: 315},
-    {name: '5 h 30 min', minutes: 330},
-    {name: '5 h 45 min', minutes: 345},
-    {name: '6 h', minutes: 360},
-    {name: '6 h 15 min', minutes: 375},
-    {name: '6 h 30 min', minutes: 390},
-    {name: '6 h 45 min', minutes: 405},
-    {name: '7 h', minutes: 420},
-    {name: '7 h 15 min', minutes: 435},
-    {name: '7 h 30 min', minutes: 450},
-    {name: '7 h 45 min', minutes: 465},
-    {name: '8 h', minutes: 480},
-  ];
+  currentService?: any
 
-  display!: boolean
-
-  @Output() updated: EventEmitter<any> = new EventEmitter<any>
+  serviceId!: number
 
   ngOnInit() {
-    this.display = false
-    this.buildForm()
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('serviceId');
+      this.serviceId = +id!
+      if (id) {
+        this.getDetail(+id)
+      }
+    });
+  }
+
+  async getDetail(id: number) {
+    await this.servicesService.getDetail(id).subscribe(res => {
+      this.currentService = res;
+      this.buildForm();
+    });
   }
 
   buildForm() {
     this.form = this.formBuilder.group({
-      name: [this.servicesStore.currentService.name, Validators.required],
-      description: [this.servicesStore.currentService.description, Validators.required],
-      duration: [this.servicesStore.currentService.duration, Validators.required],
-      price: [this.servicesStore.currentService.price, [Validators.required, Validators.min(0)]]
+      name: [capitalizeFirstLetter(this.currentService.name), Validators.required],
+      description: [capitalizeFirstLetter(this.currentService.description), Validators.required],
+      duration: [this.findDuration(this.currentService.duration), Validators.required],
+      price: [this.currentService.price, [Validators.required, Validators.min(0)]]
     })
   }
 
-  openDialog() {
-    this.display = true
-    this.buildForm()
+  findDuration(duration: number) {
+    return this.servicesStore.durations.find(d => d.minutes == duration)
   }
 
-  closeDialog() {
-    this.display = false
-  }
-
-  create() {
+  update() {
     if (this.form.invalid) {
       let error: MyError = {
         label: 'Attenzione',
         message: 'Inserire tutti i campi'
       }
       this.errorService.showError(error)
+      return
     }
 
     let v = this.form.value
-    const service: CreateServiceDto = {
+    const service: UpdateServiceDto = {
       name: v.name,
       description: v.description,
       duration: v.duration.minutes,
       price: v.price,
-      shopId: 3   // Example
     }
 
-    this.servicesService.create(service).subscribe(
+    this.servicesService.update(this.currentService.id, service).subscribe(
       res => {
-        this.closeDialog()
-        this.updated.emit()
+        this.router.navigate(['/private/services'])
       },
       err => {
         let error: MyError = {
@@ -138,4 +117,17 @@ export class EditServiceComponent implements OnInit {
       }
     )
   }
+
+  delete() {
+    if (this.serviceId != null) {
+      this.servicesService.delete(+this.serviceId).subscribe(
+        res => {
+          this.router.navigate(['/private/services'])
+        },
+        err => console.error(err.message)
+      )
+    }
+  }
+
+  protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
 }
