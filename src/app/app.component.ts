@@ -5,11 +5,13 @@ import {FloatLabelModule} from "primeng/floatlabel";
 import {InputTextModule} from "primeng/inputtext";
 import {ToastModule} from 'primeng/toast';
 import {ErrorService} from "./services/error.service";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, CommonModule, FloatLabelModule, InputTextModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

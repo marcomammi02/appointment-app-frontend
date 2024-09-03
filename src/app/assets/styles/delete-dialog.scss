@@ -1,0 +1,36 @@
+@import "../../../styles";
+
+:host ::ng-deep {
+  .p-dialog .p-dialog-header {
+    border-top-right-radius: $border-radius;
+    border-top-left-radius: $border-radius;
+  }
+
+  .p-dialog .p-dialog-footer {
+    border-bottom-right-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+  }
+
+  .p-dialog .p-dialog-footer button {
+    border-radius: $border-radius;
+    padding: 10px 25px !important;
+  }
+
+  .p-button.p-button-text {
+    color: #000;
+  }
+
+  .p-button.p-button-text:not(:disabled):hover {
+    background: none;
+    color: #000;
+  }
+
+  .p-button:focus {
+    box-shadow: none;
+  }
+
+  .p-button.p-button-danger.p-button-text, .p-button-group.p-button-danger > .p-button.p-button-text, .p-splitbutton.p-button-danger > .p-button.p-button-text {
+    color: #ef4444 !important;
+    border: 2px solid red;
+  }
+}

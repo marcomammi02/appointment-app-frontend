@@ -6,7 +6,7 @@
       <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
       <h2>{{ capitalizeFirstLetter(currentService.name) }}</h2>
     </div>
-    <app-delete-btn (click)="delete()" class="responsive"/>
+    <app-delete-btn (click)="confirm2($event)" class="responsive"/>
   </div>
   <p class="mb-5">Qui puoi vedere, modificare o eliminare il tuo servizio</p>
   <form class="flex flex-column gap-5" [formGroup]="form">
@@ -60,4 +60,6 @@
   Il servizio non è stato trovato!
   <app-cancel-btn icon="pi pi-arrow-left" label="Indietro" routerLink="/private/services"/>
 </div>
+
+<p-confirmDialog />
 

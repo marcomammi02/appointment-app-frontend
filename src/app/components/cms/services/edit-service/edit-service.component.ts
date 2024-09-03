@@ -8,13 +8,16 @@ import {DropdownModule} from "primeng/dropdown";
 import {PrimaryBtnComponent} from "../../../global/primary-btn/primary-btn.component";
 import {CancelBtnComponent} from "../../../global/cancel-btn/cancel-btn.component";
 import {NgClass, NgIf} from "@angular/common";
-import {CreateServiceDto, UpdateServiceDto} from "../../../../dtos/services.dto";
+import {UpdateServiceDto} from "../../../../dtos/services.dto";
 import {ServicesService} from "../../../../services/services.service";
 import {ErrorService, MyError} from "../../../../services/error.service";
 import {ServicesStore} from "../../../../stores/services.store";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {capitalizeFirstLetter} from "../../../../services/utility.service";
 import {DeleteBtnComponent} from "../../../global/delete-btn/delete-btn.component";
+import {ToastModule} from "primeng/toast";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {ConfirmationService, MessageService} from "primeng/api";
 
 
 @Component({
@@ -33,10 +36,13 @@ import {DeleteBtnComponent} from "../../../global/delete-btn/delete-btn.componen
     NgClass,
     RouterLink,
     NgIf,
-    DeleteBtnComponent
+    DeleteBtnComponent,
+    ToastModule,
+    ConfirmDialogModule,
   ],
   templateUrl: './edit-service.component.html',
-  styleUrl: './edit-service.component.scss'
+  styleUrl: './edit-service.component.scss',
+  providers: [ConfirmationService, MessageService]
 })
 export class EditServiceComponent implements OnInit {
 
@@ -46,7 +52,8 @@ export class EditServiceComponent implements OnInit {
     public servicesStore: ServicesStore,
     private errorService: ErrorService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private confirmationService: ConfirmationService
   ) {
   }
 
@@ -127,6 +134,25 @@ export class EditServiceComponent implements OnInit {
         err => console.error(err.message)
       )
     }
+  }
+
+  confirm2(event: Event) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Sei sicuro di voler eliminare il servizio?',
+      header: 'Attenzione',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass:"p-button-danger p-button-text",
+      acceptLabel: 'Si',
+      rejectButtonStyleClass:"p-button-text p-button-text",
+      rejectLabel: 'No',
+      acceptIcon:"none",
+      rejectIcon:"none",
+
+      accept: () => {
+        this.delete()
+      }
+    });
   }
 
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;

@@ -16,6 +16,10 @@ $border-radius: 15px;
 $palette4: #17181CFF;
 $dashboard-bg: rgba(239, 239, 239, 0.29);
 
+body {
+  margin: 0 !important;
+}
+
 *:not([class^="p-"]) {
   margin: 0;
   padding: 0;
