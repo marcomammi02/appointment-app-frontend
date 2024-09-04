@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {StaffStore} from "../stores/staff.store";
-import {CreateStaffDto} from "../dtos/staff.dto";
+import {CreateStaffDto, UpdateStaffDto} from "../dtos/staff.dto";
+import {UpdateServiceDto} from "../dtos/services.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,18 @@ export class StaffService {
 
   create(staff: CreateStaffDto) {
     return this.http.post(this.apiUrl, staff)
+  }
+
+  getDetail(id: number) {
+    return this.http.get(`${this.apiUrl}/${id}`)
+  }
+
+  update(id: number, staff: UpdateStaffDto) {
+    return this.http.patch(`${this.apiUrl}/${id}`, staff)
+  }
+
+  delete(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`)
   }
 
 }

@@ -8,11 +8,8 @@ import {DropdownModule} from "primeng/dropdown";
 import {PrimaryBtnComponent} from "../../../global/primary-btn/primary-btn.component";
 import {CancelBtnComponent} from "../../../global/cancel-btn/cancel-btn.component";
 import {NgClass} from "@angular/common";
-import {CreateServiceDto} from "../../../../dtos/services.dto";
-import {ServicesService} from "../../../../services/services.service";
 import {ErrorService, MyError} from "../../../../services/error.service";
 import {Router, RouterLink} from "@angular/router";
-import {ServicesStore} from "../../../../stores/services.store";
 import {CreateStaffDto} from "../../../../dtos/staff.dto";
 import {StaffService} from "../../../../services/staff.service";
 
@@ -55,7 +52,7 @@ export class CreateStaffComponent implements OnInit {
   buildForm() {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
-      lastname: [''],
+      lastName: [''],
       role: [''],
     })
   }
@@ -64,7 +61,7 @@ export class CreateStaffComponent implements OnInit {
     if (this.form.invalid) {
       let error: MyError = {
         label: 'Attenzione',
-        message: 'Inserire tutti i campi'
+        message: 'Il nome è obbligatorio'
       }
       this.errorService.showError(error)
       return
@@ -73,7 +70,7 @@ export class CreateStaffComponent implements OnInit {
     let v = this.form.value
     const staff: CreateStaffDto = {
       name: v.name,
-      lastname: v.lastname,
+      lastName: v.lastName,
       role: v.role,
       shopId: 3   // Example
     }

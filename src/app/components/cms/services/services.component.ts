@@ -29,8 +29,8 @@ export class ServicesComponent implements OnInit {
     this.getServices()
   }
 
-  async getServices() {
-    await this.servicesService.getServices().subscribe(res => {
+  getServices() {
+    this.servicesService.getServices().subscribe(res => {
       this.servicesStore.services = res
     })
   }

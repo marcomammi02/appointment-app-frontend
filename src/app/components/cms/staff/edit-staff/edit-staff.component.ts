@@ -18,6 +18,9 @@ import {DeleteBtnComponent} from "../../../global/delete-btn/delete-btn.componen
 import {ToastModule} from "primeng/toast";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ConfirmationService, MessageService} from "primeng/api";
+import {StaffService} from "../../../../services/staff.service";
+import {StaffStore} from "../../../../stores/staff.store";
+import {UpdateStaffDto} from "../../../../dtos/staff.dto";
 
 
 @Component({
@@ -48,8 +51,8 @@ export class EditStaffComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private servicesService: ServicesService,
-    public servicesStore: ServicesStore,
+    private staffService: StaffService,
+    public staffStore: StaffStore,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -59,61 +62,55 @@ export class EditStaffComponent implements OnInit {
 
   form!: FormGroup
 
-  currentService?: any
+  currentStaff?: any
 
-  serviceId!: number
+  staffId!: number
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      const id = params.get('serviceId');
-      this.serviceId = +id!
+      const id = params.get('staffId');
+      this.staffId = +id!
       if (id) {
         this.getDetail(+id)
       }
     });
   }
 
-  async getDetail(id: number) {
-    await this.servicesService.getDetail(id).subscribe(res => {
-      this.currentService = res;
+  getDetail(id: number) {
+    this.staffService.getDetail(id).subscribe(res => {
+      this.currentStaff = res;
       this.buildForm();
     });
   }
 
   buildForm() {
     this.form = this.formBuilder.group({
-      name: [capitalizeFirstLetter(this.currentService.name), Validators.required],
-      description: [capitalizeFirstLetter(this.currentService.description), Validators.required],
-      duration: [this.findDuration(this.currentService.duration), Validators.required],
-      price: [this.currentService.price, [Validators.required, Validators.min(0)]]
+      name: [capitalizeFirstLetter(this.currentStaff.name), Validators.required],
+      lastName: [capitalizeFirstLetter(this.currentStaff.lastName)],
+      role: [capitalizeFirstLetter(this.currentStaff.role)]
     })
-  }
-
-  findDuration(duration: number) {
-    return this.servicesStore.durations.find(d => d.minutes == duration)
   }
 
   update() {
     if (this.form.invalid) {
       let error: MyError = {
         label: 'Attenzione',
-        message: 'Inserire tutti i campi'
+        message: 'Il nome è obbligatorio'
       }
       this.errorService.showError(error)
       return
     }
 
     let v = this.form.value
-    const service: UpdateServiceDto = {
+    const staff: UpdateStaffDto = {
       name: v.name,
-      description: v.description,
-      duration: v.duration.minutes,
-      price: v.price,
+      lastName: v.lastName,
+      role: v.role
     }
 
-    this.servicesService.update(this.currentService.id, service).subscribe(
+    this.staffService.update(this.currentStaff.id, staff).subscribe(
       res => {
-        this.router.navigate(['/private/services'])
+        this.router.navigate(['/private/staff'])
       },
       err => {
         let error: MyError = {
@@ -126,10 +123,10 @@ export class EditStaffComponent implements OnInit {
   }
 
   delete() {
-    if (this.serviceId != null) {
-      this.servicesService.delete(+this.serviceId).subscribe(
+    if (this.staffId != null) {
+      this.staffService.delete(+this.staffId).subscribe(
         res => {
-          this.router.navigate(['/private/services'])
+          this.router.navigate(['/private/staff'])
         },
         err => console.error(err.message)
       )
@@ -139,7 +136,7 @@ export class EditStaffComponent implements OnInit {
   confirm2(event: Event) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: 'Sei sicuro di voler eliminare il servizio?',
+      message: 'Sei sicuro di voler eliminare il membro dello staff?',
       header: 'Attenzione',
       icon: 'pi pi-info-circle',
       acceptButtonStyleClass:"p-button-danger p-button-text",
