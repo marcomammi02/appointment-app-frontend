@@ -1,0 +1,65 @@
+<div *ngIf="currentService">
+
+  <div class="flex justify-content-between mb-3">
+    <div class="flex align-items-center gap-2 mb-5">
+      <h1 class="cursor-pointer" routerLink="/private/services">Servizi</h1>
+      <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
+      <h2>{{ capitalizeFirstLetter(currentService.name) }}</h2>
+    </div>
+    <app-delete-btn (click)="confirm2($event)" class="responsive"/>
+  </div>
+  <p class="mb-5">Qui puoi vedere, modificare o eliminare il tuo servizio</p>
+  <form class="flex flex-column gap-5" [formGroup]="form">
+
+    <div>
+      <p-floatLabel>
+        <input pInputText id="name" formControlName="name"/>
+        <label for="name">Nome :</label>
+      </p-floatLabel>
+    </div>
+
+    <div>
+      <p-floatLabel>
+          <textarea
+            formControlName="description"
+            id="float-input"
+            rows="8" cols="30"
+            pInputTextarea>
+          </textarea>
+        <label for="float-input">Descrizione :</label>
+      </p-floatLabel>
+    </div>
+
+    <div class="grid">
+      <div class="col-5">
+        <p-floatLabel>
+          <p-dropdown
+            [options]="servicesStore.durations"
+            formControlName="duration"
+            optionLabel="name"
+            id="float-label"/>
+          <label for="float-label">Durata :</label>
+        </p-floatLabel>
+      </div>
+
+      <div class="col-7">
+        <p-floatLabel class="price-label">
+          <p-inputNumber id="price" class="w-full" formControlName="price" currency="EUR" suffix=" €"/>
+          <label for="price">Prezzo :</label>
+        </p-floatLabel>
+      </div>
+    </div>
+  </form>
+
+  <div class="flex justify-content-end gap-3 mt-5">
+    <app-cancel-btn icon="pi pi-times" label="Annulla" routerLink="/private/services"/>
+    <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="update()"/>
+  </div>
+</div>
+<div *ngIf="!currentService" class="w-full h-30rem flex flex-column gap-5 align-items-center justify-content-center">
+  Il servizio non è stato trovato!
+  <app-cancel-btn icon="pi pi-arrow-left" label="Indietro" routerLink="/private/services"/>
+</div>
+
+<p-confirmDialog />
+

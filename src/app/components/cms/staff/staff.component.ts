@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {PrimaryBtnComponent} from "../../global/primary-btn/primary-btn.component";
 import {RouterLink} from "@angular/router";
-import {StoreStaff} from "../../../stores/staff.store";
+import {StaffStore} from "../../../stores/staff.store";
 import {capitalizeFirstLetter} from "../../../services/utility.service";
 
 @Component({
@@ -18,7 +18,7 @@ import {capitalizeFirstLetter} from "../../../services/utility.service";
   styleUrl: './staff.component.scss'
 })
 export class StaffComponent {
-    constructor(public staffStore: StoreStaff) {
+    constructor(public staffStore: StaffStore) {
     }
 
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Staff, StoreStaff} from "../../../stores/staff.store";
+import {Staff, StaffStore} from "../../../stores/staff.store";
 import {NgForOf, NgIf} from "@angular/common";
 import {StoreAppointments} from "../../../stores/appointment.store";
 
@@ -15,7 +15,7 @@ import {StoreAppointments} from "../../../stores/appointment.store";
 })
 export class CalendarComponent {
   constructor(
-    public storeStaff: StoreStaff,
+    public storeStaff: StaffStore,
     public storeAppointments: StoreAppointments,
   ) {}
   hours: string[] = [

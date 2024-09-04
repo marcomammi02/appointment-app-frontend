@@ -3,7 +3,7 @@ import {Injectable} from "@angular/core";
 @Injectable({
   providedIn: 'root'
 })
-export class StoreStaff {
+export class StaffStore {
   staffList: Staff[] =  [
     {
       id: '1',
