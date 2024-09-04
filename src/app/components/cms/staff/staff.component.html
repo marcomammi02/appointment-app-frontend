@@ -1,0 +1,18 @@
+<div class="flex justify-content-between mb-3">
+  <h1>Staff</h1>
+  <app-primary-btn icon="pi pi-plus" label="Crea Membro" routerLink="/private/staff/create"/>
+</div>
+
+<div class="grid" *ngIf="staffStore.staffList.length > 0">
+  <div class="col-12 md:col-6 xl:col-4" *ngFor="let staff of staffStore.staffList">
+    <div class="card p-3 m-2 text-center shadow-4" [routerLink]="'/private/staff/' + staff.id">
+      <h3>{{capitalizeFirstLetter(staff.name)}}</h3>
+      <h3>{{capitalizeFirstLetter(staff.lastname)}}</h3>
+      <!-- <div class="flex justify-content-evenly mt-3">
+        <p><i class="pi pi-clock mr-1"></i> {{getHourTime(service.duration)}}</p>
+        <p><i class="pi pi-wallet mr-1"></i> {{service.price}} €</p>
+      </div> -->
+    </div>
+  </div>
+</div>
+<div *ngIf="staffStore.staffList.length <= 0" class="w-full h-30rem flex align-items-center justify-content-center">Crea qui il tuo staff!</div>
