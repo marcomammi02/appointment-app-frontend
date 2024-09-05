@@ -27,6 +27,42 @@
     </p-floatLabel>
   </div>
 
+  <div>
+    <table>
+      <tr>
+        <th>Orario</th>
+        <th>Inizio lavoro</th>
+        <th>Inizio pausa</th>
+        <th>Fine pausa</th>
+        <th>Fine lavoro</th>
+      </tr>
+      <tr *ngFor="let day of availabilityStore.week">
+        <th>{{day}}</th>
+        <td>
+          <p-calendar
+          inputId="calendar-timeonly"
+          [timeOnly]="true" [stepMinute]="15" [defaultDate]="minDate" placeholder="- - -" (onSelect)="setStartWork(day, $event)" />
+        </td>
+        <td>
+          <p-calendar
+            inputId="calendar-timeonly"
+            [timeOnly]="true" [stepMinute]="15" [defaultDate]="minDate" placeholder="- - -" (onSelect)="setStartBreak(day, $event)" />
+        </td>
+        <td>
+          <p-calendar
+            inputId="calendar-timeonly"
+            [timeOnly]="true" [stepMinute]="15" [defaultDate]="minDate" placeholder="- - -" (onSelect)="setEndBreak(day, $event)" />
+        </td>
+        <td>
+          <p-calendar
+            inputId="calendar-timeonly"
+            [timeOnly]="true" [stepMinute]="15" [defaultDate]="minDate" placeholder="- - -" (onSelect)="setEndWork(day, $event)" />
+
+        </td>
+      </tr>
+    </table>
+  </div>
+
 </form>
 
 <div class="flex justify-content-end gap-3 mt-5">
