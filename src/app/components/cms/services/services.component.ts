@@ -22,7 +22,6 @@ export class ServicesComponent implements OnInit {
   constructor(
     private servicesService: ServicesService,
     public servicesStore: ServicesStore,
-    private router: Router
   ) {}
 
   ngOnInit() {

@@ -19,7 +19,10 @@ import {StaffService} from "../../../services/staff.service";
   styleUrl: './staff.component.scss'
 })
 export class StaffComponent implements OnInit{
-    constructor(public staffStore: StaffStore, private staffService: StaffService) {}
+    constructor(
+      public staffStore: StaffStore,
+      private staffService: StaffService
+    ) {}
 
   ngOnInit() {
     this.getStaff()
@@ -32,5 +35,4 @@ export class StaffComponent implements OnInit{
   }
 
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
-  protected readonly caches = caches;
 }

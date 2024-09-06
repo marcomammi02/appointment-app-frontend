@@ -1,8 +1,9 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {StaffStore} from "../stores/staff.store";
-import {CreateStaffDto, UpdateStaffDto} from "../dtos/staff.dto";
+import {CreateStaffDto, StaffDto, UpdateStaffDto} from "../dtos/staff.dto";
 import {UpdateServiceDto} from "../dtos/services.dto";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class StaffService {
     return this.http.get(this.apiUrl);
   }
 
-  create(staff: CreateStaffDto) {
+  create(staff: CreateStaffDto): Observable<any> {
     return this.http.post(this.apiUrl, staff)
   }
 

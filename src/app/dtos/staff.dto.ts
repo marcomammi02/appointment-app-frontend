@@ -10,3 +10,10 @@ export interface UpdateStaffDto {
   lastName?: string
   role?: string
 }
+
+export interface StaffDto {
+  id: number
+  name: string
+  lastName: string
+  role: string
+}

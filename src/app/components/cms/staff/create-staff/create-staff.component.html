@@ -3,7 +3,7 @@
   <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
   <h2>Creazione</h2>
 </div>
-<p class="mb-5">Inserisci i dati relativi al membro dello staff</p>
+<p class="mb-3">Inserisci i dati relativi al membro dello staff</p>
 <form class="flex flex-column gap-5" [formGroup]="form">
 
   <div>
@@ -28,38 +28,63 @@
   </div>
 
   <div>
-    <table>
+    <h2 class="mt-5 mb-3">Orari</h2>
+    <p class="mb-3">Se il membro dello staff non ha una pausa, lascia i relativi campi vuoti</p>
+    <table class="responsive-table">
+      <thead>
       <tr>
-        <th>Orario</th>
+        <th>Giorno</th>
         <th>Inizio lavoro</th>
         <th>Inizio pausa</th>
         <th>Fine pausa</th>
         <th>Fine lavoro</th>
       </tr>
+      </thead>
+      <tbody>
       <tr *ngFor="let day of availabilityStore.week">
-        <th>{{day}}</th>
-        <td>
-          <p-calendar
-          inputId="calendar-timeonly"
-          [timeOnly]="true" [stepMinute]="15" [defaultDate]="minDate" placeholder="- - -" (onSelect)="setStartWork(day, $event)" />
-        </td>
-        <td>
+        <td data-label="Giorno">{{ day.name }}</td>
+        <td data-label="Inizio lavoro">
           <p-calendar
             inputId="calendar-timeonly"
-            [timeOnly]="true" [stepMinute]="15" [defaultDate]="minDate" placeholder="- - -" (onSelect)="setStartBreak(day, $event)" />
+            [timeOnly]="true"
+            [stepMinute]="15"
+            [defaultDate]="minDate"
+            placeholder="- - -"
+            (onSelect)="setStartWork(day.value, $event)"
+          />
         </td>
-        <td>
+        <td data-label="Inizio pausa">
           <p-calendar
             inputId="calendar-timeonly"
-            [timeOnly]="true" [stepMinute]="15" [defaultDate]="minDate" placeholder="- - -" (onSelect)="setEndBreak(day, $event)" />
+            [timeOnly]="true"
+            [stepMinute]="15"
+            [defaultDate]="minDate"
+            placeholder="- - -"
+            (onSelect)="setStartBreak(day.value, $event)"
+          />
         </td>
-        <td>
+        <td data-label="Fine pausa">
           <p-calendar
             inputId="calendar-timeonly"
-            [timeOnly]="true" [stepMinute]="15" [defaultDate]="minDate" placeholder="- - -" (onSelect)="setEndWork(day, $event)" />
-
+            [timeOnly]="true"
+            [stepMinute]="15"
+            [defaultDate]="minDate"
+            placeholder="- - -"
+            (onSelect)="setEndBreak(day.value, $event)"
+          />
+        </td>
+        <td data-label="Fine lavoro">
+          <p-calendar
+            inputId="calendar-timeonly"
+            [timeOnly]="true"
+            [stepMinute]="15"
+            [defaultDate]="minDate"
+            placeholder="- - -"
+            (onSelect)="setEndWork(day.value, $event)"
+          />
         </td>
       </tr>
+      </tbody>
     </table>
   </div>
 
