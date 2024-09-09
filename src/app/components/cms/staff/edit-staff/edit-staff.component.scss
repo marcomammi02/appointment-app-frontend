@@ -45,3 +45,83 @@ textarea {
   }
 }
 
+.responsive-table {
+  width: 100%;
+  border-collapse: separate; /* Cambiato in 'separate' */
+  border-spacing: 0; /* Rimuove lo spazio tra le celle */
+
+  th, td {
+    border: 1px solid #000;
+  }
+
+  /* Aggiunge un bordo stondato agli angoli della tabella */
+  th:first-child {
+    border-top-left-radius: $border-radius;
+  }
+
+  th:last-child {
+    border-top-right-radius: $border-radius;
+  }
+
+  tr:last-child td:first-child {
+    border-bottom-left-radius: $border-radius;
+  }
+
+  tr:last-child td:last-child {
+    border-bottom-right-radius: $border-radius;
+  }
+}
+
+
+.responsive-table thead {
+  display: table-header-group;
+}
+
+.responsive-table th,
+.responsive-table td {
+  padding: .6rem;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+@media (max-width: $md) {
+  .responsive-table thead {
+    display: none;
+  }
+
+  .responsive-table tbody tr {
+    display: block;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: $border-radius;
+
+    td:first-child {
+      padding: 1rem;
+    }
+  }
+
+  .responsive-table td {
+    display: block;
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+    border: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .responsive-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 10px;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .responsive-table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+

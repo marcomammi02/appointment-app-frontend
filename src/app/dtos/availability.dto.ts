@@ -1,20 +1,17 @@
 export interface AvailabilityDayDto {
-  dayCode: number
-  startWork?: string
+  dayOfWeek: number
+  startTime?: string
   startBreak?: string
   endBreak?: string
-  endWork?: string
-}
-
-export interface AvailabilityWeekDto {
-  [key: string]: AvailabilityDayDto
+  endTime?: string
+  staffId: number
 }
 
 export interface CreateAvailabilityDto {
   dayOfWeek: number
-  startTime: string
+  startTime?: string | null
   startBreak?: string | null
   endBreak?: string | null
-  endTime: string
+  endTime?: string | null
   staffId: number
 }

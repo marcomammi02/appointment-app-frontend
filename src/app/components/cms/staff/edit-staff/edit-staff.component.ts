@@ -7,11 +7,8 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {DropdownModule} from "primeng/dropdown";
 import {PrimaryBtnComponent} from "../../../global/primary-btn/primary-btn.component";
 import {CancelBtnComponent} from "../../../global/cancel-btn/cancel-btn.component";
-import {NgClass, NgIf} from "@angular/common";
-import {UpdateServiceDto} from "../../../../dtos/services.dto";
-import {ServicesService} from "../../../../services/services.service";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {ErrorService, MyError} from "../../../../services/error.service";
-import {ServicesStore} from "../../../../stores/services.store";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {capitalizeFirstLetter} from "../../../../services/utility.service";
 import {DeleteBtnComponent} from "../../../global/delete-btn/delete-btn.component";
@@ -19,30 +16,35 @@ import {ToastModule} from "primeng/toast";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {StaffService} from "../../../../services/staff.service";
-import {StaffStore} from "../../../../stores/staff.store";
 import {UpdateStaffDto} from "../../../../dtos/staff.dto";
+import {CalendarModule} from "primeng/calendar";
+import {AvailabilityStore} from "../../../../stores/availability.store";
+import {AvailabilityService} from "../../../../services/availability.service";
+import {AvailabilityDayDto} from "../../../../dtos/availability.dto";
 
 
 @Component({
   selector: 'app-edit-staff',
   standalone: true,
-  imports: [
-    InputTextModule,
-    FloatLabelModule,
-    FormsModule,
-    InputTextareaModule,
-    ReactiveFormsModule,
-    InputNumberModule,
-    DropdownModule,
-    PrimaryBtnComponent,
-    CancelBtnComponent,
-    NgClass,
-    RouterLink,
-    NgIf,
-    DeleteBtnComponent,
-    ToastModule,
-    ConfirmDialogModule,
-  ],
+    imports: [
+        InputTextModule,
+        FloatLabelModule,
+        FormsModule,
+        InputTextareaModule,
+        ReactiveFormsModule,
+        InputNumberModule,
+        DropdownModule,
+        PrimaryBtnComponent,
+        CancelBtnComponent,
+        NgClass,
+        RouterLink,
+        NgIf,
+        DeleteBtnComponent,
+        ToastModule,
+        ConfirmDialogModule,
+        CalendarModule,
+        NgForOf,
+    ],
   templateUrl: './edit-staff.component.html',
   styleUrl: './edit-staff.component.scss',
   providers: [ConfirmationService, MessageService]
@@ -52,7 +54,8 @@ export class EditStaffComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private staffService: StaffService,
-    public staffStore: StaffStore,
+    public availabilityStore: AvailabilityStore,
+    private availabilityService: AvailabilityService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -66,14 +69,30 @@ export class EditStaffComponent implements OnInit {
 
   staffId!: number
 
+  minDate!: Date;
+
+  week?: AvailabilityDayDto[]
+  value: string = ''
+
+
   ngOnInit() {
+    this.week = [];
     this.route.paramMap.subscribe(params => {
       const id = params.get('staffId');
-      this.staffId = +id!
+      this.staffId = +id!;
+
       if (id) {
-        this.getDetail(+id)
+        this.getDetail(+id);
+
+        this.availabilityService.findAll(+id).subscribe((res: any) => {
+          res.forEach((av: AvailabilityDayDto) => this.week!.push(av))
+          console.log(this.week![0])
+        });
       }
     });
+
+    this.minDate = new Date();
+    this.minDate.setHours(12, 0, 0);
   }
 
   getDetail(id: number) {
@@ -83,12 +102,51 @@ export class EditStaffComponent implements OnInit {
     });
   }
 
+  getDateFromString(time?: string): Date {
+    const [hours, minutes] = time!.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, 0);
+    return date;
+  }
+
   buildForm() {
     this.form = this.formBuilder.group({
       name: [capitalizeFirstLetter(this.currentStaff.name), Validators.required],
       lastName: [capitalizeFirstLetter(this.currentStaff.lastName)],
       role: [capitalizeFirstLetter(this.currentStaff.role)]
     })
+  }
+
+  setStartWork(day: number, event: any) {
+    if (this.week![day]){
+      this.week![day].startTime = this.getTime(event)
+    }
+  }
+  setStartBreak(day: number, event: any) {
+    if (this.week![day]){
+      this.week![day].startBreak = this.getTime(event)
+    }  }
+
+  setEndBreak(day: number, event: any) {
+    if (this.week![day]){
+      this.week![day].endBreak = this.getTime(event)
+    }  }
+
+  setEndWork(day: number, event: any) {
+    if (this.week![day]){
+      this.week![day].endTime = this.getTime(event)
+    }  }
+
+  getTime(date: Date) {
+    let hours: number | string = date.getHours()
+    let minutes: number | string = date.getMinutes()
+    if (hours < 10) {
+      hours = '0' + hours
+    }
+    if (minutes == 0) {
+      minutes = '00'
+    }
+    return `${hours}:${minutes}`
   }
 
   update() {

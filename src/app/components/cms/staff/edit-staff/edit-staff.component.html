@@ -33,6 +33,71 @@
     </div>
   </form>
 
+    <div>
+      <h2 class="mt-5 mb-3">Orari</h2>
+      <p class="mb-3">Visualizza o modifica gli orari del moembro dello staff</p>
+      <table class="responsive-table">
+        <thead>
+        <tr>
+          <th>Giorno</th>
+          <th>Inizio lavoro</th>
+          <th>Inizio pausa</th>
+          <th>Fine pausa</th>
+          <th>Fine lavoro</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let day of availabilityStore.week">
+          <td data-label="Giorno">{{ day.name }}</td>
+          <td data-label="Inizio lavoro">
+            <p-calendar
+              inputId="calendar-timeonly"
+              [timeOnly]="true"
+              [stepMinute]="15"
+              [defaultDate]="minDate"
+              [ngModel]="value"
+              placeholder="- - -"
+              (onSelect)="setStartWork(day.value, $event)"
+            ></p-calendar>
+          </td>
+          <td data-label="Inizio pausa">
+            <p-calendar
+              inputId="calendar-timeonly"
+              [timeOnly]="true"
+              [stepMinute]="15"
+              [defaultDate]="minDate"
+              [ngModel]="week?.[day.value]?.startBreak ? getDateFromString(week![day.value].startBreak) : null"
+              placeholder="- - -"
+              (onSelect)="setStartBreak(day.value, $event)"
+            ></p-calendar>
+          </td>
+          <td data-label="Fine pausa">
+            <p-calendar
+              inputId="calendar-timeonly"
+              [timeOnly]="true"
+              [stepMinute]="15"
+              [defaultDate]="minDate"
+              [ngModel]="week?.[day.value]?.endBreak ? getDateFromString(week![day.value].endBreak) : null"
+              placeholder="- - -"
+              (onSelect)="setEndBreak(day.value, $event)"
+            ></p-calendar>
+          </td>
+          <td data-label="Fine lavoro">
+            <p-calendar
+              inputId="calendar-timeonly"
+              [timeOnly]="true"
+              [stepMinute]="15"
+              [defaultDate]="minDate"
+              [ngModel]="week?.[day.value]?.endTime ? getDateFromString(week![day.value].endTime) : null"
+              placeholder="- - -"
+              (onSelect)="setEndWork(day.value, $event)"
+            ></p-calendar>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
   <div class="flex justify-content-end gap-3 mt-5">
     <app-cancel-btn icon="pi pi-times" label="Annulla" routerLink="/private/staff"/>
     <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="update()"/>

@@ -5,12 +5,12 @@ import {Injectable} from "@angular/core";
 })
 export class AvailabilityStore {
   week: any[] = [
-    {name: 'Lunedì', value: 'monday'},
-    {name: 'Martedì', value: 'tuesday'},
-    {name: 'Mercoledì', value: 'wednesday'},
-    {name: 'Giovedì', value: 'thursday'},
-    {name: 'Venerdì', value: 'friday'},
-    {name: 'Sabato', value: 'saturday'},
-    {name: 'Domenica', value: 'sunday'},
+    {name: 'Lunedì', value: 0},
+    {name: 'Martedì', value: 1},
+    {name: 'Mercoledì', value: 2},
+    {name: 'Giovedì', value: 3},
+    {name: 'Venerdì', value: 4},
+    {name: 'Sabato', value: 5},
+    {name: 'Domenica', value: 6},
   ]
 }

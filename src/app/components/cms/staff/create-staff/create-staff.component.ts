@@ -14,7 +14,7 @@ import {CreateStaffDto} from "../../../../dtos/staff.dto";
 import {StaffService} from "../../../../services/staff.service";
 import {AvailabilityStore} from "../../../../stores/availability.store";
 import {CalendarModule} from "primeng/calendar";
-import {AvailabilityDayDto, AvailabilityWeekDto, CreateAvailabilityDto} from "../../../../dtos/availability.dto";
+import {AvailabilityDayDto, CreateAvailabilityDto} from "../../../../dtos/availability.dto";
 import {AvailabilityService} from "../../../../services/availability.service";
 
 
@@ -55,67 +55,14 @@ export class CreateStaffComponent implements OnInit {
 
   minDate!: Date;
 
-  availabilityWeek?: AvailabilityWeekDto
+  week: AvailabilityDayDto[] = []
 
   ngOnInit() {
     this.minDate = new Date()
     this.minDate.setHours(12, 0, 0)
     this.buildForm()
-    this.initAvailabilityWeek()
-  }
-
-  initAvailabilityWeek() {
-    this.availabilityWeek = {
-      monday: {
-        dayCode: 1,
-        startWork: '',
-        startBreak: '',
-        endBreak: '',
-        endWork: ''
-      },
-      tuesday: {
-        dayCode: 2,
-        startWork: '',
-        startBreak: '',
-        endBreak: '',
-        endWork: ''
-      },
-      wednesday: {
-        dayCode: 3,
-        startWork: '',
-        startBreak: '',
-        endBreak: '',
-        endWork: ''
-      },
-      thursday: {
-        dayCode: 4,
-        startWork: '',
-        startBreak: '',
-        endBreak: '',
-        endWork: ''
-      },
-      friday: {
-        dayCode: 5,
-        startWork: '',
-        startBreak: '',
-        endBreak: '',
-        endWork: ''
-      },
-      saturday: {
-        dayCode: 6,
-        startWork: '',
-        startBreak: '',
-        endBreak: '',
-        endWork: ''
-      },
-      sunday: {
-        dayCode: 7,
-        startWork: '',
-        startBreak: '',
-        endBreak: '',
-        endWork: ''
-      }
-    }
+    this.week = this.availabilityService.week
+    console.log(this.week)
   }
 
   buildForm() {
@@ -126,24 +73,24 @@ export class CreateStaffComponent implements OnInit {
     })
   }
 
-  setStartWork(day: string, event: any) {
-    if (this.availabilityWeek![day]){
-      this.availabilityWeek![day].startWork = this.getTime(event)
+  setStartWork(day: number, event: any) {
+    if (this.week![day]){
+      this.week![day].startTime = this.getTime(event)
     }
   }
-  setStartBreak(day: string, event: any) {
-    if (this.availabilityWeek![day]){
-      this.availabilityWeek![day].startBreak = this.getTime(event)
+  setStartBreak(day: number, event: any) {
+    if (this.week![day]){
+      this.week![day].startBreak = this.getTime(event)
     }  }
 
-  setEndBreak(day: string, event: any) {
-    if (this.availabilityWeek![day]){
-      this.availabilityWeek![day].endBreak = this.getTime(event)
+  setEndBreak(day: number, event: any) {
+    if (this.week![day]){
+      this.week![day].endBreak = this.getTime(event)
     }  }
 
-  setEndWork(day: string, event: any) {
-    if (this.availabilityWeek![day]){
-      this.availabilityWeek![day].endWork = this.getTime(event)
+  setEndWork(day: number, event: any) {
+    if (this.week![day]){
+      this.week![day].endTime = this.getTime(event)
     }  }
 
   getTime(date: Date) {
@@ -160,7 +107,6 @@ export class CreateStaffComponent implements OnInit {
 
   create() {
     if (this.form.invalid) {
-      console.log(this.availabilityWeek)
       let error: MyError = {
         label: 'Attenzione',
         message: 'Il nome è obbligatorio'
@@ -180,14 +126,14 @@ export class CreateStaffComponent implements OnInit {
     this.staffService.create(staff).subscribe(
       res => {
         this.availabilityStore.week.forEach(day => {
-          const av: AvailabilityDayDto = this.availabilityWeek![day.value]
-          if (av && av.startWork) {
+          const av: AvailabilityDayDto = this.week![day.value]
+          if (av && av.startTime) {
             let createAvailability: CreateAvailabilityDto = {
-              dayOfWeek: av.dayCode,
-              startTime: av.startWork!,
+              dayOfWeek: av.dayOfWeek,
+              startTime: av.startTime!,
               startBreak: av.startBreak ? av.startBreak : null,
               endBreak: av.endBreak ? av.endBreak : null,
-              endTime: av.endWork!,
+              endTime: av.endTime!,
               staffId: res.id
             }
             this.availabilityService.create(createAvailability).subscribe()
@@ -203,7 +149,5 @@ export class CreateStaffComponent implements OnInit {
         this.errorService.showError(error)
       }
     )
-
-
   }
 }
