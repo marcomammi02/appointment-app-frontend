@@ -74,7 +74,7 @@ export class EditServiceComponent implements OnInit {
   }
 
   async getDetail(id: number) {
-    await this.servicesService.getDetail(id).subscribe(res => {
+     this.servicesService.getDetail(id).subscribe(res => {
       this.currentService = res;
       this.buildForm();
     });

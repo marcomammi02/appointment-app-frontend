@@ -1,4 +1,5 @@
 export interface AvailabilityDayDto {
+  id: number
   dayOfWeek: number
   startTime?: string
   startBreak?: string
@@ -14,4 +15,11 @@ export interface CreateAvailabilityDto {
   endBreak?: string | null
   endTime?: string | null
   staffId: number
+}
+
+export interface UpdateAvailabilityDto {
+  startTime?: string | null
+  startBreak?: string | null
+  endBreak?: string | null
+  endTime?: string | null
 }

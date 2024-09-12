@@ -20,7 +20,7 @@ import {UpdateStaffDto} from "../../../../dtos/staff.dto";
 import {CalendarModule} from "primeng/calendar";
 import {AvailabilityStore} from "../../../../stores/availability.store";
 import {AvailabilityService} from "../../../../services/availability.service";
-import {AvailabilityDayDto} from "../../../../dtos/availability.dto";
+import {AvailabilityDayDto, CreateAvailabilityDto, UpdateAvailabilityDto} from "../../../../dtos/availability.dto";
 
 
 @Component({
@@ -71,22 +71,28 @@ export class EditStaffComponent implements OnInit {
 
   minDate!: Date;
 
-  week?: AvailabilityDayDto[]
-  value: string = ''
-
+  week: AvailabilityDayDto[] = []
 
   ngOnInit() {
-    this.week = [];
+    this.week = this.availabilityService.week
     this.route.paramMap.subscribe(params => {
       const id = params.get('staffId');
       this.staffId = +id!;
 
       if (id) {
         this.getDetail(+id);
-
-        this.availabilityService.findAll(+id).subscribe((res: any) => {
-          res.forEach((av: AvailabilityDayDto) => this.week!.push(av))
-          console.log(this.week![0])
+        this.availabilityService.findAll(this.staffId).subscribe((res: AvailabilityDayDto[]) => {
+          res.forEach(av => {
+            this.week[av.dayOfWeek] = {
+              id: av.id,
+              dayOfWeek: av.dayOfWeek,
+              startTime: av.startTime,
+              startBreak: av.startBreak,
+              endBreak: av.endBreak,
+              endTime: av.endTime,
+              staffId: av.staffId
+            }
+          })
         });
       }
     });
@@ -95,18 +101,11 @@ export class EditStaffComponent implements OnInit {
     this.minDate.setHours(12, 0, 0);
   }
 
-  getDetail(id: number) {
-    this.staffService.getDetail(id).subscribe(res => {
+  async getDetail(id: number) {
+    return this.staffService.getDetail(id).subscribe(res => {
       this.currentStaff = res;
       this.buildForm();
     });
-  }
-
-  getDateFromString(time?: string): Date {
-    const [hours, minutes] = time!.split(':').map(Number);
-    const date = new Date();
-    date.setHours(hours, minutes, 0);
-    return date;
   }
 
   buildForm() {
@@ -168,6 +167,18 @@ export class EditStaffComponent implements OnInit {
 
     this.staffService.update(this.currentStaff.id, staff).subscribe(
       res => {
+        this.availabilityStore.week.forEach(day => {
+          const av: AvailabilityDayDto = this.week![day.value]
+          if (av && av.startTime) {
+            let updateAvailability: UpdateAvailabilityDto = {
+              startTime: av.startTime,
+              startBreak: av.startBreak ? av.startBreak : null,
+              endBreak: av.endBreak ? av.endBreak : null,
+              endTime: av.endTime!,
+            }
+            this.availabilityService.update(av.id, updateAvailability).subscribe()
+          }
+        })
         this.router.navigate(['/private/staff'])
       },
       err => {

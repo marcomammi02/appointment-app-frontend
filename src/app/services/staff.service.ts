@@ -22,7 +22,7 @@ export class StaffService {
   }
 
   getDetail(id: number) {
-    return this.http.get(`${this.apiUrl}/${id}`)
+    return this.http.get(`${this.apiUrl}/${id}`);
   }
 
   update(id: number, staff: UpdateStaffDto) {
