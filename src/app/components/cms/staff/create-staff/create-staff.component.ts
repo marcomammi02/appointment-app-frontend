@@ -93,6 +93,15 @@ export class CreateStaffComponent implements OnInit {
       this.week![day].endTime = this.getTime(event)
     }  }
 
+  checkIfEmpty(day: number, field: 'startTime' | 'startBreak' | 'endBreak' | 'endTime', value: string) {
+    if (value === '') {
+      if (this.week![day]) {
+        this.week![day][field] = null;
+        console.log(this.week![day][field])
+      }
+    }
+  }
+
   getTime(date: Date) {
     let hours: number | string = date.getHours()
     let minutes: number | string = date.getMinutes()
@@ -127,7 +136,7 @@ export class CreateStaffComponent implements OnInit {
       res => {
         this.availabilityStore.week.forEach(day => {
           const av: AvailabilityDayDto = this.week![day.value]
-          if (av && av.startTime) {
+          if (av) {
             let createAvailability: CreateAvailabilityDto = {
               dayOfWeek: av.dayOfWeek,
               startTime: av.startTime!,

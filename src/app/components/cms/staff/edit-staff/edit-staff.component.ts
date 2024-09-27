@@ -136,6 +136,23 @@ export class EditStaffComponent implements OnInit {
       this.week![day].endTime = this.getTime(event)
     }  }
 
+  checkIfEmpty(day: number, field: 'startTime' | 'startBreak' | 'endBreak' | 'endTime', value: string) {
+    if (value === '') {
+      if (this.week![day]) {
+        this.week![day][field] = '';
+      }
+    }
+  }
+
+  onKeyDown(event: KeyboardEvent) {
+    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight'];
+
+    // Se il tasto premuto non è uno di quelli consentiti, impedisci l'input
+    if (!allowedKeys.includes(event.key)) {
+      event.preventDefault();
+    }
+  }
+
   getTime(date: Date) {
     let hours: number | string = date.getHours()
     let minutes: number | string = date.getMinutes()
@@ -169,13 +186,14 @@ export class EditStaffComponent implements OnInit {
       res => {
         this.availabilityStore.week.forEach(day => {
           const av: AvailabilityDayDto = this.week![day.value]
-          if (av && av.startTime) {
+          if (av) {
             let updateAvailability: UpdateAvailabilityDto = {
               startTime: av.startTime,
               startBreak: av.startBreak ? av.startBreak : null,
               endBreak: av.endBreak ? av.endBreak : null,
               endTime: av.endTime!,
             }
+            console.log(updateAvailability)
             this.availabilityService.update(av.id, updateAvailability).subscribe()
           }
         })

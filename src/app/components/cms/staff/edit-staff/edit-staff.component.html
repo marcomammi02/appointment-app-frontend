@@ -58,6 +58,8 @@
             [ngModel]="week[day.value]?.startTime"
             placeholder="- - -"
             (onSelect)="setStartWork(day.value, $event)"
+            (onInput)="checkIfEmpty(day.value, 'startTime', $event.target.value)"
+            [readonlyInput]="true"
           ></p-calendar>
         </td>
         <td data-label="Inizio pausa">
@@ -69,6 +71,7 @@
             [ngModel]="week[day.value]?.startBreak!"
             placeholder="- - -"
             (onSelect)="setStartBreak(day.value, $event)"
+            (onInput)="checkIfEmpty(day.value, 'startBreak', $event.target.value)"
           ></p-calendar>
         </td>
         <td data-label="Fine pausa">
@@ -80,6 +83,7 @@
             [ngModel]="week[day.value]?.endBreak!"
             placeholder="- - -"
             (onSelect)="setEndBreak(day.value, $event)"
+            (onInput)="checkIfEmpty(day.value, 'endBreak', $event.target.value)"
           ></p-calendar>
         </td>
         <td data-label="Fine lavoro">
@@ -91,6 +95,7 @@
             [ngModel]="week[day.value]?.endTime!"
             placeholder="- - -"
             (onSelect)="setEndWork(day.value, $event)"
+            (onInput)="checkIfEmpty(day.value, 'endTime', $event.target.value)"
           ></p-calendar>
         </td>
       </tr>

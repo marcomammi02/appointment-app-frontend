@@ -51,6 +51,7 @@
             [defaultDate]="minDate"
             placeholder="- - -"
             (onSelect)="setStartWork(day.value, $event)"
+            (onInput)="checkIfEmpty(day.value, 'startTime', $event.target.value)"
           />
         </td>
         <td data-label="Inizio pausa">
@@ -61,6 +62,7 @@
             [defaultDate]="minDate"
             placeholder="- - -"
             (onSelect)="setStartBreak(day.value, $event)"
+            (onInput)="checkIfEmpty(day.value, 'startBreak', $event.target.value)"
           />
         </td>
         <td data-label="Fine pausa">
@@ -71,6 +73,7 @@
             [defaultDate]="minDate"
             placeholder="- - -"
             (onSelect)="setEndBreak(day.value, $event)"
+            (onInput)="checkIfEmpty(day.value, 'endBreak', $event.target.value)"
           />
         </td>
         <td data-label="Fine lavoro">
@@ -81,6 +84,7 @@
             [defaultDate]="minDate"
             placeholder="- - -"
             (onSelect)="setEndWork(day.value, $event)"
+            (onInput)="checkIfEmpty(day.value, 'endTime', $event.target.value)"
           />
         </td>
       </tr>
