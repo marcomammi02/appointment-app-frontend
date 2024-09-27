@@ -45,47 +45,75 @@
         <td data-label="Giorno">{{ day.name }}</td>
         <td data-label="Inizio lavoro">
           <p-calendar
+            #calendar1
             inputId="calendar-timeonly"
             [timeOnly]="true"
             [stepMinute]="15"
             [defaultDate]="minDate"
             placeholder="- - -"
             (onSelect)="setStartWork(day.value, $event)"
-            (onInput)="checkIfEmpty(day.value, 'startTime', $event.target.value)"
-          />
+            [readonlyInput]="true"
+          >
+            <ng-template pTemplate="footer">
+              <div class="w-full flex justify-content-end">
+                <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'startTime', calendar1)"></span>
+              </div>
+            </ng-template>
+          </p-calendar>
         </td>
         <td data-label="Inizio pausa">
           <p-calendar
+            #calendar2
             inputId="calendar-timeonly"
             [timeOnly]="true"
             [stepMinute]="15"
             [defaultDate]="minDate"
             placeholder="- - -"
             (onSelect)="setStartBreak(day.value, $event)"
-            (onInput)="checkIfEmpty(day.value, 'startBreak', $event.target.value)"
-          />
+            [readonlyInput]="true"
+          >
+            <ng-template pTemplate="footer">
+              <div class="w-full flex justify-content-end">
+                <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'startBreak', calendar2)"></span>
+              </div>
+            </ng-template>
+          </p-calendar>
         </td>
         <td data-label="Fine pausa">
           <p-calendar
+            #calendar3
             inputId="calendar-timeonly"
             [timeOnly]="true"
             [stepMinute]="15"
             [defaultDate]="minDate"
             placeholder="- - -"
             (onSelect)="setEndBreak(day.value, $event)"
-            (onInput)="checkIfEmpty(day.value, 'endBreak', $event.target.value)"
-          />
+            [readonlyInput]="true"
+          >
+            <ng-template pTemplate="footer">
+              <div class="w-full flex justify-content-end">
+                <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'endBreak', calendar3)"></span>
+              </div>
+            </ng-template>
+          </p-calendar>
         </td>
         <td data-label="Fine lavoro">
           <p-calendar
+            #calendar4
             inputId="calendar-timeonly"
             [timeOnly]="true"
             [stepMinute]="15"
             [defaultDate]="minDate"
             placeholder="- - -"
             (onSelect)="setEndWork(day.value, $event)"
-            (onInput)="checkIfEmpty(day.value, 'endTime', $event.target.value)"
-          />
+            [readonlyInput]="true"
+          >
+            <ng-template pTemplate="footer">
+              <div class="w-full flex justify-content-end">
+                <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'endTime', calendar4)"></span>
+              </div>
+            </ng-template>
+          </p-calendar>
         </td>
       </tr>
       </tbody>

@@ -13,7 +13,7 @@ import {Router, RouterLink} from "@angular/router";
 import {CreateStaffDto} from "../../../../dtos/staff.dto";
 import {StaffService} from "../../../../services/staff.service";
 import {AvailabilityStore} from "../../../../stores/availability.store";
-import {CalendarModule} from "primeng/calendar";
+import {Calendar, CalendarModule} from "primeng/calendar";
 import {AvailabilityDayDto, CreateAvailabilityDto} from "../../../../dtos/availability.dto";
 import {AvailabilityService} from "../../../../services/availability.service";
 
@@ -93,13 +93,16 @@ export class CreateStaffComponent implements OnInit {
       this.week![day].endTime = this.getTime(event)
     }  }
 
-  checkIfEmpty(day: number, field: 'startTime' | 'startBreak' | 'endBreak' | 'endTime', value: string) {
-    if (value === '') {
-      if (this.week![day]) {
-        this.week![day][field] = null;
-        console.log(this.week![day][field])
-      }
+  clearInput(day: number, field: 'startTime' | 'startBreak' | 'endBreak' | 'endTime', calendar: Calendar) {
+    if (this.week![day]) {
+      this.week![day][field] = '';
+      this.clearCalendar(calendar)
     }
+  }
+
+  clearCalendar(calendar: Calendar) {
+    calendar.inputFieldValue = null;
+    calendar.updateModel(null);
   }
 
   getTime(date: Date) {
