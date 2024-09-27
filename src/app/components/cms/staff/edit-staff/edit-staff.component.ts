@@ -17,7 +17,7 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {StaffService} from "../../../../services/staff.service";
 import {UpdateStaffDto} from "../../../../dtos/staff.dto";
-import {CalendarModule} from "primeng/calendar";
+import {Calendar, CalendarModule} from "primeng/calendar";
 import {AvailabilityStore} from "../../../../stores/availability.store";
 import {AvailabilityService} from "../../../../services/availability.service";
 import {AvailabilityDayDto, CreateAvailabilityDto, UpdateAvailabilityDto} from "../../../../dtos/availability.dto";
@@ -124,33 +124,31 @@ export class EditStaffComponent implements OnInit {
   setStartBreak(day: number, event: any) {
     if (this.week![day]){
       this.week![day].startBreak = this.getTime(event)
-    }  }
+    }
+  }
 
   setEndBreak(day: number, event: any) {
     if (this.week![day]){
       this.week![day].endBreak = this.getTime(event)
-    }  }
+    }
+  }
 
   setEndWork(day: number, event: any) {
     if (this.week![day]){
       this.week![day].endTime = this.getTime(event)
-    }  }
-
-  checkIfEmpty(day: number, field: 'startTime' | 'startBreak' | 'endBreak' | 'endTime', value: string) {
-    if (value === '') {
-      if (this.week![day]) {
-        this.week![day][field] = '';
-      }
     }
   }
 
-  onKeyDown(event: KeyboardEvent) {
-    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight'];
-
-    // Se il tasto premuto non è uno di quelli consentiti, impedisci l'input
-    if (!allowedKeys.includes(event.key)) {
-      event.preventDefault();
+  clearInput(day: number, field: 'startTime' | 'startBreak' | 'endBreak' | 'endTime', calendar: Calendar) {
+    if (this.week![day]) {
+      this.week![day][field] = '';
+      this.clearCalendar(calendar)
     }
+  }
+
+  clearCalendar(calendar: Calendar) {
+    calendar.inputFieldValue = null;
+    calendar.updateModel(null);
   }
 
   getTime(date: Date) {

@@ -35,7 +35,7 @@
 
   <div *ngIf="week.length > 0">
     <h2 class="mt-5 mb-3">Orari</h2>
-    <p class="mb-3">Visualizza o modifica gli orari del moembro dello staff</p>
+    <p class="mb-3">Visualizza o modifica gli orari del membro dello staff</p>
     <table class="responsive-table">
       <thead>
       <tr>
@@ -51,6 +51,7 @@
         <td data-label="Giorno">{{ day.name }}</td>
         <td data-label="Inizio lavoro">
           <p-calendar
+            #calendar1
             inputId="calendar-timeonly"
             [timeOnly]="true"
             [stepMinute]="15"
@@ -58,12 +59,18 @@
             [ngModel]="week[day.value]?.startTime"
             placeholder="- - -"
             (onSelect)="setStartWork(day.value, $event)"
-            (onInput)="checkIfEmpty(day.value, 'startTime', $event.target.value)"
             [readonlyInput]="true"
-          ></p-calendar>
+          >
+            <ng-template pTemplate="footer">
+              <div class="w-full flex justify-content-end">
+                <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'startTime', calendar1)"></span>
+              </div>
+            </ng-template>
+          </p-calendar>
         </td>
         <td data-label="Inizio pausa">
           <p-calendar
+            #calendar2
             inputId="calendar-timeonly"
             [timeOnly]="true"
             [stepMinute]="15"
@@ -71,11 +78,18 @@
             [ngModel]="week[day.value]?.startBreak!"
             placeholder="- - -"
             (onSelect)="setStartBreak(day.value, $event)"
-            (onInput)="checkIfEmpty(day.value, 'startBreak', $event.target.value)"
-          ></p-calendar>
+            [readonlyInput]="true"
+          >
+            <ng-template pTemplate="footer">
+              <div class="w-full flex justify-content-end">
+                <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'startBreak', calendar2)"></span>
+              </div>
+            </ng-template>
+          </p-calendar>
         </td>
         <td data-label="Fine pausa">
           <p-calendar
+            #calendar3
             inputId="calendar-timeonly"
             [timeOnly]="true"
             [stepMinute]="15"
@@ -83,11 +97,18 @@
             [ngModel]="week[day.value]?.endBreak!"
             placeholder="- - -"
             (onSelect)="setEndBreak(day.value, $event)"
-            (onInput)="checkIfEmpty(day.value, 'endBreak', $event.target.value)"
-          ></p-calendar>
+            [readonlyInput]="true"
+          >
+            <ng-template pTemplate="footer">
+              <div class="w-full flex justify-content-end">
+                <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'endBreak', calendar3)"></span>
+              </div>
+            </ng-template>
+          </p-calendar>
         </td>
         <td data-label="Fine lavoro">
           <p-calendar
+            #calendar4
             inputId="calendar-timeonly"
             [timeOnly]="true"
             [stepMinute]="15"
@@ -95,8 +116,14 @@
             [ngModel]="week[day.value]?.endTime!"
             placeholder="- - -"
             (onSelect)="setEndWork(day.value, $event)"
-            (onInput)="checkIfEmpty(day.value, 'endTime', $event.target.value)"
-          ></p-calendar>
+            [readonlyInput]="true"
+          >
+            <ng-template pTemplate="footer">
+              <div class="w-full flex justify-content-end">
+                <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'endTime', calendar4)"></span>
+              </div>
+            </ng-template>
+          </p-calendar>
         </td>
       </tr>
       </tbody>

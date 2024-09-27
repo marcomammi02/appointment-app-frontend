@@ -18,6 +18,14 @@
   .p-inputnumber-input, .price-label label {
     margin-left: 2rem !important;
   }
+
+  .p-datepicker .p-datepicker-buttonbar .p-button:first-child {
+    display: none !important;
+  }
+
+  .p-datepicker .p-datepicker-buttonbar .p-button:last-child {
+    margin-left: 80px !important;
+  }
 }
 
 input, textarea {
