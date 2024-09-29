@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Staff, StaffStore} from "../../../stores/staff.store";
 import {NgForOf, NgIf} from "@angular/common";
 import {StoreAppointments} from "../../../stores/appointment.store";
+import {StaffService} from "../../../services/staff.service";
+import {ShopStore} from "../../../stores/shop.store";
+import {AvailabilityService} from "../../../services/availability.service";
 
 @Component({
   selector: 'app-calendar',
@@ -13,18 +16,31 @@ import {StoreAppointments} from "../../../stores/appointment.store";
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnInit {
   constructor(
     public storeStaff: StaffStore,
     public storeAppointments: StoreAppointments,
+    private staffService: StaffService,
+    public shopStore: ShopStore,
+    private availabilitiesService: AvailabilityService
   ) {}
-  hours: string[] = [
-    '08:00',
-    '09:00',
-    '10:00',
-    '11:00',
-    '12:00'
-  ]
+
+  ngOnInit() {
+    this.getStaff()
+    this.getHours()
+  }
+
+  getStaff() {
+    this.staffService.getStaff().subscribe(res => {
+      this.storeStaff.staffList = res
+    })
+  }
+
+  getHours() {
+    this.availabilitiesService.getWorkingHours(this.shopStore.shopId).subscribe(res => {
+      this.shopStore.workingHours = res
+    })
+  }
 
   getAppointment(hour: string, staff: Staff) {
     return this.storeAppointments.appointments.find(app => app.hour === hour && app.staffId === staff.id)

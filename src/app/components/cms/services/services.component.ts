@@ -8,6 +8,7 @@ import {EditServiceComponent} from "./edit-service/edit-service.component";
 import {ThLargeIcon} from "primeng/icons/thlarge";
 import {Router, RouterLink} from "@angular/router";
 import {capitalizeFirstLetter} from "../../../services/utility.service";
+import {ShopStore} from "../../../stores/shop.store";
 
 @Component({
   selector: 'app-services',
@@ -22,6 +23,7 @@ export class ServicesComponent implements OnInit {
   constructor(
     private servicesService: ServicesService,
     public servicesStore: ServicesStore,
+    public shopStore: ShopStore
   ) {}
 
   ngOnInit() {

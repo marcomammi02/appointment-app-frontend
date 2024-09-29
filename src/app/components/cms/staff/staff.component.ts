@@ -5,6 +5,7 @@ import {RouterLink} from "@angular/router";
 import {StaffStore} from "../../../stores/staff.store";
 import {capitalizeFirstLetter} from "../../../services/utility.service";
 import {StaffService} from "../../../services/staff.service";
+import {ShopStore} from "../../../stores/shop.store";
 
 @Component({
   selector: 'app-staff',
@@ -21,7 +22,8 @@ import {StaffService} from "../../../services/staff.service";
 export class StaffComponent implements OnInit{
     constructor(
       public staffStore: StaffStore,
-      private staffService: StaffService
+      private staffService: StaffService,
+      public shopStore: ShopStore
     ) {}
 
   ngOnInit() {

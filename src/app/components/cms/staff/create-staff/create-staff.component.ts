@@ -16,6 +16,7 @@ import {AvailabilityStore} from "../../../../stores/availability.store";
 import {Calendar, CalendarModule} from "primeng/calendar";
 import {AvailabilityDayDto, CreateAvailabilityDto} from "../../../../dtos/availability.dto";
 import {AvailabilityService} from "../../../../services/availability.service";
+import {ShopStore} from "../../../../stores/shop.store";
 
 
 @Component({
@@ -47,7 +48,8 @@ export class CreateStaffComponent implements OnInit {
     private router: Router,
     private staffService: StaffService,
     public availabilityStore: AvailabilityStore,
-    private availabilityService: AvailabilityService
+    private availabilityService: AvailabilityService,
+    public shopStore: ShopStore
   ) {
   }
 
@@ -151,7 +153,7 @@ export class CreateStaffComponent implements OnInit {
             this.availabilityService.create(createAvailability).subscribe()
           }
         })
-        this.router.navigate(['/private/staff'])
+        this.router.navigate([`/private/${this.shopStore.shopId}/staff`])
       },
       err => {
         let error: MyError = {

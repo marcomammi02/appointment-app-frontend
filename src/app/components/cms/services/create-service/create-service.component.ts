@@ -13,6 +13,7 @@ import {ServicesService} from "../../../../services/services.service";
 import {ErrorService, MyError} from "../../../../services/error.service";
 import {Router, RouterLink} from "@angular/router";
 import {ServicesStore} from "../../../../stores/services.store";
+import {ShopStore} from "../../../../stores/shop.store";
 
 
 @Component({
@@ -41,7 +42,8 @@ export class CreateServiceComponent implements OnInit {
     private servicesService: ServicesService,
     private errorService: ErrorService,
     public servicesStore: ServicesStore,
-    private router: Router
+    private router: Router,
+    public shopStore: ShopStore
   ) {
   }
 
@@ -81,7 +83,7 @@ export class CreateServiceComponent implements OnInit {
 
     this.servicesService.create(service).subscribe(
       res => {
-        this.router.navigate(['/private/services'])
+        this.router.navigate([`/private/${this.shopStore.shopId}/services`])
       },
       err => {
         let error: MyError = {

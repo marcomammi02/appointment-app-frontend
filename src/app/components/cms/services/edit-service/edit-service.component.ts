@@ -18,6 +18,7 @@ import {DeleteBtnComponent} from "../../../global/delete-btn/delete-btn.componen
 import {ToastModule} from "primeng/toast";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ConfirmationService, MessageService} from "primeng/api";
+import {ShopStore} from "../../../../stores/shop.store";
 
 
 @Component({
@@ -53,7 +54,8 @@ export class EditServiceComponent implements OnInit {
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    public shopStore: ShopStore
   ) {
   }
 
@@ -113,7 +115,7 @@ export class EditServiceComponent implements OnInit {
 
     this.servicesService.update(this.currentService.id, service).subscribe(
       res => {
-        this.router.navigate(['/private/services'])
+        this.router.navigate([`/private/${this.shopStore.shopId}/services`])
       },
       err => {
         let error: MyError = {
@@ -129,7 +131,7 @@ export class EditServiceComponent implements OnInit {
     if (this.serviceId != null) {
       this.servicesService.delete(+this.serviceId).subscribe(
         res => {
-          this.router.navigate(['/private/services'])
+          this.router.navigate([`/private/${this.shopStore.shopId}/services`])
         },
         err => console.error(err.message)
       )

@@ -9,7 +9,7 @@ import {CreateStaffComponent} from "./components/cms/staff/create-staff/create-s
 import {EditStaffComponent} from "./components/cms/staff/edit-staff/edit-staff.component";
 
 export const routes: Routes = [
-  {path: 'private', component: CmsComponent, children: [
+  {path: 'private/:shopId', component: CmsComponent, children: [
       {path: 'appointments', component: CalendarComponent },
       {path: 'staff', component: StaffComponent },
       {path: 'staff/create', component: CreateStaffComponent },
@@ -19,4 +19,5 @@ export const routes: Routes = [
       {path: 'services/:serviceId', component: EditServiceComponent },
       {path: '', redirectTo: 'appointments', pathMatch: 'full'}
     ]},
+  {path: '**', redirectTo: ''}
 ];

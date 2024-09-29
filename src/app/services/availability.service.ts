@@ -2,12 +2,13 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {AvailabilityDayDto, CreateAvailabilityDto, UpdateAvailabilityDto} from "../dtos/availability.dto";
 import {Observable} from "rxjs";
+import {ShopStore} from "../stores/shop.store";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AvailabilityService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private shopStore: ShopStore) {}
 
   private apiUrl: string = 'http://localhost:3000/availabilities'
 
@@ -35,5 +36,10 @@ export class AvailabilityService {
 
   update(id: number, updateAvailability:UpdateAvailabilityDto) {
     return this.http.patch(`${this.apiUrl}/${id}`, updateAvailability)
+  }
+
+  getWorkingHours(shopId: number) {
+    const options = { params: { shopId: shopId } }
+    return this.http.get(`${this.apiUrl}/shop/${this.shopStore.shopId}`, options)
   }
 }

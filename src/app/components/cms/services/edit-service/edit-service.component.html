@@ -2,7 +2,7 @@
 
   <div class="flex justify-content-between mb-3">
     <div class="flex align-items-center gap-2 mb-5">
-      <h1 class="cursor-pointer" routerLink="/private/services">Servizi</h1>
+      <h1 class="cursor-pointer" [routerLink]="'/private/' + shopStore.shopId + '/services'">Servizi</h1>
       <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
       <h2>{{ capitalizeFirstLetter(currentService.name) }}</h2>
     </div>
@@ -52,13 +52,13 @@
   </form>
 
   <div class="flex justify-content-end gap-3 mt-5">
-    <app-cancel-btn icon="pi pi-times" label="Annulla" routerLink="/private/services"/>
+    <app-cancel-btn icon="pi pi-times" label="Annulla" [routerLink]="'/private/' + shopStore.shopId + '/services'"/>
     <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="update()"/>
   </div>
 </div>
 <div *ngIf="!currentService" class="w-full h-30rem flex flex-column gap-5 align-items-center justify-content-center">
   Il servizio non è stato trovato!
-  <app-cancel-btn icon="pi pi-arrow-left" label="Indietro" routerLink="/private/services"/>
+  <app-cancel-btn icon="pi pi-arrow-left" label="Indietro" [routerLink]="'/private/' + shopStore.shopId + '/services'"/>
 </div>
 
 <p-confirmDialog />

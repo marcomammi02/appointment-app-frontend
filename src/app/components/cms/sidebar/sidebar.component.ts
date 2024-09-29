@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {NgClass, NgStyle} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
+import {ShopStore} from "../../../stores/shop.store";
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -13,12 +14,12 @@ import {Router, RouterLink} from "@angular/router";
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent  {
-  constructor(private router: Router) {
+  constructor(private router: Router, private shopStore: ShopStore) {
   }
   displaySidebar: boolean = false
 
   navigate(label: string) {
-    this.router.navigate([`private/${label}`])
+    this.router.navigate([`private/${this.shopStore.shopId}/${label}`])
     this.displaySidebar = false
   }
 }
