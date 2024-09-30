@@ -7,10 +7,12 @@ import {EditServiceComponent} from "./components/cms/services/edit-service/edit-
 import {StaffComponent} from "./components/cms/staff/staff.component";
 import {CreateStaffComponent} from "./components/cms/staff/create-staff/create-staff.component";
 import {EditStaffComponent} from "./components/cms/staff/edit-staff/edit-staff.component";
+import {CreateAppComponent} from "./components/cms/calendar/create-app/create-app.component";
 
 export const routes: Routes = [
   {path: 'private/:shopId', component: CmsComponent, children: [
       {path: 'appointments', component: CalendarComponent },
+      {path: 'appointments/create', component: CreateAppComponent },
       {path: 'staff', component: StaffComponent },
       {path: 'staff/create', component: CreateStaffComponent },
       {path: 'staff/:staffId', component: EditStaffComponent },

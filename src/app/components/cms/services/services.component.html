@@ -1,6 +1,6 @@
 <div class="flex justify-content-between mb-3">
   <h1>Servizi</h1>
-  <app-primary-btn icon="pi pi-plus" label="Crea Servizio" [routerLink]="'/private/' + shopStore.shopId + '/services/create'"/>
+  <app-primary-btn icon="pi pi-plus" class="absolute top-0 right-0 p-3" label="Crea Servizio" [routerLink]="'/private/' + shopStore.shopId + '/services/create'"/>
 </div>
 
 <div class="grid" *ngIf="servicesStore.services.length > 0">

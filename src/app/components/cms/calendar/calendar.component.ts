@@ -5,13 +5,17 @@ import {StoreAppointments} from "../../../stores/appointment.store";
 import {StaffService} from "../../../services/staff.service";
 import {ShopStore} from "../../../stores/shop.store";
 import {AvailabilityService} from "../../../services/availability.service";
+import {PrimaryBtnComponent} from "../../global/primary-btn/primary-btn.component";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
   imports: [
     NgForOf,
-    NgIf
+    NgIf,
+    PrimaryBtnComponent,
+    RouterLink
   ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'

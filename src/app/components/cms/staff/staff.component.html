@@ -1,6 +1,6 @@
 <div class="flex justify-content-between mb-3">
   <h1>Staff</h1>
-  <app-primary-btn icon="pi pi-plus" label="Crea Membro" [routerLink]="'/private/' + shopStore.shopId + '/staff/create'"/>
+  <app-primary-btn icon="pi pi-plus" label="Crea Membro" class="absolute top-0 right-0 p-3" [routerLink]="'/private/' + shopStore.shopId + '/staff/create'"/>
 </div>
 
 <div class="grid" *ngIf="staffStore.staffList.length > 0">
