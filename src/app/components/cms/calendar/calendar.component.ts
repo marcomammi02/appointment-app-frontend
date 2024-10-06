@@ -6,7 +6,7 @@ import {StaffService} from "../../../services/staff.service";
 import {ShopStore} from "../../../stores/shop.store";
 import {AvailabilityService} from "../../../services/availability.service";
 import {PrimaryBtnComponent} from "../../global/primary-btn/primary-btn.component";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-calendar',
@@ -26,7 +26,8 @@ export class CalendarComponent implements OnInit {
     public storeAppointments: StoreAppointments,
     private staffService: StaffService,
     public shopStore: ShopStore,
-    private availabilitiesService: AvailabilityService
+    private availabilitiesService: AvailabilityService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -47,6 +48,13 @@ export class CalendarComponent implements OnInit {
   }
 
   getAppointment(hour: string, staff: Staff) {
-    return this.storeAppointments.appointments.find(app => app.hour === hour && app.staffId === staff.id)
+    return this.storeAppointments.appointments.find(app => app.hour == hour && app.staffId == staff.id)
+  }
+
+  goToCreation(hour: string, staff: any) {
+    if (this.getAppointment(hour, staff)) return
+    this.storeAppointments.currentHour = hour
+    this.storeAppointments.currentStaff = staff
+    this.router.navigate([`/private/${this.shopStore.shopId}/appointments/create`])
   }
 }

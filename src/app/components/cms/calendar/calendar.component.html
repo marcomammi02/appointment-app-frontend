@@ -9,7 +9,7 @@
   </tr>
   <tr *ngFor="let hour of shopStore.workingHours">
     <th>{{hour}}</th>
-    <td *ngFor="let staff of storeStaff.staffList">
+    <td *ngFor="let staff of storeStaff.staffList" (click)="goToCreation(hour, staff)" class="cursor-pointer">
       <div *ngIf="getAppointment(hour, staff)">Appuntamento!</div>
     </td>
   </tr>

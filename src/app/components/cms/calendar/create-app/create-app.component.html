@@ -22,7 +22,7 @@
 
   <div>
     <p-floatLabel>
-      <input pInputText id="phone" formControlName="phone"/>
+      <input pInputText type="number" id="phone" formControlName="phone"/>
       <label for="phone">Telefono *</label>
     </p-floatLabel>
   </div>
@@ -43,6 +43,7 @@
           [options]="this.servicesStore.services"
           formControlName="serviceId"
           optionLabel="name"
+          optionValue="id"
           id="serviceId"/>
         <label for="serviceId">Servizio *</label>
       </p-floatLabel>
@@ -50,11 +51,7 @@
 
     <div class="col-5">
       <p-floatLabel class="staff-label">
-        <p-dropdown
-          [options]="this.staffStore.staffList"
-          formControlName="staffId"
-          optionLabel="name"
-          id="staffId"/>
+        <input pInputText id="staffId" readonly [value]="this.appointmentStore.currentStaff.name"/>
         <label for="staffId">Staff</label>
       </p-floatLabel>
     </div>
@@ -62,12 +59,8 @@
 
   <div>
     <p-floatLabel>
-      <p-dropdown
-        [options]=""
-        formControlName="startTime"
-        optionLabel="name"
-        id="startTime"/>
-      <label for="startTime">Orario *</label>
+      <input pInputText id="startTime" readonly [value]="this.appointmentStore.currentHour"/>
+      <label for="startTime">Orario</label>
     </p-floatLabel>
   </div>
 
@@ -75,6 +68,6 @@
 
 <div class="flex justify-content-end gap-3 mt-5">
   <app-cancel-btn icon="pi pi-times" label="Annulla" [routerLink]="'/private/' + shopStore.shopId + '/appointments'"/>
-  <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min"/>
+  <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="create()"/>
 </div>
 

@@ -4,4 +4,7 @@ export function capitalizeFirstLetter(value: any): string {
   }
   return value;
 }
-
+ export function toDateTime(inputDay: string, inputTime: string) {
+  const day = '2024-10-06'
+  return `${day}T${inputTime}:00Z`
+ }

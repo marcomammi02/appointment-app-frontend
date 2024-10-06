@@ -1,4 +1,5 @@
 import {Injectable} from "@angular/core";
+import {Staff} from "./staff.store";
 
 @Injectable({
   providedIn: 'root'
@@ -9,15 +10,18 @@ export class StoreAppointments {
     {
       id: '1',
       hour: '10:00',
-      staffId: '3'
+      staffId: '42'
     },
     {
       id: '2',
       hour: '11:00',
-      staffId: '5'
+      staffId: '43'
     },
 
   ]
+
+  currentStaff: any = {}
+  currentHour: string = ''
 }
 
 export interface Appointment {
