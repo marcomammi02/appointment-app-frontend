@@ -7,7 +7,6 @@ export class StaffStore {
   staffList: any =  []
 }
 
-
 export interface Staff {
   id: string
   name: string

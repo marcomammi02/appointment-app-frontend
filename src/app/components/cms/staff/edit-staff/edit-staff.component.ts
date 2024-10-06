@@ -213,7 +213,7 @@ export class EditStaffComponent implements OnInit {
     if (this.staffId != null) {
       this.staffService.delete(+this.staffId).subscribe(
         res => {
-          this.router.navigate(['/private/staff'])
+          this.router.navigate([`/private/${this.shopStore.shopId}/staff`])
         },
         err => console.error(err.message)
       )

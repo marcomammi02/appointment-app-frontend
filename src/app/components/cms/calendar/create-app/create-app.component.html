@@ -34,32 +34,47 @@
     </p-floatLabel>
   </div>
 
-  <p class="mb-5">Inserisci i dati dell'appuntamento</p>
+  <p>Inserisci i dati dell'appuntamento</p>
 
   <div class="grid">
-    <div class="col-5">
-      <p-floatLabel>
+    <div class="col-7">
+      <p-floatLabel >
         <p-dropdown
-          [options]=""
-          formControlName="duration"
+          [options]="this.servicesStore.services"
+          formControlName="serviceId"
           optionLabel="name"
-          id="float-label"/>
-        <label for="float-label">Durata *</label>
+          id="serviceId"/>
+        <label for="serviceId">Servizio *</label>
       </p-floatLabel>
     </div>
 
-    <div class="col-7">
-      <p-floatLabel class="price-label">
-        <p-inputNumber id="price" class="w-full" formControlName="price" currency="EUR" suffix=" €"/>
-        <label for="price">Prezzo *</label>
+    <div class="col-5">
+      <p-floatLabel class="staff-label">
+        <p-dropdown
+          [options]="this.staffStore.staffList"
+          formControlName="staffId"
+          optionLabel="name"
+          id="staffId"/>
+        <label for="staffId">Staff</label>
       </p-floatLabel>
     </div>
+  </div>
+
+  <div>
+    <p-floatLabel>
+      <p-dropdown
+        [options]=""
+        formControlName="startTime"
+        optionLabel="name"
+        id="startTime"/>
+      <label for="startTime">Orario *</label>
+    </p-floatLabel>
   </div>
 
 </form>
 
 <div class="flex justify-content-end gap-3 mt-5">
-  <app-cancel-btn icon="pi pi-times" label="Annulla" [routerLink]="'/private/' + shopStore.shopId + '/staff'"/>
+  <app-cancel-btn icon="pi pi-times" label="Annulla" [routerLink]="'/private/' + shopStore.shopId + '/appointments'"/>
   <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min"/>
 </div>
 
