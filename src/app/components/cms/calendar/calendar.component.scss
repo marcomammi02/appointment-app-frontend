@@ -1,11 +1,63 @@
+:host ::ng-deep {
+  .p-calendar .p-inputtext {
+    text-align: center;
+    border: none;
+    &:hover{
+      cursor: pointer;
+      border-color: transparent;
+    }
+  }
+
+  .p-calendar:not(.p-calendar-disabled).p-focus > .p-inputtext {
+    box-shadow: none;
+    border-color: transparent;
+  }
+}
+
 table {
   border-collapse: collapse;
 }
 
 th, td {
-  padding: 1.5rem;
+  padding: 2rem 2.5rem;
   border: 1px solid #000;
   margin: 0; /* Rimuove eventuali margini */
 }
 
+td {
+  position: relative;
+  min-width: 150px;
+}
 
+.appointment {
+  width: calc(100% - 6px);
+  margin: 3px;
+  background: rgba(254,174,54,.9);
+  border-radius: 8px;
+  padding: 1rem;
+  position: absolute;
+  inset: 0;
+  z-index: 10 !important;
+  overflow: hidden;
+}
+
+.border-right {
+  border: none;
+  border-right: 1px solid #000;
+}
+
+.name-tag {
+  padding: 1rem !important;
+}
+
+.hour-tag {
+  border: none;
+  padding: 2rem 1rem;
+  h4 {
+    transform: translateY(-42px);
+  }
+}
+
+tr:last-child td{
+  display: none;
+}

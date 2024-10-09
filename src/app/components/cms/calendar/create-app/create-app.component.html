@@ -22,7 +22,7 @@
 
   <div>
     <p-floatLabel>
-      <input pInputText type="number" id="phone" formControlName="phone"/>
+      <input pInputText id="phone" formControlName="phone"/>
       <label for="phone">Telefono *</label>
     </p-floatLabel>
   </div>
@@ -41,11 +41,10 @@
       <p-floatLabel >
         <p-dropdown
           [options]="this.servicesStore.services"
-          formControlName="serviceId"
+          formControlName="service"
           optionLabel="name"
-          optionValue="id"
-          id="serviceId"/>
-        <label for="serviceId">Servizio *</label>
+          id="service"/>
+        <label for="service">Servizio *</label>
       </p-floatLabel>
     </div>
 

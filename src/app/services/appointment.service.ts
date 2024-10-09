@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {ShopStore} from "../stores/shop.store";
-import {CreateAvailabilityDto} from "../dtos/availability.dto";
 import {CreateAppointmentDto} from "../dtos/appointments.dto";
 
 @Injectable({
@@ -14,4 +13,11 @@ export class AppointmentService {
 
   create(appointment: CreateAppointmentDto) {
     return this.http.post(this.apiUrl, appointment)
-  }}
+  }
+
+  getAppointments() {
+    return this.http.get(`${this.apiUrl}/shop/${this.shopStore.shopId}`)
+  }
+}
+
+

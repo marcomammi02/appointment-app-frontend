@@ -1,16 +1,23 @@
 <div class="flex justify-content-between mb-3">
   <h1>Appuntamenti</h1>
-  <app-primary-btn icon="pi pi-plus" class="absolute top-0 right-0 p-3" label="Crea Appuntamento" [routerLink]="'/private/' + shopStore.shopId + '/appointments/create'"/>
 </div>
-<table>
+
+<p-calendar [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy"></p-calendar>
+
+<table *ngIf="storeAppointments.appointments">
   <tr>
-    <th>Orari</th>
-    <th *ngFor="let staff of storeStaff.staffList">{{staff.name}}</th>
+    <th class="border-right"></th>
+    <th class="name-tag" *ngFor="let staff of storeStaff.staffList">{{ staff.name }}</th>
   </tr>
   <tr *ngFor="let hour of shopStore.workingHours">
-    <th>{{hour}}</th>
+    <th class="hour-tag"><h4>{{ hour }}</h4></th>
     <td *ngFor="let staff of storeStaff.staffList" (click)="goToCreation(hour, staff)" class="cursor-pointer">
-      <div *ngIf="getAppointment(hour, staff)">Appuntamento!</div>
+      <ng-container *ngIf="getAppointmentForTime(hour, staff) as app">
+        <div class="appointment flex flex-column justify-content-center" [ngStyle]="{'height': getAppHeight(app)}">
+          <h4 class="text-center">{{app.customerLastName}} {{firstLetter(app.customerName)}}.</h4>
+          <p class="text-center">{{app.serviceName}}</p>
+        </div>
+      </ng-container>
     </td>
   </tr>
 </table>

@@ -6,7 +6,7 @@ import {Staff} from "./staff.store";
 })
 export class StoreAppointments {
 
-  appointments: Appointment[] = [
+  appointments: any[] = [
     {
       id: '1',
       hour: '10:00',
@@ -21,11 +21,6 @@ export class StoreAppointments {
   ]
 
   currentStaff: any = {}
+  currentDay: Date = new Date
   currentHour: string = ''
-}
-
-export interface Appointment {
-  id: string
-  hour: string
-  staffId: string
 }

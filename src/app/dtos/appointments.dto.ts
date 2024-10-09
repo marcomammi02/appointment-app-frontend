@@ -6,6 +6,7 @@ export interface CreateAppointmentDto {
   startTime: Date | string
   endTime: Date | string
   status: string
+  serviceName: string
   serviceId: number
   staffId: number
   shopId: number

@@ -70,7 +70,7 @@ export class CreateAppComponent implements OnInit{
       lastName: ['', Validators.required],
       phone: ['', Validators.required],
       email: ['', Validators.required],
-      serviceId: [null, Validators.required],
+      service: [null, Validators.required],
       staffId: [this.appointmentStore.currentStaff],
       startTime: [this.appointmentStore.currentHour]
     })
@@ -108,46 +108,44 @@ export class CreateAppComponent implements OnInit{
 
   create() {
     if (this.form.invalid) {
-      let error: MyError = {
+      this.errorService.showError({
         label: 'Attenzione',
         message: 'Inserire tutti i campi'
-      }
-      this.errorService.showError(error);
+      });
       return;
     }
 
-    let v = this.form.value;
+    const v = this.form.value;
+    console.log(v.service.id)
 
-    this.getEndtime(v.startTime, v.serviceId).pipe(
+    this.getEndtime(v.startTime, v.service.id).pipe(
       switchMap(endTime => {
         const appointment: CreateAppointmentDto = {
           customerName: v.name,
           customerLastName: v.lastName,
           customerPhone: v.phone,
           customerEmail: v.email,
-          startTime: toDateTime('', v.startTime),
-          endTime: toDateTime('', endTime),
+          startTime: toDateTime(this.appointmentStore.currentDay, v.startTime),
+          endTime: toDateTime(this.appointmentStore.currentDay, endTime),
           status: 'BOOKED',
-          serviceId: v.serviceId,
+          serviceName: v.service.name,
+          serviceId: v.service.id,
           staffId: this.appointmentStore.currentStaff.id,
           shopId: this.shopStore.shopId
         };
 
-        console.log(v.serviceId);
-        console.log(appointment);
+        // Rimuovi i console log inutili o usane uno solo se necessario
+        console.log('Creating appointment:', appointment);
 
         return this.appointmentService.create(appointment);
       })
     ).subscribe(
-      res => {
-        this.router.navigate([`/private/${this.shopStore.shopId}/appointments`]);
-      },
+      () => this.router.navigate([`/private/${this.shopStore.shopId}/appointments`]),
       err => {
-        let error: MyError = {
+        this.errorService.showError({
           label: 'Errore',
           message: err.message
-        }
-        this.errorService.showError(error);
+        });
       }
     );
   }
