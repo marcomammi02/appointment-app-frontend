@@ -23,4 +23,5 @@ export class StoreAppointments {
   currentStaff: any = {}
   currentDay: Date = new Date
   currentHour: string = ''
+  currentApp: any = {}
 }

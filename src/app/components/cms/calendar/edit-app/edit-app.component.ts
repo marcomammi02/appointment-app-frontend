@@ -1,47 +1,47 @@
 import {Component, OnInit} from '@angular/core';
-import {ButtonDirective} from "primeng/button";
-import {CalendarModule} from "primeng/calendar";
 import {CancelBtnComponent} from "../../../global/cancel-btn/cancel-btn.component";
+import {DropdownModule} from "primeng/dropdown";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {InputTextModule} from "primeng/inputtext";
-import {NgForOf} from "@angular/common";
 import {PaginatorModule} from "primeng/paginator";
 import {PrimaryBtnComponent} from "../../../global/primary-btn/primary-btn.component";
-import {PrimeTemplate} from "primeng/api";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ShopStore} from "../../../../stores/shop.store";
-import {Router, RouterLink} from "@angular/router";
 import {ServicesService} from "../../../../services/services.service";
 import {ServicesStore} from "../../../../stores/services.store";
 import {StaffService} from "../../../../services/staff.service";
 import {StaffStore} from "../../../../stores/staff.store";
 import {StoreAppointments} from "../../../../stores/appointment.store";
-import {ErrorService, MyError} from "../../../../services/error.service";
-import {CreateAppointmentDto} from "../../../../dtos/appointments.dto";
+import {ErrorService} from "../../../../services/error.service";
+import {Router, RouterLink} from "@angular/router";
 import {AppointmentService} from "../../../../services/appointment.service";
 import {map, Observable, switchMap} from "rxjs";
-import {toDateTime} from "../../../../services/utility.service";
+import {CreateAppointmentDto} from "../../../../dtos/appointments.dto";
+import {capitalizeFirstLetter, toDateTime} from "../../../../services/utility.service";
+import {DeleteBtnComponent} from "../../../global/delete-btn/delete-btn.component";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 @Component({
-  selector: 'app-create-app',
+  selector: 'app-edit-app',
   standalone: true,
   imports: [
-    ButtonDirective,
-    CalendarModule,
     CancelBtnComponent,
+    DropdownModule,
     FloatLabelModule,
     InputTextModule,
-    NgForOf,
     PaginatorModule,
     PrimaryBtnComponent,
-    PrimeTemplate,
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    DeleteBtnComponent,
+    ConfirmDialogModule
   ],
-  templateUrl: './create-app.component.html',
-  styleUrl: './create-app.component.scss'
+  templateUrl: './edit-app.component.html',
+  styleUrl: './edit-app.component.scss',
+  providers: [ConfirmationService, MessageService]
 })
-export class CreateAppComponent implements OnInit{
+export class EditAppComponent implements OnInit{
   constructor(
     public shopStore: ShopStore,
     private formBuilder: FormBuilder,
@@ -52,7 +52,8 @@ export class CreateAppComponent implements OnInit{
     public appointmentStore: StoreAppointments,
     private errorService: ErrorService,
     private router: Router,
-    private appointmentService: AppointmentService
+    private appointmentService: AppointmentService,
+    private confirmationService: ConfirmationService,
   ) {
   }
 
@@ -70,10 +71,26 @@ export class CreateAppComponent implements OnInit{
       lastName: ['', Validators.required],
       phone: ['', Validators.required],
       email: ['', Validators.required],
-      service: [null, Validators.required],
-      staffId: [this.appointmentStore.currentStaff],
-      startTime: [this.appointmentStore.currentHour]
-    })
+      service: ['', Validators.required],
+      staffId: [null],
+      startTime: [null]
+    });
+
+    const app = this.appointmentStore.currentApp;
+
+    this.servicesService.getDetail(app.serviceId).subscribe(res => {
+      const service = res;
+
+      this.form.patchValue({
+        name: app.customerName,
+        lastName: app.customerLastName,
+        phone: app.customerPhone,
+        email: app.customerEmail,
+        service: service,
+        staffId: this.appointmentStore.currentStaff,
+        startTime: this.appointmentStore.currentHour
+      });
+    });
   }
 
   getEndtime(startTime: string, serviceId: number): Observable<string> {
@@ -106,7 +123,7 @@ export class CreateAppComponent implements OnInit{
     })
   }
 
-  create() {
+  edit() {
     if (this.form.invalid) {
       this.errorService.showError({
         label: 'Attenzione',
@@ -134,7 +151,7 @@ export class CreateAppComponent implements OnInit{
           shopId: this.shopStore.shopId
         };
 
-        return this.appointmentService.create(appointment);
+        return this.appointmentService.update(this.appointmentStore.currentApp.id, appointment);
       })
     ).subscribe(
       () => this.router.navigate([`/private/${this.shopStore.shopId}/appointments`]),
@@ -146,4 +163,33 @@ export class CreateAppComponent implements OnInit{
       }
     );
   }
+
+  confirm2(event: Event) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Sei sicuro di voler eliminare l\'appuntamento?',
+      header: 'Attenzione',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass:"p-button-danger p-button-text",
+      acceptLabel: 'Si',
+      rejectButtonStyleClass:"p-button-text p-button-text",
+      rejectLabel: 'No',
+      acceptIcon:"none",
+      rejectIcon:"none",
+
+      accept: () => {
+        this.delete()
+      }
+    });
+  }
+
+  delete() {
+   return this.appointmentService.delete(this.appointmentStore.currentApp.id).subscribe(res => {
+      this.router.navigate([`/private/${this.shopStore.shopId}/appointments`])
+     }
+   )
+  }
+
+  protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
 }
+

@@ -10,7 +10,7 @@ import {Router, RouterLink} from "@angular/router";
 import {CalendarModule} from "primeng/calendar";
 import {FormsModule} from "@angular/forms";
 import {AppointmentService} from "../../../services/appointment.service";
-import {firstLetter, timeToMinutes, toTime} from "../../../services/utility.service";
+import {capitalizeFirstLetter, firstLetter, timeToMinutes, toTime} from "../../../services/utility.service";
 
 @Component({
   selector: 'app-calendar',
@@ -39,11 +39,12 @@ export class CalendarComponent implements OnInit {
     private appointmentService: AppointmentService
   ) {}
 
-
   ngOnInit() {
     this.getStaff()
     this.getHours()
     this.getAppointments()
+    this.storeAppointments.currentStaff = ''
+    this.storeAppointments.currentHour = ''
   }
 
   getAppointments() {
@@ -77,12 +78,20 @@ export class CalendarComponent implements OnInit {
     this.router.navigate([`/private/${this.shopStore.shopId}/appointments/create`])
   }
 
+  goToAppointment(app: any, hour: string, staff: any) {
+    if (!app) return
+    this.storeAppointments.currentHour = hour
+    this.storeAppointments.currentStaff = staff
+    this.storeAppointments.currentApp = app
+    this.router.navigate([`/private/${this.shopStore.shopId}/appointments/${app.id}`])
+  }
+
   getAppHeight(app: any) {
     let duration: number = timeToMinutes(app.endTime) - timeToMinutes(app.startTime)
     let pixels: number = (duration / 15) * 83.2;
-    console.log(app)
     return `calc(${pixels}px - 6px)`;
   }
 
   protected readonly firstLetter = firstLetter;
+  protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
 }

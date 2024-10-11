@@ -1,0 +1,52 @@
+@import "../../../../../styles";
+
+:host ::ng-deep {
+  .p-dropdown, .p-inputnumber-input {
+    border-radius: 10px !important;
+    width: 100% !important;
+
+    &:hover {
+      border-color: #d1d5db;
+    }
+  }
+
+  .staff-label > span {
+    margin-left: 2rem !important;
+  }
+
+  .p-button.p-button-text {
+    background-color: transparent;
+    color: #000;
+    border-color: transparent;
+  }
+
+  .p-button.p-button-text:last-child {
+    background-color: transparent;
+    color: red;
+  }
+}
+
+input, textarea {
+  border-radius: 10px !important;
+  width: 100%;
+
+  &:hover {
+    border-color: #d1d5db;
+  }
+}
+
+label {
+  margin-top: -8px !important;
+}
+
+textarea {
+  resize: none;
+}
+
+.responsive {
+  margin-top: -70px;
+
+  @media screen and (min-width: $md) {
+    margin-top: 0;
+  }
+}

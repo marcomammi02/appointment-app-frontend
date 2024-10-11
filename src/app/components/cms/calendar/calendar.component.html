@@ -13,8 +13,8 @@
     <th class="hour-tag"><h4>{{ hour }}</h4></th>
     <td *ngFor="let staff of storeStaff.staffList" (click)="goToCreation(hour, staff)" class="cursor-pointer">
       <ng-container *ngIf="getAppointmentForTime(hour, staff) as app">
-        <div class="appointment flex flex-column justify-content-center" [ngStyle]="{'height': getAppHeight(app)}">
-          <h4 class="text-center">{{app.customerLastName}} {{firstLetter(app.customerName)}}.</h4>
+        <div class="appointment flex flex-column justify-content-center" (click)="goToAppointment(app, hour, staff)" [ngStyle]="{'height': getAppHeight(app)}">
+          <h4 class="text-center">{{capitalizeFirstLetter(app.customerLastName)}} {{firstLetter(app.customerName)}}.</h4>
           <p class="text-center">{{app.serviceName}}</p>
         </div>
       </ng-container>
