@@ -18,8 +18,8 @@
              'height': getAppHeight(app),
              'border': getAppWidth(app, staff)
              }" [ngClass]="alreadyCalled(app, hour) ? 'flex' : 'hidden'">
-          <h4 class="text-center">{{app.customerLastName}} {{firstLetter(app.customerName)}}.</h4>
-          <p class="text-center">{{app.serviceName}}</p>
+          <h4 class="text-center">{{capitalizeFirstLetter(app.customerLastName)}} {{firstLetter(app.customerName)}}.</h4>
+          <p class="text-center">{{capitalizeFirstLetter(app.serviceName)}}</p>
         </div>
       </ng-container>
     </td>

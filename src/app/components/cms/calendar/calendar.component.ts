@@ -116,4 +116,5 @@ export class CalendarComponent implements OnInit {
   }
 
   protected readonly firstLetter = firstLetter;
+  protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
 }
