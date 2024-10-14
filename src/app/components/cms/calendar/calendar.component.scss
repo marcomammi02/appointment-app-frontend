@@ -21,7 +21,7 @@ table {
 th, td {
   padding: 2rem 2.5rem;
   border: 1px solid #000;
-  margin: 0; /* Rimuove eventuali margini */
+  margin: 0;
 }
 
 td {
@@ -39,6 +39,12 @@ td {
   inset: 0;
   z-index: 10 !important;
   overflow: hidden;
+  transition: transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.65);
+
+  &:hover {
+    transform: scale(1.01);
+  }
 }
 
 .border-right {
@@ -61,3 +67,4 @@ td {
 tr:last-child td{
   display: none;
 }
+
