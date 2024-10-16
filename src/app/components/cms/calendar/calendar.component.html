@@ -2,7 +2,7 @@
   <h1>Appuntamenti</h1>
 </div>
 
-<p-calendar [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy"></p-calendar>
+<p-calendar [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy" (onSelect)="changeDate()"></p-calendar>
 
 <table *ngIf="storeAppointments.appointments">
   <tr>

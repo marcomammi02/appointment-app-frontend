@@ -71,7 +71,7 @@ export class CreateAppComponent implements OnInit{
       phone: ['', Validators.required],
       email: ['', Validators.required],
       service: [null, Validators.required],
-      staffId: [this.appointmentStore.currentStaff],
+      staff: [this.appointmentStore.currentStaff],
       startTime: [this.appointmentStore.currentHour]
     })
   }
@@ -130,7 +130,7 @@ export class CreateAppComponent implements OnInit{
           status: 'BOOKED',
           serviceName: v.service.name,
           serviceId: v.service.id,
-          staffId: this.appointmentStore.currentStaff.id,
+          staffId: v.staff.id,
           shopId: this.shopStore.shopId
         };
 

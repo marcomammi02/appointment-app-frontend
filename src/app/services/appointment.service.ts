@@ -16,8 +16,9 @@ export class AppointmentService {
     return this.http.post(this.apiUrl, appointment)
   }
 
-  getAppointments() {
-    return this.http.get(`${this.apiUrl}/shop/${this.shopStore.shopId}`)
+  getAppointments(day: string) {
+    const options = { params: { day: day } }
+    return this.http.get(`${this.apiUrl}/shop/${this.shopStore.shopId}`, options)
   }
 
   getDetail(id: number) {

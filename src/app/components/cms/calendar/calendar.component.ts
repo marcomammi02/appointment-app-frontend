@@ -10,7 +10,14 @@ import {Router, RouterLink} from "@angular/router";
 import {CalendarModule} from "primeng/calendar";
 import {FormsModule} from "@angular/forms";
 import {AppointmentService} from "../../../services/appointment.service";
-import {capitalizeFirstLetter, firstLetter, timeToMinutes, toTime} from "../../../services/utility.service";
+import {
+  capitalizeFirstLetter,
+  firstLetter,
+  formatDateToString,
+  timeToMinutes,
+  toTime
+} from "../../../services/utility.service";
+import {formatDate} from "date-fns";
 
 @Component({
   selector: 'app-calendar',
@@ -48,8 +55,9 @@ export class CalendarComponent implements OnInit {
   }
 
   getAppointments() {
-    return this.appointmentService.getAppointments().subscribe((res: any) => {
+    return this.appointmentService.getAppointments(formatDateToString(this.storeAppointments.currentDay)).subscribe((res: any) => {
       this.storeAppointments.appointments = res
+      console.log(res)
     })
   }
 
@@ -113,6 +121,10 @@ export class CalendarComponent implements OnInit {
       }
     }
     return 'none'
+  }
+
+  changeDate() {
+    this.getAppointments()
   }
 
   protected readonly firstLetter = firstLetter;

@@ -72,8 +72,8 @@ export class EditAppComponent implements OnInit{
       phone: ['', Validators.required],
       email: ['', Validators.required],
       service: ['', Validators.required],
-      staffId: [null],
-      startTime: [null]
+      staff: [this.appointmentStore.currentStaff],
+      startTime: [this.appointmentStore.currentHour]
     });
 
     const app = this.appointmentStore.currentApp;
@@ -133,7 +133,6 @@ export class EditAppComponent implements OnInit{
     }
 
     const v = this.form.value;
-    console.log(v.service.id)
 
     this.getEndtime(v.startTime, v.service.id).pipe(
       switchMap(endTime => {
@@ -147,7 +146,7 @@ export class EditAppComponent implements OnInit{
           status: 'BOOKED',
           serviceName: v.service.name,
           serviceId: v.service.id,
-          staffId: this.appointmentStore.currentStaff.id,
+          staffId: v.staff.id,
           shopId: this.shopStore.shopId
         };
 

@@ -5,14 +5,14 @@ export function capitalizeFirstLetter(value: any): string {
   return value;
 }
 
-export function formatDate(date: Date): string {
+export function formatDateToString(date: Date): string {
   const year = date.getFullYear();
   const month = ('0' + (date.getMonth() + 1)).slice(-2);
   const day = ('0' + date.getDate()).slice(-2);
   return `${year}-${month}-${day}`;
 }
 export function toDateTime(inputDay: Date, inputTime: string) {
-  const day = formatDate(inputDay)
+  const day = formatDateToString(inputDay)
   return `${day}T${inputTime}:00Z`
 }
 

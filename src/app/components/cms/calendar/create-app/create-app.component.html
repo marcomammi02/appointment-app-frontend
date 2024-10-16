@@ -50,16 +50,23 @@
 
     <div class="col-5">
       <p-floatLabel class="staff-label">
-        <input pInputText id="staffId" readonly [value]="this.appointmentStore.currentStaff.name"/>
-        <label for="staffId">Staff</label>
+        <p-dropdown
+          [options]="this.staffStore.staffList"
+          formControlName="staff"
+          optionLabel="name"
+          id="staffId"/>
+        <label for="staffId">Staff *</label>
       </p-floatLabel>
     </div>
   </div>
 
   <div>
     <p-floatLabel>
-      <input pInputText id="startTime" readonly [value]="this.appointmentStore.currentHour"/>
-      <label for="startTime">Orario</label>
+    <p-dropdown
+      [options]="this.shopStore.workingHours"
+      formControlName="startTime"
+      id="startTime"/>
+    <label for="startTime">Orario *</label>
     </p-floatLabel>
   </div>
 
