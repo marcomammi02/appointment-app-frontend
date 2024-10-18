@@ -13,11 +13,13 @@ import {AppointmentService} from "../../../services/appointment.service";
 import {
   capitalizeFirstLetter,
   firstLetter,
-  formatDateToString,
+  formatDateToString, getDayOfWeek,
   timeToMinutes,
   toTime
 } from "../../../services/utility.service";
 import {formatDate} from "date-fns";
+import {TranslateService} from "@ngx-translate/core";
+import {PrimeNGConfig} from "primeng/api";
 
 @Component({
   selector: 'app-calendar',
@@ -43,7 +45,7 @@ export class CalendarComponent implements OnInit {
     public shopStore: ShopStore,
     private availabilitiesService: AvailabilityService,
     private router: Router,
-    private appointmentService: AppointmentService
+    private appointmentService: AppointmentService,
   ) {}
 
   ngOnInit() {
@@ -52,6 +54,7 @@ export class CalendarComponent implements OnInit {
     this.getAppointments()
     this.storeAppointments.currentStaff = ''
     this.storeAppointments.currentHour = ''
+    console.log(this.storeAppointments.currentDay)
   }
 
   getAppointments() {
@@ -129,4 +132,5 @@ export class CalendarComponent implements OnInit {
 
   protected readonly firstLetter = firstLetter;
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
+  protected readonly getDayOfWeek = getDayOfWeek;
 }

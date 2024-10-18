@@ -33,3 +33,13 @@ export function firstLetter(str: string): string {
   if (!str) return '';
   return str.charAt(0).toUpperCase();
 }
+
+export function getDayOfWeek(date: Date): string {
+  const weekDays = [
+    'Domenica', 'Lunedì', 'Martedì', 'Mercoledì',
+    'Giovedì', 'Venerdì', 'Sabato'
+  ]
+  const day = date.getDay()
+
+  return weekDays[day]
+}

@@ -1,22 +1,53 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {CommonModule} from "@angular/common";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {InputTextModule} from "primeng/inputtext";
 import {ToastModule} from 'primeng/toast';
 import {ErrorService} from "./services/error.service";
-import {MessageService} from "primeng/api";
+import {MessageService, PrimeNGConfig} from "primeng/api";
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, FloatLabelModule, InputTextModule, ToastModule],
+  imports: [RouterOutlet, CommonModule, FloatLabelModule, InputTextModule, ToastModule, TranslateModule],
   providers: [MessageService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  constructor(public errorService: ErrorService) {
+export class AppComponent implements OnInit{
+  constructor(
+    public errorService: ErrorService,
+    private translate: TranslateService,
+    private primengConfig: PrimeNGConfig
+  ) {
+    this.translate.addLangs(['en', 'it']);
+    this.translate.setDefaultLang('it');
+
+    const browserLang = this.translate.getBrowserLang();
+    this.translate.use(browserLang?.match(/en|it/) ? browserLang : 'it');
+  }
+  ngOnInit() {
+    this.setCalendarTranslation()
   }
   title = 'appointment-app-frontend';
+
+  // This function translate all the calendars in the application
+  setCalendarTranslation() {
+    this.primengConfig.setTranslation({
+      dayNames: ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
+      dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
+      dayNamesMin: ['D', 'L', 'M', 'M', 'G', 'V', 'S'],
+      monthNames: [
+        'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+        'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
+      ],
+      monthNamesShort: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
+      today: 'Oggi',
+      clear: 'Cancella',
+      dateFormat: 'dd/mm/yy',
+      firstDayOfWeek: 1
+    });
+  }
 }

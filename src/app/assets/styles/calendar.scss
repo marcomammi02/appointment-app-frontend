@@ -1,0 +1,22 @@
+:host ::ng-deep {
+  .p-datepicker table td.p-datepicker-today > span.p-highlight,
+  .p-datepicker table td > span.p-highlight {
+    color: #000;
+    background: rgb(254, 174, 54);
+  }
+
+  .p-datepicker .p-yearpicker .p-yearpicker-year.p-highlight {
+    color: #000;
+    background: #e4e4e4;
+  }
+
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year:enabled:hover, .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month:enabled:hover {
+    color: rgb(254, 174, 54);
+  }
+
+  .p-datepicker table td > span:focus,
+  .p-datepicker:not(.p-disabled) .p-yearpicker .p-yearpicker-year:not(.p-disabled):focus,
+  .p-datepicker:not(.p-disabled) .p-monthpicker .p-monthpicker-month:not(.p-disabled):focus {
+    box-shadow: none;
+  }
+}

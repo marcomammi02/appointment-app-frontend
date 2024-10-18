@@ -2,11 +2,12 @@
   <h1>Appuntamenti</h1>
 </div>
 
-<div class="w-full flex justify-content-center">
+<div class="w-full flex align-items-center">
+  <h2 class="ml-3">{{getDayOfWeek(storeAppointments.currentDay)}}</h2>
   <p-calendar [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy" (onSelect)="changeDate()"></p-calendar>
 </div>
 
-<table *ngIf="storeAppointments.appointments">
+<table *ngIf="storeAppointments.appointments" class="shadow-4 border-round">
   <tr>
     <th class="border-right"></th>
     <th class="name-tag" *ngFor="let staff of storeStaff.staffList">{{ staff.name }}</th>
