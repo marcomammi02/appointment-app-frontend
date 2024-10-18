@@ -1,7 +1,7 @@
 <div class="flex justify-content-between mb-3">
-  <div class="flex align-items-center gap-2 mb-5">
+  <div class="flex sm:align-items-center gap-2 mb-5 flex-column sm:flex-row">
     <h1 class="cursor-pointer" [routerLink]="'/private/' + shopStore.shopId + '/appointments'">Appuntamenti</h1>
-    <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
+    <i class="pi pi-angle-right hidden sm:block" style="font-size: 1.5rem"></i>
     <h2>{{capitalizeFirstLetter(appointmentStore.currentApp.customerLastName)}} {{capitalizeFirstLetter(appointmentStore.currentApp.customerName)}}</h2>
   </div>
   <app-delete-btn (click)="confirm2($event)" class="responsive"/>
@@ -64,14 +64,27 @@
     </div>
   </div>
 
-  <div>
-    <p-floatLabel>
-      <p-dropdown
-        [options]="this.shopStore.workingHours"
-        formControlName="startTime"
-        id="startTime"/>
-      <label for="startTime">Orario *</label>
-    </p-floatLabel>
+  <div class="grid">
+    <div class="col-5">
+      <p-floatLabel>
+        <p-calendar
+          formControlName="day"
+          readonlyInput
+          dateFormat="dd/mm/yy"
+          id="day" />
+        <label for="day">Giorno *</label>
+      </p-floatLabel>
+    </div>
+
+    <div class="col-7">
+      <p-floatLabel class="time-label">
+        <p-dropdown
+          [options]="this.shopStore.workingHours"
+          formControlName="startTime"
+          id="startTime"/>
+        <label for="startTime">Orario *</label>
+      </p-floatLabel>
+    </div>
   </div>
 
 </form>

@@ -10,8 +10,17 @@
     }
   }
 
-   .staff-label > span {
+   .staff-label > span,
+   .time-label > span {
     margin-left: 2rem !important;
+  }
+
+  .p-calendar {
+    width: 100%;
+
+    .p-inputtext {
+      border-radius: 10px !important;
+    }
   }
 }
 

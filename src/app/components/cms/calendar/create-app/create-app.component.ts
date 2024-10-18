@@ -57,6 +57,7 @@ export class CreateAppComponent implements OnInit{
   }
 
   form!: FormGroup
+  day!: Date
 
   ngOnInit() {
     this.buildForm()
@@ -72,7 +73,8 @@ export class CreateAppComponent implements OnInit{
       email: ['', Validators.required],
       service: [null, Validators.required],
       staff: [this.appointmentStore.currentStaff],
-      startTime: [this.appointmentStore.currentHour]
+      startTime: [this.appointmentStore.currentHour],
+      day: [this.appointmentStore.currentDay]
     })
   }
 
@@ -125,8 +127,8 @@ export class CreateAppComponent implements OnInit{
           customerLastName: v.lastName,
           customerPhone: v.phone,
           customerEmail: v.email,
-          startTime: toDateTime(this.appointmentStore.currentDay, v.startTime),
-          endTime: toDateTime(this.appointmentStore.currentDay, endTime),
+          startTime: toDateTime(v.day, v.startTime),
+          endTime: toDateTime(v.day, endTime),
           status: 'BOOKED',
           serviceName: v.service.name,
           serviceId: v.service.id,

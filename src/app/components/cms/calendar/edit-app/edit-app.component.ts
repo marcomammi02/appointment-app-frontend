@@ -21,6 +21,7 @@ import {capitalizeFirstLetter, toDateTime} from "../../../../services/utility.se
 import {DeleteBtnComponent} from "../../../global/delete-btn/delete-btn.component";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {CalendarModule} from "primeng/calendar";
 
 @Component({
   selector: 'app-edit-app',
@@ -35,7 +36,8 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
     ReactiveFormsModule,
     RouterLink,
     DeleteBtnComponent,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    CalendarModule
   ],
   templateUrl: './edit-app.component.html',
   styleUrl: './edit-app.component.scss',
@@ -73,7 +75,8 @@ export class EditAppComponent implements OnInit{
       email: ['', Validators.required],
       service: ['', Validators.required],
       staff: [this.appointmentStore.currentStaff],
-      startTime: [this.appointmentStore.currentHour]
+      startTime: [this.appointmentStore.currentHour],
+      day: [this.appointmentStore.currentDay]
     });
 
     const app = this.appointmentStore.currentApp;
@@ -88,7 +91,8 @@ export class EditAppComponent implements OnInit{
         email: app.customerEmail,
         service: service,
         staffId: this.appointmentStore.currentStaff,
-        startTime: this.appointmentStore.currentHour
+        startTime: this.appointmentStore.currentHour,
+        day: this.appointmentStore.currentDay
       });
     });
   }
@@ -141,8 +145,8 @@ export class EditAppComponent implements OnInit{
           customerLastName: v.lastName,
           customerPhone: v.phone,
           customerEmail: v.email,
-          startTime: toDateTime(this.appointmentStore.currentDay, v.startTime),
-          endTime: toDateTime(this.appointmentStore.currentDay, endTime),
+          startTime: toDateTime(v.day, v.startTime),
+          endTime: toDateTime(v.day, endTime),
           status: 'BOOKED',
           serviceName: v.service.name,
           serviceId: v.service.id,
