@@ -20,10 +20,7 @@
   </tr>
   <tr *ngFor="let hour of shopStore.workingHours">
     <th class="hour-tag"><h4>{{ hour }}</h4></th>
-    <td *ngFor="let staff of storeStaff.staffList" (click)="goToCreation(hour, staff)" class="cursor-pointer">
-      <ng-container *ngIf="checkAvailability(hour, staff)">
-
-      </ng-container>
+    <td *ngFor="let staff of storeStaff.staffList" (click)="goToCreation(hour, staff)" class="cursor-pointer" [ngClass]="!checkStaffAvailability(hour, staff.id) ? 'not-available-icon' : ''">
       <ng-container *ngIf="getAppointmentForTime(hour, staff) as apps">
         <div *ngFor="let app of apps" class="appointment flex-column justify-content-center hidden" (click)="goToAppointment(app, hour, staff)"
              [ngStyle]="{

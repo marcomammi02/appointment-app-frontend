@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {AvailabilityDayDto, CreateAvailabilityDto, UpdateAvailabilityDto} from "../dtos/availability.dto";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {ShopStore} from "../stores/shop.store";
 
 @Injectable({
@@ -16,8 +16,8 @@ export class AvailabilityService {
     return this.http.post(this.apiUrl, availability)
   }
 
-  findAll(staffId?: number): Observable<any> {
-    const options = staffId ? { params: { staffId: staffId } } : {}
+  findAll(staffId?: number, dayOfWeek?: number): Observable<any> {
+    const options =  { params: { staffId: staffId, dayOfWeek: dayOfWeek } }
     return this.http.get(this.apiUrl, options)
   }
 

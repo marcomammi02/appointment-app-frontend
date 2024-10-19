@@ -19,15 +19,8 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
 export class AppComponent implements OnInit{
   constructor(
     public errorService: ErrorService,
-    private translate: TranslateService,
     private primengConfig: PrimeNGConfig
-  ) {
-    this.translate.addLangs(['en', 'it']);
-    this.translate.setDefaultLang('it');
-
-    const browserLang = this.translate.getBrowserLang();
-    this.translate.use(browserLang?.match(/en|it/) ? browserLang : 'it');
-  }
+  ) {}
   ngOnInit() {
     this.setCalendarTranslation()
   }

@@ -23,11 +23,18 @@ export function toTime(dateTime: string): string {
   return `${hours}:${minutes}`;
 }
 
+// This function tranform from format "2024-10-19T08:00:00.000Z" to minutes
 export function timeToMinutes(time: string): number {
   const formattedTime = toTime(time)
   const [hours, minutes] = formattedTime.split(':').map(Number)
   return hours * 60 + minutes;
-};
+}
+
+// This function tranform from format "12:00" to minutes
+export function timeStringToMinutes(time: string): number {
+  const [hours, minutes] = time.split(':').map(Number);
+  return hours * 60 + minutes;
+}
 
 export function firstLetter(str: string): string {
   if (!str) return '';

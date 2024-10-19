@@ -81,3 +81,12 @@ tr:last-child td{
   font-size: 1.5rem;
 }
 
+.not-available-icon {
+  background: repeating-linear-gradient(
+      45deg,
+      #f7f6f6,
+      #f7f6f6 10px,
+      #e9e6e6 10px,
+      #e9e6e6 20px
+  );}
+
