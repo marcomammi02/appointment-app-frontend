@@ -141,7 +141,7 @@ export class EditServiceComponent implements OnInit {
   confirm2(event: Event) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: 'Sei sicuro di voler eliminare il servizio?',
+      message: `Sei sicuro di voler eliminare "${this.currentService.name}"?`,
       header: 'Attenzione',
       icon: 'pi pi-info-circle',
       acceptButtonStyleClass:"p-button-danger p-button-text",

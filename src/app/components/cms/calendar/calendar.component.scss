@@ -68,3 +68,16 @@ tr:last-child td{
   display: none;
 }
 
+.calendar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-arrow {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+

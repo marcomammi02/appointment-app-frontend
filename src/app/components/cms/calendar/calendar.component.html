@@ -1,13 +1,19 @@
-<div class="flex justify-content-between mb-3">
-  <h1>Appuntamenti</h1>
+<h1 class="mb-3 hidden sm:block">Appuntamenti</h1>
+<h1 class="mb-3 p-3 absolute top-0 right-0 sm:hidden text-center">Appuntamenti</h1>
+
+<div class="w-full flex align-items-center justify-content-center sm:justify-content-start">
+  <button (click)="navigateDay(-1)" class="nav-arrow">
+    <i class="pi pi-chevron-left"></i>
+  </button>
+  <p class="ml-5 font-medium">{{getDayOfWeek(storeAppointments.currentDay)}}</p>
+  <p-calendar [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy" class="w-10rem" (onSelect)="changeDate()"></p-calendar>
+
+  <button (click)="navigateDay(1)" class="nav-arrow">
+    <i class="pi pi-chevron-right"></i>
+  </button>
 </div>
 
-<div class="w-full flex align-items-center">
-  <h2 class="ml-3">{{getDayOfWeek(storeAppointments.currentDay)}}</h2>
-  <p-calendar [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy" (onSelect)="changeDate()"></p-calendar>
-</div>
-
-<table *ngIf="storeAppointments.appointments" class="shadow-4 border-round">
+<table *ngIf="storeAppointments.appointments">
   <tr>
     <th class="border-right"></th>
     <th class="name-tag" *ngFor="let staff of storeStaff.staffList">{{ staff.name }}</th>
@@ -15,6 +21,9 @@
   <tr *ngFor="let hour of shopStore.workingHours">
     <th class="hour-tag"><h4>{{ hour }}</h4></th>
     <td *ngFor="let staff of storeStaff.staffList" (click)="goToCreation(hour, staff)" class="cursor-pointer">
+      <ng-container *ngIf="checkAvailability(hour, staff)">
+
+      </ng-container>
       <ng-container *ngIf="getAppointmentForTime(hour, staff) as apps">
         <div *ngFor="let app of apps" class="appointment flex-column justify-content-center hidden" (click)="goToAppointment(app, hour, staff)"
              [ngStyle]="{

@@ -223,15 +223,15 @@ export class EditStaffComponent implements OnInit {
   confirm2(event: Event) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: 'Sei sicuro di voler eliminare il membro dello staff?',
+      message: `Gli appuntamenti assegnati a "${capitalizeFirstLetter(this.currentStaff.name)} ${capitalizeFirstLetter(this.currentStaff.lastName)}" verranno eliminati. Sei sicuro di voler eliminare "${capitalizeFirstLetter(this.currentStaff.name)} ${capitalizeFirstLetter(this.currentStaff.lastName)}"?`,
       header: 'Attenzione',
       icon: 'pi pi-info-circle',
       acceptButtonStyleClass:"p-button-danger p-button-text",
       acceptLabel: 'Si',
       rejectButtonStyleClass:"p-button-text p-button-text",
       rejectLabel: 'No',
-      acceptIcon:"none",
-      rejectIcon:"none",
+      acceptIcon: "none",
+      rejectIcon: "none",
 
       accept: () => {
         this.delete()

@@ -86,6 +86,10 @@ export class CalendarComponent implements OnInit {
     return apps;
   }
 
+  checkAvailability(hour: string, staff: Staff) {
+    
+  }
+
   alreadyCalled(app: any, hour: string) {
     return toTime(app.startTime) == hour;
   }
@@ -124,6 +128,13 @@ export class CalendarComponent implements OnInit {
       }
     }
     return 'none'
+  }
+
+  navigateDay(days: number) {
+    const newDate = new Date(this.storeAppointments.currentDay);
+    newDate.setDate(newDate.getDate() + days);
+    this.storeAppointments.currentDay = newDate;
+    this.changeDate();
   }
 
   changeDate() {
