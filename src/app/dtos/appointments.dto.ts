@@ -8,6 +8,7 @@ export interface CreateAppointmentDto {
   status: string
   serviceName: string
   serviceId: number
+  serviceColor: string
   staffId: number
   shopId: number
 }

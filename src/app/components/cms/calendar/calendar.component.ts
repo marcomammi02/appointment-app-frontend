@@ -138,34 +138,37 @@ export class CalendarComponent implements OnInit {
   getAppHeight(app: any) {
     let duration: number = timeToMinutes(app.endTime) - timeToMinutes(app.startTime)
     let pixels: number = (duration / 15) * 83.2;
-    return `calc(${pixels}px - 6px)`;
+    console.log(app)
+    return `calc(${pixels}px - 6px)`
   }
 
   getAppWidth(app: any, staff: any): string {
     const startTimeMinutes = timeStringToMinutes(toTime(app.startTime));
     const endTimeMinutes = timeStringToMinutes(toTime(app.endTime));
 
-    // 1. Controllo sovrapposizione con altri appuntamenti dello stesso staff
     const overlapping = this.storeAppointments.appointments.some(existingApp =>
       existingApp.staffId === staff.id &&
       existingApp.id !== app.id &&
       timeStringToMinutes(toTime(existingApp.startTime)) < endTimeMinutes &&
       timeStringToMinutes(toTime(existingApp.endTime)) > startTimeMinutes
-    );
+    )
 
     if (overlapping) {
-      return '3px solid red'; // Sovrapposizione con un altro appuntamento
+      return '3px solid red'
     }
 
-    // 2. Controllo disponibilità del personale
     const startAvailable = this.checkStaffAvailability(toTime(app.startTime), staff.id);
     const endAvailable = this.checkStaffAvailability(toTime(app.endTime), staff.id);
 
     if (!startAvailable || !endAvailable) {
-      return '3px solid red'; // Orario fuori dalla disponibilità del personale
+      return '3px solid red'
     }
 
-    return 'none'; // Nessun problema
+    return 'none'
+  }
+
+  getBgColor(app: any) {
+    return app.serviceColor
   }
 
 

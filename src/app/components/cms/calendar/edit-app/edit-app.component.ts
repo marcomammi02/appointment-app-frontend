@@ -150,6 +150,7 @@ export class EditAppComponent implements OnInit{
           status: 'BOOKED',
           serviceName: v.service.name,
           serviceId: v.service.id,
+          serviceColor: v.service.color,
           staffId: v.staff.id,
           shopId: this.shopStore.shopId
         };

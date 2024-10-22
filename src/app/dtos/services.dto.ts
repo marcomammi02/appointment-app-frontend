@@ -12,6 +12,7 @@ export interface CreateServiceDto {
   duration: number  // Duration in minutes
   price: number
   shopId: number
+  color: string
 }
 
 export interface UpdateServiceDto {
@@ -19,4 +20,5 @@ export interface UpdateServiceDto {
   description: string
   duration: number  // Duration in minutes
   price: number
+  color: string
 }

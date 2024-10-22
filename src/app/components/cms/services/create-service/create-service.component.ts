@@ -14,6 +14,7 @@ import {ErrorService, MyError} from "../../../../services/error.service";
 import {Router, RouterLink} from "@angular/router";
 import {ServicesStore} from "../../../../stores/services.store";
 import {ShopStore} from "../../../../stores/shop.store";
+import {ColorPickerModule} from "primeng/colorpicker";
 
 
 @Component({
@@ -30,7 +31,8 @@ import {ShopStore} from "../../../../stores/shop.store";
     PrimaryBtnComponent,
     CancelBtnComponent,
     NgClass,
-    RouterLink
+    RouterLink,
+    ColorPickerModule
   ],
   templateUrl: './create-service.component.html',
   styleUrl: './create-service.component.scss'
@@ -58,7 +60,8 @@ export class CreateServiceComponent implements OnInit {
       name: ['', Validators.required],
       description: ['', Validators.required],
       duration: [null, Validators.required],
-      price: [null, [Validators.required, Validators.min(0)]]
+      price: [null, [Validators.required, Validators.min(0)]],
+      color: ['#feb64a']
     })
   }
 
@@ -78,7 +81,8 @@ export class CreateServiceComponent implements OnInit {
       description: v.description,
       duration: v.duration.minutes,
       price: v.price,
-      shopId: 3   // Example
+      shopId: 3,   // Example
+      color: v.color
     }
 
     this.servicesService.create(service).subscribe(

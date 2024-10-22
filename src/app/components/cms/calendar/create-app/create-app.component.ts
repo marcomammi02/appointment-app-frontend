@@ -118,7 +118,7 @@ export class CreateAppComponent implements OnInit{
     }
 
     const v = this.form.value;
-    console.log(v.service.id)
+    console.log(v.service)
 
     this.getEndtime(v.startTime, v.service.id).pipe(
       switchMap(endTime => {
@@ -132,6 +132,7 @@ export class CreateAppComponent implements OnInit{
           status: 'BOOKED',
           serviceName: v.service.name,
           serviceId: v.service.id,
+          serviceColor: v.service.color,
           staffId: v.staff.id,
           shopId: this.shopStore.shopId
         };

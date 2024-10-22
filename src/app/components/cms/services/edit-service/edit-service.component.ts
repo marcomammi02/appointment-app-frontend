@@ -19,6 +19,7 @@ import {ToastModule} from "primeng/toast";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ShopStore} from "../../../../stores/shop.store";
+import {ColorPickerModule} from "primeng/colorpicker";
 
 
 @Component({
@@ -40,6 +41,7 @@ import {ShopStore} from "../../../../stores/shop.store";
     DeleteBtnComponent,
     ToastModule,
     ConfirmDialogModule,
+    ColorPickerModule,
   ],
   templateUrl: './edit-service.component.html',
   styleUrl: './edit-service.component.scss',
@@ -87,7 +89,8 @@ export class EditServiceComponent implements OnInit {
       name: [capitalizeFirstLetter(this.currentService.name), Validators.required],
       description: [capitalizeFirstLetter(this.currentService.description), Validators.required],
       duration: [this.findDuration(this.currentService.duration), Validators.required],
-      price: [this.currentService.price, [Validators.required, Validators.min(0)]]
+      price: [this.currentService.price, [Validators.required, Validators.min(0)]],
+      color: [this.currentService.color]
     })
   }
 
@@ -111,6 +114,7 @@ export class EditServiceComponent implements OnInit {
       description: v.description,
       duration: v.duration.minutes,
       price: v.price,
+      color: v.color
     }
 
     this.servicesService.update(this.currentService.id, service).subscribe(

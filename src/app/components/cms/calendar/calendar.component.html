@@ -25,10 +25,11 @@
         <div *ngFor="let app of apps" class="appointment flex-column justify-content-center hidden" (click)="goToAppointment(app, hour, staff)"
              [ngStyle]="{
              'height': getAppHeight(app),
-             'border': getAppWidth(app, staff)
+             'border': getAppWidth(app, staff),
+             'background-color': getBgColor(app)
              }" [ngClass]="alreadyCalled(app, hour) ? 'flex' : 'hidden'">
-          <h4 class="text-center">{{capitalizeFirstLetter(app.customerLastName)}} {{firstLetter(app.customerName)}}.</h4>
-          <p class="text-center">{{capitalizeFirstLetter(app.serviceName)}}</p>
+          <h4 class="text-center app-text">{{capitalizeFirstLetter(app.customerLastName)}} {{firstLetter(app.customerName)}}.</h4>
+          <p class="text-center app-text">{{capitalizeFirstLetter(app.serviceName)}}</p>
         </div>
       </ng-container>
     </td>
