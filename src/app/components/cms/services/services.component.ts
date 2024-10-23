@@ -44,5 +44,9 @@ export class ServicesComponent implements OnInit {
     return `${hours} h ${min} min`;
   }
 
+  getServiceColor(service: any) {
+    return service.color
+  }
+
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
 }

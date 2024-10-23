@@ -4,9 +4,21 @@
   border-radius: $border-radius;
   transition: all .2s ease;
   background: #fcf8f7;
+  position: relative;
 
   &:hover {
     cursor: pointer;
     transform: scale(1.02);
+  }
+
+  .color-icon {
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 50%;
+    margin: 10px;
+    border: 2px solid #000;
   }
 }

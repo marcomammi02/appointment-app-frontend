@@ -164,7 +164,7 @@ export class CalendarComponent implements OnInit {
       return '3px solid red'
     }
 
-    return 'none'
+    return `3px solid ${app.serviceColor}`
   }
 
   getBgColor(app: any) {
