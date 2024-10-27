@@ -1,0 +1,16 @@
+:host ::ng-deep {
+  .p-float-label label {
+    margin-top: -.5rem !important;
+  }
+
+  .p-inputtext {
+    width: 100% !important;
+  }
+}
+
+.login-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

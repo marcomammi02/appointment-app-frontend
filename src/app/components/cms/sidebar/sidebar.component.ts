@@ -14,7 +14,7 @@ import {ShopStore} from "../../../stores/shop.store";
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent  {
-  constructor(private router: Router, private shopStore: ShopStore) {
+  constructor(private router: Router, public shopStore: ShopStore) {
   }
   displaySidebar: boolean = false
 

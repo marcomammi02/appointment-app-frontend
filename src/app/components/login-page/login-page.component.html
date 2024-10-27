@@ -1,0 +1,16 @@
+
+<form [formGroup]="form" class="flex flex-column gap-5 login-container">
+
+  <p-floatLabel>
+    <input pInputText id="email" formControlName="email"/>
+    <label for="email">Email</label>
+  </p-floatLabel>
+
+  <p-floatLabel>
+    <p-password id="password" formControlName="password" [feedback]="false" [toggleMask]="true" />
+    <label for="password">Password</label>
+  </p-floatLabel>
+
+  <app-primary-btn (click)="submit()" label="Accedi" />
+</form>
+

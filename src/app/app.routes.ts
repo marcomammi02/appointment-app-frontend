@@ -9,8 +9,10 @@ import {CreateStaffComponent} from "./components/cms/staff/create-staff/create-s
 import {EditStaffComponent} from "./components/cms/staff/edit-staff/edit-staff.component";
 import {CreateAppComponent} from "./components/cms/calendar/create-app/create-app.component";
 import {EditAppComponent} from "./components/cms/calendar/edit-app/edit-app.component";
+import {LoginPageComponent} from "./components/login-page/login-page.component";
 
 export const routes: Routes = [
+  {path: 'login', component: LoginPageComponent},
   {path: 'private/:shopId', component: CmsComponent, children: [
       {path: 'appointments', component: CalendarComponent },
       {path: 'appointments/create', component: CreateAppComponent },

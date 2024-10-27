@@ -12,7 +12,7 @@
     <!-- Shop header with logo and name -->
     <div class="p-3 flex align-items-center gap-3 text-white">
       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaVt9yPCghMIg98VMlCM69-EgECCxk_CE8WQ&s">
-      <h2>Shop name</h2>
+      <h3 class="shop-name">{{shopStore.currentShop.name}}</h3>
     </div>
 
     <!-- Navigation section with menu items -->
@@ -20,8 +20,8 @@
       <span class="pt-3 pb-2 block text-xs">Navigazione</span>
       <p class="cursor-pointer py-3" (click)="navigate('appointments')"><i class="pi pi-calendar mr-3"></i>Appuntamenti</p>
       <p class="cursor-pointer py-3" (click)="navigate('staff')"><i class="pi pi-users mr-3"></i>Staff</p>
-      <p class="cursor-pointer py-3" (click)="navigate('services')"><i class="pi pi-hammer mr-3"></i>Servizi</p>
-      <p class="cursor-pointer py-3" (click)="navigate('profile')"><i class="pi pi-shop mr-3"></i>Profilo</p>
+      <p class="cursor-pointer py-3" (click)="navigate('services')"><i class="pi pi-shop mr-3"></i>Servizi</p>
+      <p class="cursor-pointer py-3" (click)="navigate('profile')"><i class="pi pi-cog mr-3"></i>Profilo</p>
     </div>
 
     <!-- Footer section with logout option -->

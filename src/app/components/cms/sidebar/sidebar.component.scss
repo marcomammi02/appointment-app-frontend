@@ -34,6 +34,11 @@
       object-fit: cover;
       border-radius: $border-radius;
     }
+
+    .shop-name {
+      word-wrap: break-word;
+      white-space: pre-line;
+    }
   }
 
   .transparent {
