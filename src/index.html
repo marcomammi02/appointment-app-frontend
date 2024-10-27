@@ -10,5 +10,24 @@
 </head>
 <body>
   <app-root></app-root>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB5bMyE40Lxqu3lLPcDaL_QJpXf8bcdybk",
+      authDomain: "appointment-app-a53b0.firebaseapp.com",
+      projectId: "appointment-app-a53b0",
+      storageBucket: "appointment-app-a53b0.appspot.com",
+      messagingSenderId: "964620599559",
+      appId: "1:964620599559:web:22a9bdd9706a69b883c5a2"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
 </body>
 </html>
