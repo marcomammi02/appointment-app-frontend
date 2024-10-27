@@ -81,7 +81,7 @@ export class CreateServiceComponent implements OnInit {
       description: v.description,
       duration: v.duration.minutes,
       price: v.price,
-      shopId: 3,   // Example
+      shopId: this.shopStore.shopId,
       color: v.color
     }
 

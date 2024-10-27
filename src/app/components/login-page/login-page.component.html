@@ -1,5 +1,4 @@
-
-<form [formGroup]="form" class="flex flex-column gap-5 login-container">
+<form [formGroup]="form" (keyup.enter)="submit()" class="flex flex-column gap-5 login-container">
 
   <p-floatLabel>
     <input pInputText id="email" formControlName="email"/>

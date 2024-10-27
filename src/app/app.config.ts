@@ -1,5 +1,5 @@
 import {ApplicationConfig, importProvidersFrom, provideZoneChangeDetection} from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {provideRouter, RouterModule} from '@angular/router';
 import { routes } from './app.routes';
 import {HttpClient, provideHttpClient} from "@angular/common/http";
 import {provideAnimations} from "@angular/platform-browser/animations";
@@ -22,6 +22,7 @@ export const provideTranslation = () => ({
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
+    importProvidersFrom(RouterModule.forRoot(routes)),
     provideHttpClient(),
     provideAnimations(),
     importProvidersFrom(TranslateModule.forRoot(provideTranslation())),

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SidebarComponent} from "./sidebar/sidebar.component";
-import {RouterOutlet} from "@angular/router";
+import {ActivatedRoute, RouterOutlet} from "@angular/router";
 import {ShopService} from "../../services/shop.service";
 import {ShopStore} from "../../stores/shop.store";
 
@@ -18,11 +18,16 @@ export class CmsComponent implements OnInit{
 
   constructor(
     private shopService: ShopService,
-    private shopStore: ShopStore
+    private shopStore: ShopStore,
   ) {
   }
 
   ngOnInit() {
+    const storedShopId = localStorage.getItem('shopId');
+    if (storedShopId) {
+      this.shopStore.shopId = Number(storedShopId);
+    }
+
     this.shopService.getShop()
   }
 

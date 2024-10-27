@@ -10,10 +10,16 @@ import {EditStaffComponent} from "./components/cms/staff/edit-staff/edit-staff.c
 import {CreateAppComponent} from "./components/cms/calendar/create-app/create-app.component";
 import {EditAppComponent} from "./components/cms/calendar/edit-app/edit-app.component";
 import {LoginPageComponent} from "./components/login-page/login-page.component";
+import {provideHttpClient, withInterceptors} from "@angular/common/http";
+import {authInterceptor} from "./http/auth.interceptor";
+import {AuthGuard} from "./http/auth.guard";
 
 export const routes: Routes = [
   {path: 'login', component: LoginPageComponent},
-  {path: 'private/:shopId', component: CmsComponent, children: [
+  {path: 'private/:shopId',
+    component: CmsComponent,
+    canActivate: [AuthGuard],
+    children: [
       {path: 'appointments', component: CalendarComponent },
       {path: 'appointments/create', component: CreateAppComponent },
       {path: 'appointments/:appId', component: EditAppComponent },
@@ -26,4 +32,8 @@ export const routes: Routes = [
       {path: '', redirectTo: 'appointments', pathMatch: 'full'}
     ]},
   {path: '**', redirectTo: ''}
+];
+
+export const appProviders = [
+  provideHttpClient(withInterceptors([authInterceptor])),
 ];

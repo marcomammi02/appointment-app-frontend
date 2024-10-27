@@ -4,6 +4,9 @@ import {PasswordModule} from "primeng/password";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {PrimaryBtnComponent} from "../global/primary-btn/primary-btn.component";
+import {AuthService} from "../../services/auth.service";
+import {Router} from "@angular/router";
+import {ShopStore} from "../../stores/shop.store";
 
 @Component({
   selector: 'app-login-page',
@@ -19,7 +22,12 @@ import {PrimaryBtnComponent} from "../global/primary-btn/primary-btn.component";
   styleUrl: './login-page.component.scss'
 })
 export class LoginPageComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private shopStore: ShopStore,
+    private router: Router
+  ) {}
 
   form: FormGroup
 
@@ -34,7 +42,12 @@ export class LoginPageComponent implements OnInit {
     })
   }
 
-  submit() {
-    
+  async submit() {
+    const v = this.form.value
+    return this.authService.login(v.email, v.password).subscribe(res => {
+      this.shopStore.shopId = res.shopId
+      this.router.navigate([`private/${this.shopStore.shopId}`])
+      localStorage.setItem('shopId', this.shopStore.shopId.toString())
+    });
   }
 }

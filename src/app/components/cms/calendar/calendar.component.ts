@@ -138,7 +138,6 @@ export class CalendarComponent implements OnInit {
   getAppHeight(app: any) {
     let duration: number = timeToMinutes(app.endTime) - timeToMinutes(app.startTime)
     let pixels: number = (duration / 15) * 83.2;
-    console.log(app)
     return `calc(${pixels}px - 6px)`
   }
 

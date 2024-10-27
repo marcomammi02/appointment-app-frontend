@@ -134,7 +134,7 @@ export class CreateStaffComponent implements OnInit {
       name: v.name,
       lastName: v.lastName,
       role: v.role,
-      shopId: 3   // Example
+      shopId: this.shopStore.shopId
     }
 
     this.staffService.create(staff).subscribe(
