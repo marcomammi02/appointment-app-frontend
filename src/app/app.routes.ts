@@ -31,7 +31,8 @@ export const routes: Routes = [
       {path: 'services/:serviceId', component: EditServiceComponent },
       {path: '', redirectTo: 'appointments', pathMatch: 'full'}
     ]},
-  {path: '**', redirectTo: ''}
+  {path: '**', redirectTo: 'login'},
+  {path: '', redirectTo: 'login'}
 ];
 
 export const appProviders = [
