@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {ServicesStore} from "../stores/services.store";
 import {CreateServiceDto, UpdateServiceDto} from "../dtos/services.dto";
 import {ShopStore} from "../stores/shop.store";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class ServicesService {
 
   constructor(private http: HttpClient, private shopStore: ShopStore) {}
 
-  private apiUrl: string = 'http://localhost:3000/services'
+  private apiUrl: string = environment.apiUrl + '/services'
 
   getServices() {
     return this.http.get(`${this.apiUrl}/shop/${this.shopStore.shopId}`);

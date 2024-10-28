@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {ShopStore} from "../stores/shop.store";
 import {CreateAppointmentDto, UpdateAppointmentDto} from "../dtos/appointments.dto";
 import {UpdateAvailabilityDto} from "../dtos/availability.dto";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import {UpdateAvailabilityDto} from "../dtos/availability.dto";
 export class AppointmentService {
   constructor(private http: HttpClient, private shopStore: ShopStore) {}
 
-  private apiUrl: string = 'http://localhost:3000/appointments'
+  private apiUrl: string = environment.apiUrl + '/appointments'
 
   create(appointment: CreateAppointmentDto) {
     return this.http.post(this.apiUrl, appointment)

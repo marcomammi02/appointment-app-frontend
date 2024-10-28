@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {AvailabilityDayDto, CreateAvailabilityDto, UpdateAvailabilityDto} from "../dtos/availability.dto";
 import {map, Observable} from "rxjs";
 import {ShopStore} from "../stores/shop.store";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import {ShopStore} from "../stores/shop.store";
 export class AvailabilityService {
   constructor(private http: HttpClient, private shopStore: ShopStore) {}
 
-  private apiUrl: string = 'http://localhost:3000/availabilities'
+  private apiUrl: string = environment.apiUrl + '/availabilities'
 
   create(availability: CreateAvailabilityDto) {
     return this.http.post(this.apiUrl, availability)

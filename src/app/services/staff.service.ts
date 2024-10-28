@@ -5,6 +5,7 @@ import {CreateStaffDto, StaffDto, UpdateStaffDto} from "../dtos/staff.dto";
 import {UpdateServiceDto} from "../dtos/services.dto";
 import {Observable} from "rxjs";
 import {ShopStore} from "../stores/shop.store";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ import {ShopStore} from "../stores/shop.store";
 export class StaffService {
   constructor(private http: HttpClient, private shopStore: ShopStore) {}
 
-  private apiUrl: string = 'http://localhost:3000/staff'
+  private apiUrl: string = environment.apiUrl + '/staff'
 
   getStaff() {
     return this.http.get(`${this.apiUrl}/shop/${this.shopStore.shopId}`);
