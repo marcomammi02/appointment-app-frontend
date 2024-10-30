@@ -32,7 +32,7 @@ export const routes: Routes = [
       {path: '', redirectTo: 'appointments', pathMatch: 'full'}
     ]},
   {path: '**', redirectTo: 'login'},
-  {path: '', redirectTo: 'login'}
+  {path: '', redirectTo: 'login', pathMatch: "full"}
 ];
 
 export const appProviders = [
