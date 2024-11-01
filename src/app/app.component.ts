@@ -22,7 +22,7 @@ export class AppComponent implements OnInit{
     public errorService: ErrorService,
     private primengConfig: PrimeNGConfig
   ) {
-    console.log('ENV:' + environment.prod)
+    console.log('Production: ' + environment.prod)
   }
   ngOnInit() {
     this.setCalendarTranslation()
