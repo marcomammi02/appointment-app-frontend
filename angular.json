@@ -61,8 +61,12 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "appointment-app-frontend:build:production"
-            },
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
             "development": {
               "buildTarget": "appointment-app-frontend:build:development"
             }
