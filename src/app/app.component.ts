@@ -7,6 +7,7 @@ import {ToastModule} from 'primeng/toast';
 import {ErrorService} from "./services/error.service";
 import {MessageService, PrimeNGConfig} from "primeng/api";
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,9 @@ export class AppComponent implements OnInit{
   constructor(
     public errorService: ErrorService,
     private primengConfig: PrimeNGConfig
-  ) {}
+  ) {
+    console.log('ENV:' + environment.prod)
+  }
   ngOnInit() {
     this.setCalendarTranslation()
   }
