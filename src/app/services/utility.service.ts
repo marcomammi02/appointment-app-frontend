@@ -23,6 +23,16 @@ export function toTime(dateTime: string): string {
   return `${hours}:${minutes}`;
 }
 
+export function minutesToTime(minutes: number): string {
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  const formattedHours = ('0' + hours).slice(-2);
+  const formattedMinutes = ('0' + remainingMinutes).slice(-2);
+
+  return `${formattedHours}:${formattedMinutes}`;
+}
+
 // This function tranform from format "2024-10-19T08:00:00.000Z" to minutes
 export function timeToMinutes(time: string): number {
   const formattedTime = toTime(time)

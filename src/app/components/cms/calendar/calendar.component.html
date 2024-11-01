@@ -1,14 +1,16 @@
 <div class="appointments-container">
   <div class="header">
-    <h1 class="mb-3 hidden sm:block">Appuntamenti</h1>
-    <h1 class="mb-3 p-3 absolute top-0 right-0 sm:hidden text-center">Appuntamenti</h1>
+    <h1 class="mb-3 hidden lg:block">Appuntamenti</h1>
+    <h1 class="mb-3 p-3 absolute top-0 right-0 lg:hidden text-center">Appuntamenti</h1>
 
-    <div class="date-navigation w-full flex align-items-center justify-content-center sm:justify-content-start">
+    <div class="w-full flex align-items-center justify-content-center border-bottom-1">
       <button (click)="navigateDay(-1)" class="nav-arrow">
         <i class="pi pi-chevron-left"></i>
       </button>
-      <p class="ml-5 font-medium">{{ getDayOfWeek(storeAppointments.currentDay) }}</p>
-      <p-calendar [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy" class="w-10rem" (onSelect)="changeDate()"></p-calendar>
+      <div class="flex align-items-center justify-content-center cursor-pointer w-15rem" (click)="openCalendar(calendar)">
+        <p class="ml-5 font-medium">{{ getDayOfWeek(storeAppointments.currentDay) }}</p>
+        <p-calendar #calendar [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy" class="w-10rem" (onSelect)="changeDate()"></p-calendar>
+      </div>
       <button (click)="navigateDay(1)" class="nav-arrow">
         <i class="pi pi-chevron-right"></i>
       </button>
@@ -19,7 +21,7 @@
     <table *ngIf="storeAppointments.appointments">
       <thead>
         <tr>
-          <th class="fixed-header"></th>
+          <th class="fixed-column"></th>
           <th class="name-tag fixed-header" *ngFor="let staff of storeStaff.staffList"><h3>{{ staff.name }}</h3></th>
         </tr>
       </thead>

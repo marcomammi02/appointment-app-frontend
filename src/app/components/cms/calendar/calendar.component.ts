@@ -14,9 +14,9 @@ import {
   capitalizeFirstLetter,
   firstLetter,
   formatDateToString,
-  getDayOfWeek,
+  getDayOfWeek, minutesToTime,
   timeStringToMinutes,
-  timeToMinutes,
+  timeToMinutes, toDateTime,
   toTime
 } from "../../../services/utility.service";
 
@@ -96,24 +96,27 @@ export class CalendarComponent implements OnInit {
 
   checkStaffAvailability(hour: string, staffId: number): boolean {
     const av = this.availabilities.find(av => av.staffId === staffId);
-
     if (!av || !av.startTime) return false;
 
     const hourMinutes = timeStringToMinutes(hour);
     const startTimeMinutes = timeStringToMinutes(av.startTime);
     const endTimeMinutes = timeStringToMinutes(av.endTime);
 
-    const isWithinWorkHours = hourMinutes >= startTimeMinutes && hourMinutes < endTimeMinutes;
+    // Check within working hours (inclusive of start, exclusive of end)
+    const inWorkHours = hourMinutes >= startTimeMinutes && hourMinutes < endTimeMinutes;
 
+    // Handle break times more specifically
     const startBreakMinutes = av.startBreak ? timeStringToMinutes(av.startBreak) : null;
     const endBreakMinutes = av.endBreak ? timeStringToMinutes(av.endBreak) : null;
 
-    const isOutsideBreak =
-      !startBreakMinutes || !endBreakMinutes ||
-      hourMinutes < startBreakMinutes || hourMinutes >= endBreakMinutes;
+    const inBreakTime = startBreakMinutes !== null && endBreakMinutes !== null &&
+      hourMinutes >= startBreakMinutes && hourMinutes < endBreakMinutes;
 
-    return isWithinWorkHours && isOutsideBreak;
+    // Only return true if within work hours and not in break time
+    return inWorkHours && !inBreakTime;
   }
+
+
 
   alreadyCalled(app: any, hour: string) {
     return toTime(app.startTime) == hour;
@@ -137,8 +140,8 @@ export class CalendarComponent implements OnInit {
 
   getAppHeight(app: any) {
     let duration: number = timeToMinutes(app.endTime) - timeToMinutes(app.startTime)
-    let pixels: number = (duration / 15) * 83.2;
-    return `calc(${pixels}px - 6px)`
+    let pixels: number = (duration / 15) * 82.4;
+    return `calc(${pixels}px - 8px)`
   }
 
   getAppWidth(app: any, staff: any): string {
@@ -150,26 +153,26 @@ export class CalendarComponent implements OnInit {
       existingApp.id !== app.id &&
       timeStringToMinutes(toTime(existingApp.startTime)) < endTimeMinutes &&
       timeStringToMinutes(toTime(existingApp.endTime)) > startTimeMinutes
-    )
+    );
 
     if (overlapping) {
-      return '3px solid red'
+      return '3px solid red';
     }
 
     const startAvailable = this.checkStaffAvailability(toTime(app.startTime), staff.id);
-    const endAvailable = this.checkStaffAvailability(toTime(app.endTime), staff.id);
+    const endAvailable = this.checkStaffAvailability(minutesToTime(endTimeMinutes - 1), staff.id);
 
     if (!startAvailable || !endAvailable) {
-      return '3px solid red'
+      return '3px solid red';
     }
 
-    return `3px solid ${app.serviceColor}`
+    return `3px solid ${app.serviceColor}`;
   }
+
 
   getBgColor(app: any) {
     return app.serviceColor
   }
-
 
   navigateDay(days: number) {
     const newDate = new Date(this.storeAppointments.currentDay);
@@ -180,6 +183,13 @@ export class CalendarComponent implements OnInit {
 
   changeDate() {
     this.ngOnInit()
+  }
+
+  openCalendar(calendar: any) {
+    if (!calendar.overlayVisible) {
+      calendar.showOverlay();
+      calendar.cd.detectChanges();
+    }   console.log(calendar.overlayVisible)
   }
 
   protected readonly firstLetter = firstLetter;
