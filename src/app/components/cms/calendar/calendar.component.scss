@@ -2,7 +2,7 @@
   .p-calendar .p-inputtext {
     text-align: center;
     border: none;
-    &:hover{
+    &:hover {
       cursor: pointer;
       border-color: transparent;
     }
@@ -14,8 +14,15 @@
   }
 }
 
+.table-wrapper {
+  overflow-x: auto;  /* Abilita lo scroll orizzontale */
+  max-height: 80vh;  /* Imposta un'altezza massima per il contenitore della tabella */
+  position: relative; /* Mantiene il contenitore posizionato correttamente */
+}
+
 table {
   border-collapse: collapse;
+  width: 100%;
 }
 
 th, td {
@@ -29,12 +36,29 @@ td {
   min-width: 150px;
 }
 
+thead th, .fixed-header {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 3;
+  white-space: nowrap;
+  text-align: center;
+  padding: 8px;
+}
+
+.fixed-column {
+  position: sticky;
+  left: 0;
+  background-color: #fff;
+  z-index: 2;
+}
+
 .appointment {
   width: calc(100% - 6px);
   margin: 3px;
   border-radius: 8px;
   padding: 1rem;
-  z-index: 10 !important;
+  z-index: 1 !important;
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -63,17 +87,26 @@ td {
 
 .name-tag {
   padding: 1rem !important;
+  z-index: 3;
 }
 
 .hour-tag {
   border: none;
   padding: 2rem 1rem;
+  
   h4 {
     transform: translateY(-42px);
+    z-index: 2;
   }
 }
 
-tr:last-child td{
+thead tr:first-child th:first-child {
+  border: none; /* Rimuove il bordo della prima cella della prima riga */
+  background-color: transparent; /* Rimuove lo sfondo della prima cella */
+}
+
+
+tr:last-child td {
   display: none;
 }
 
@@ -92,10 +125,10 @@ tr:last-child td{
 
 .not-available-icon {
   background: repeating-linear-gradient(
-      45deg,
-      #f7f6f6,
-      #f7f6f6 10px,
-      #e9e6e6 10px,
-      #e9e6e6 20px
-  );}
-
+    45deg,
+    #f7f6f6,
+    #f7f6f6 10px,
+    #e9e6e6 10px,
+    #e9e6e6 20px
+  );
+}

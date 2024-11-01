@@ -7,6 +7,7 @@ import {PrimaryBtnComponent} from "../global/primary-btn/primary-btn.component";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {ShopStore} from "../../stores/shop.store";
+import { ErrorService, MyError } from '../../services/error.service';
 
 @Component({
   selector: 'app-login-page',
@@ -26,10 +27,11 @@ export class LoginPageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private shopStore: ShopStore,
-    private router: Router
+    private router: Router,
+    private errorService: ErrorService
   ) {}
 
-  form: FormGroup
+  form!: FormGroup
 
   ngOnInit() {
     this.buildForm()
@@ -43,11 +45,18 @@ export class LoginPageComponent implements OnInit {
   }
 
   async submit() {
-    const v = this.form.value
-    return this.authService.login(v.email, v.password).subscribe(res => {
-      this.shopStore.shopId = res.shopId
-      this.router.navigate([`private/${this.shopStore.shopId}`])
-      localStorage.setItem('shopId', this.shopStore.shopId.toString())
-    });
+    const v = this.form.value;
+    try {
+      const res = await this.authService.login(v.email, v.password).toPromise();
+      this.shopStore.shopId = res.shopId;
+      this.router.navigate([`private/${this.shopStore.shopId}`]);
+      localStorage.setItem('shopId', this.shopStore.shopId.toString());
+    } catch (error) {
+      const err: MyError = {
+        label: 'Attenzione',
+        message: 'Email o Password errati'
+      }
+      this.errorService.showError(err)
+    }
   }
 }

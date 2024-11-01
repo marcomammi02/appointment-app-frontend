@@ -8,6 +8,10 @@
   .p-inputtext {
     width: 100% !important;
   }
+
+  .p-password {
+    width: 100% !important;
+  }
 }
 
 section {
@@ -22,7 +26,9 @@ section {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border-radius: 40px
+  border-radius: 40px;
+  width: 80%;
+  max-width: 400px;
 }
 
 .logo {
@@ -31,4 +37,14 @@ section {
 
 .title {
   font-size: 2.5rem;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+  transition: color .2s ease;
+
+  &:hover {
+    color: #ff6200;
+  }
 }
