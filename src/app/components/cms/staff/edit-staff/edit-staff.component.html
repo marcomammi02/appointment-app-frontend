@@ -1,7 +1,4 @@
-<div *ngIf="loading" class="w-full h-30rem flex flex-column gap-5 align-items-center justify-content-center">
-  <i class="pi pi-spinner pi-spin" style="font-size: 2rem"></i>
-  <p>Caricamento in corso...</p>
-</div>
+<app-loading *ngIf="loading" />
 
 <div *ngIf="!loading">
   <div *ngIf="currentStaff">

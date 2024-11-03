@@ -22,30 +22,32 @@ import {AvailabilityStore} from "../../../../stores/availability.store";
 import {AvailabilityService} from "../../../../services/availability.service";
 import {AvailabilityDayDto, CreateAvailabilityDto, UpdateAvailabilityDto} from "../../../../dtos/availability.dto";
 import {ShopStore} from "../../../../stores/shop.store";
+import { LoadingComponent } from "../../../global/loading/loading.component";
 
 
 @Component({
   selector: 'app-edit-staff',
   standalone: true,
     imports: [
-        InputTextModule,
-        FloatLabelModule,
-        FormsModule,
-        InputTextareaModule,
-        ReactiveFormsModule,
-        InputNumberModule,
-        DropdownModule,
-        PrimaryBtnComponent,
-        CancelBtnComponent,
-        NgClass,
-        RouterLink,
-        NgIf,
-        DeleteBtnComponent,
-        ToastModule,
-        ConfirmDialogModule,
-        CalendarModule,
-        NgForOf,
-    ],
+    InputTextModule,
+    FloatLabelModule,
+    FormsModule,
+    InputTextareaModule,
+    ReactiveFormsModule,
+    InputNumberModule,
+    DropdownModule,
+    PrimaryBtnComponent,
+    CancelBtnComponent,
+    NgClass,
+    RouterLink,
+    NgIf,
+    DeleteBtnComponent,
+    ToastModule,
+    ConfirmDialogModule,
+    CalendarModule,
+    NgForOf,
+    LoadingComponent
+],
   templateUrl: './edit-staff.component.html',
   styleUrl: './edit-staff.component.scss',
   providers: [ConfirmationService, MessageService]
