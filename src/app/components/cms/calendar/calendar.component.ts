@@ -19,6 +19,7 @@ import {
   timeToMinutes, toDateTime,
   toTime
 } from "../../../services/utility.service";
+import { LoadingComponent } from "../../global/loading/loading.component";
 
 @Component({
   selector: 'app-calendar',
@@ -31,8 +32,9 @@ import {
     CalendarModule,
     FormsModule,
     NgClass,
-    NgStyle
-  ],
+    NgStyle,
+    LoadingComponent
+],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
@@ -49,19 +51,28 @@ export class CalendarComponent implements OnInit {
 
   availabilities: any[] = []
 
+  loading: boolean = true
+
   ngOnInit() {
     this.getStaff()
     this.getHours()
-    this.getAppointments()
     this.getAvailabilitiesByDay()
+    this.getAppointments()
     this.storeAppointments.currentStaff = ''
     this.storeAppointments.currentHour = ''
     this.availabilities = []
   }
 
-  getAppointments() {
-    return this.appointmentService.getAppointments(formatDateToString(this.storeAppointments.currentDay)).subscribe((res: any) => {
-      this.storeAppointments.appointments = res
+  async getAppointments() {
+    return this.appointmentService.getAppointments(formatDateToString(this.storeAppointments.currentDay)).subscribe({
+      next: (res: any) => {
+        this.storeAppointments.appointments = res;
+        this.loading = false
+      },
+      error: (err) => {
+        console.error(err)
+        this.loading = false
+      }
     })
   }
 

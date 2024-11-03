@@ -20,6 +20,7 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ShopStore} from "../../../../stores/shop.store";
 import {ColorPickerModule} from "primeng/colorpicker";
+import { LoadingComponent } from "../../../global/loading/loading.component";
 
 
 @Component({
@@ -42,7 +43,8 @@ import {ColorPickerModule} from "primeng/colorpicker";
     ToastModule,
     ConfirmDialogModule,
     ColorPickerModule,
-  ],
+    LoadingComponent
+],
   templateUrl: './edit-service.component.html',
   styleUrl: './edit-service.component.scss',
   providers: [ConfirmationService, MessageService]
@@ -65,6 +67,8 @@ export class EditServiceComponent implements OnInit {
 
   currentService?: any
 
+  loading: boolean = true
+
   serviceId!: number
 
   ngOnInit() {
@@ -78,9 +82,16 @@ export class EditServiceComponent implements OnInit {
   }
 
   async getDetail(id: number) {
-     this.servicesService.getDetail(id).subscribe(res => {
+     this.servicesService.getDetail(id).subscribe({
+      next: (res) => {
       this.currentService = res;
-      this.buildForm();
+      this.buildForm()
+      this.loading = false
+      },
+      error: (err) => {
+        console.error(err)
+        this.loading = false
+      }
     });
   }
 

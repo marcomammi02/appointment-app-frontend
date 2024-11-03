@@ -1,97 +1,102 @@
-<div class="flex justify-content-between mb-3">
-  <div class="flex sm:align-items-center gap-2 mb-5 flex-column sm:flex-row">
-    <h1 class="cursor-pointer" [routerLink]="'/private/' + shopStore.shopId + '/appointments'">Appuntamenti</h1>
-    <i class="pi pi-angle-right hidden sm:block" style="font-size: 1.5rem"></i>
-    <h2>{{capitalizeFirstLetter(appointmentStore.currentApp.customerLastName)}} {{capitalizeFirstLetter(appointmentStore.currentApp.customerName)}}</h2>
+<app-loading *ngIf="loading" />
+
+<div *ngIf="!loading">
+  <div class="flex justify-content-between mb-3">
+    <div class="flex sm:align-items-center gap-2 mb-5 flex-column sm:flex-row">
+      <h1 class="cursor-pointer" [routerLink]="'/private/' + shopStore.shopId + '/appointments'">Appuntamenti</h1>
+      <i class="pi pi-angle-right hidden sm:block" style="font-size: 1.5rem"></i>
+      <h2>{{capitalizeFirstLetter(appointmentStore.currentApp.customerLastName)}} {{capitalizeFirstLetter(appointmentStore.currentApp.customerName)}}</h2>
+    </div>
+    <app-delete-btn (click)="confirm2($event)" class="responsive"/>
   </div>
-  <app-delete-btn (click)="confirm2($event)" class="responsive"/>
-</div>
-
-<p class="mb-5">Dati del cliente</p>
-<form class="flex flex-column gap-5" [formGroup]="form">
-
-  <div>
-    <p-floatLabel>
-      <input pInputText id="name" formControlName="name"/>
-      <label for="name">Nome *</label>
-    </p-floatLabel>
-  </div>
-
-  <div>
-    <p-floatLabel>
-      <input pInputText id="lastName" formControlName="lastName"/>
-      <label for="lastName">Cognome *</label>
-    </p-floatLabel>
-  </div>
-
-  <div>
-    <p-floatLabel>
-      <input pInputText id="phone" formControlName="phone"/>
-      <label for="phone">Telefono *</label>
-    </p-floatLabel>
-  </div>
-
-  <div>
-    <p-floatLabel>
-      <input pInputText id="email" formControlName="email"/>
-      <label for="email">Email</label>
-    </p-floatLabel>
-  </div>
-
-  <p>Dati dell'appuntamento</p>
-
-  <div class="grid">
-    <div class="col-7">
-      <p-floatLabel >
-        <p-dropdown
+  
+  <p class="mb-5">Dati del cliente</p>
+  <form class="flex flex-column gap-5" [formGroup]="form">
+    
+    <div>
+      <p-floatLabel>
+        <input pInputText id="name" formControlName="name"/>
+        <label for="name">Nome *</label>
+      </p-floatLabel>
+    </div>
+    
+    <div>
+      <p-floatLabel>
+        <input pInputText id="lastName" formControlName="lastName"/>
+        <label for="lastName">Cognome *</label>
+      </p-floatLabel>
+    </div>
+    
+    <div>
+      <p-floatLabel>
+        <input pInputText id="phone" formControlName="phone"/>
+        <label for="phone">Telefono *</label>
+      </p-floatLabel>
+    </div>
+    
+    <div>
+      <p-floatLabel>
+        <input pInputText id="email" formControlName="email"/>
+        <label for="email">Email</label>
+      </p-floatLabel>
+    </div>
+    
+    <p>Dati dell'appuntamento</p>
+    
+    <div class="grid">
+      <div class="col-7">
+        <p-floatLabel >
+          <p-dropdown
           [options]="this.servicesStore.services"
           formControlName="service"
           optionLabel="name"
           id="service"/>
-        <label for="service">Servizio *</label>
-      </p-floatLabel>
-    </div>
-
-    <div class="col-5">
-      <p-floatLabel class="staff-label">
-        <p-dropdown
+          <label for="service">Servizio *</label>
+        </p-floatLabel>
+      </div>
+      
+      <div class="col-5">
+        <p-floatLabel class="staff-label">
+          <p-dropdown
           [options]="this.staffStore.staffList"
           formControlName="staff"
           optionLabel="name"
           id="staffId"/>
-        <label for="staffId">Staff *</label>
-      </p-floatLabel>
+          <label for="staffId">Staff *</label>
+        </p-floatLabel>
+      </div>
     </div>
-  </div>
-
-  <div class="grid">
-    <div class="col-5">
-      <p-floatLabel>
-        <p-calendar
+    
+    <div class="grid">
+      <div class="col-5">
+        <p-floatLabel>
+          <p-calendar
           formControlName="day"
           readonlyInput
           dateFormat="dd/mm/yy"
           id="day" />
-        <label for="day">Giorno *</label>
-      </p-floatLabel>
-    </div>
-
-    <div class="col-7">
-      <p-floatLabel class="time-label">
-        <p-dropdown
+          <label for="day">Giorno *</label>
+        </p-floatLabel>
+      </div>
+      
+      <div class="col-7">
+        <p-floatLabel class="time-label">
+          <p-dropdown
           [options]="this.shopStore.workingHours"
           formControlName="startTime"
           id="startTime"/>
-        <label for="startTime">Orario *</label>
-      </p-floatLabel>
+          <label for="startTime">Orario *</label>
+        </p-floatLabel>
+      </div>
     </div>
+    
+  </form>
+  
+  <div class="flex justify-content-end gap-3 mt-5">
+    <app-cancel-btn icon="pi pi-times" label="Annulla" [routerLink]="'/private/' + shopStore.shopId + '/appointments'"/>
+    <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="edit()"/>
   </div>
-
-</form>
-
-<div class="flex justify-content-end gap-3 mt-5">
-  <app-cancel-btn icon="pi pi-times" label="Annulla" [routerLink]="'/private/' + shopStore.shopId + '/appointments'"/>
-  <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="edit()"/>
 </div>
-
-<p-confirmDialog />
+  
+  <p-confirmDialog />
+  

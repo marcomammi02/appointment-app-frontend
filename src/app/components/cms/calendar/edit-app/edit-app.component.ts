@@ -22,6 +22,8 @@ import {DeleteBtnComponent} from "../../../global/delete-btn/delete-btn.componen
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {CalendarModule} from "primeng/calendar";
+import { LoadingComponent } from "../../../global/loading/loading.component";
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-edit-app',
@@ -37,8 +39,10 @@ import {CalendarModule} from "primeng/calendar";
     RouterLink,
     DeleteBtnComponent,
     ConfirmDialogModule,
-    CalendarModule
-  ],
+    CalendarModule,
+    LoadingComponent,
+    NgIf
+],
   templateUrl: './edit-app.component.html',
   styleUrl: './edit-app.component.scss',
   providers: [ConfirmationService, MessageService]
@@ -61,13 +65,15 @@ export class EditAppComponent implements OnInit{
 
   form!: FormGroup
 
+  loading: boolean = true
+
   ngOnInit() {
     this.buildForm()
     this.getServices()
     this.getStaff()
   }
 
-  buildForm() {
+  async buildForm() {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -81,7 +87,8 @@ export class EditAppComponent implements OnInit{
 
     const app = this.appointmentStore.currentApp;
 
-    this.servicesService.getDetail(app.serviceId).subscribe(res => {
+    this.servicesService.getDetail(app.serviceId).subscribe({
+      next: (res) => {
       const service = res;
 
       this.form.patchValue({
@@ -94,7 +101,14 @@ export class EditAppComponent implements OnInit{
         startTime: this.appointmentStore.currentHour,
         day: this.appointmentStore.currentDay
       });
-    });
+
+      this.loading = false
+    },
+    error: (err) => {
+      console.error(err)
+      this.loading = false
+    }
+  });
   }
 
   getEndtime(startTime: string, serviceId: number): Observable<string> {

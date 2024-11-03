@@ -17,7 +17,9 @@
     </div>
   </div>
 
-  <div class="table-wrapper">
+  <app-loading *ngIf="loading" />
+
+  <div class="table-wrapper" *ngIf="!loading">
     <table *ngIf="storeAppointments.appointments">
       <thead>
         <tr>

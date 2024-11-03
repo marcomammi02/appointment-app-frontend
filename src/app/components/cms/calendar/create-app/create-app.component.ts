@@ -4,7 +4,7 @@ import {CalendarModule} from "primeng/calendar";
 import {CancelBtnComponent} from "../../../global/cancel-btn/cancel-btn.component";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {InputTextModule} from "primeng/inputtext";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {PaginatorModule} from "primeng/paginator";
 import {PrimaryBtnComponent} from "../../../global/primary-btn/primary-btn.component";
 import {PrimeTemplate} from "primeng/api";
@@ -16,11 +16,13 @@ import {ServicesStore} from "../../../../stores/services.store";
 import {StaffService} from "../../../../services/staff.service";
 import {StaffStore} from "../../../../stores/staff.store";
 import {StoreAppointments} from "../../../../stores/appointment.store";
-import {ErrorService, MyError} from "../../../../services/error.service";
+import {ErrorService} from "../../../../services/error.service";
 import {CreateAppointmentDto} from "../../../../dtos/appointments.dto";
 import {AppointmentService} from "../../../../services/appointment.service";
 import {map, Observable, switchMap} from "rxjs";
 import {toDateTime} from "../../../../services/utility.service";
+import { CalendarComponent } from "../calendar.component";
+import { LoadingComponent } from "../../../global/loading/loading.component";
 
 @Component({
   selector: 'app-create-app',
@@ -36,8 +38,11 @@ import {toDateTime} from "../../../../services/utility.service";
     PrimaryBtnComponent,
     PrimeTemplate,
     ReactiveFormsModule,
-    RouterLink
-  ],
+    RouterLink,
+    NgIf,
+    CalendarComponent,
+    LoadingComponent
+],
   templateUrl: './create-app.component.html',
   styleUrl: './create-app.component.scss'
 })
@@ -58,6 +63,8 @@ export class CreateAppComponent implements OnInit{
 
   form!: FormGroup
   day!: Date
+
+  loading: boolean = true
 
   ngOnInit() {
     this.buildForm()
@@ -96,15 +103,22 @@ export class CreateAppComponent implements OnInit{
     );
   }
 
-  getServices() {
-    this.servicesService.getServices().subscribe(res => {
+  async getServices() {
+    return this.servicesService.getServices().subscribe(res => {
       this.servicesStore.services = res
     })
   }
 
-  getStaff() {
-    this.staffService.getStaff().subscribe(res => {
+  async getStaff() {
+    return this.staffService.getStaff().subscribe({
+      next: (res) => {
       this.staffStore.staffList = res
+      this.loading = false
+      },
+      error: (err) => {
+        console.error(err)
+        this.loading = false
+      }
     })
   }
 

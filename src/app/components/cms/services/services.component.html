@@ -1,18 +1,22 @@
-<div class="flex justify-content-between mb-3">
-  <h1>Servizi</h1>
-  <app-primary-btn icon="pi pi-plus" class="absolute top-0 right-0 p-3" label="Crea Servizio" [routerLink]="'/private/' + shopStore.shopId + '/services/create'"/>
-</div>
+<app-loading *ngIf="loading" />
 
-<div class="grid" *ngIf="servicesStore.services.length > 0">
-  <div class="col-12 md:col-6 xl:col-4" *ngFor="let service of servicesStore.services">
-    <div class="card p-3 m-2 text-center shadow-4" [routerLink]="'/private/' + shopStore.shopId + '/services/' + service.id">
-      <div class="color-icon" [ngStyle]="{'background': getServiceColor(service)}"></div>
-      <h3>{{capitalizeFirstLetter(service.name)}}</h3>
-      <div class="flex justify-content-evenly mt-3">
-        <p><i class="pi pi-clock mr-1"></i> {{getHourTime(service.duration)}}</p>
-        <p><i class="pi pi-wallet mr-1"></i> {{service.price}} €</p>
+<div *ngIf="!loading">
+  <div class="flex justify-content-between mb-3">
+    <h1>Servizi</h1>
+    <app-primary-btn icon="pi pi-plus" class="absolute top-0 right-0 p-3" label="Crea Servizio" [routerLink]="'/private/' + shopStore.shopId + '/services/create'"/>
+  </div>
+
+  <div class="grid" *ngIf="servicesStore.services.length > 0">
+    <div class="col-12 md:col-6 xl:col-4" *ngFor="let service of servicesStore.services">
+      <div class="card p-3 m-2 text-center shadow-4" [routerLink]="'/private/' + shopStore.shopId + '/services/' + service.id">
+        <div class="color-icon" [ngStyle]="{'background': getServiceColor(service)}"></div>
+        <h3>{{capitalizeFirstLetter(service.name)}}</h3>
+        <div class="flex justify-content-evenly mt-3">
+          <p><i class="pi pi-clock mr-1"></i> {{getHourTime(service.duration)}}</p>
+          <p><i class="pi pi-wallet mr-1"></i> {{service.price}} €</p>
+        </div>
       </div>
     </div>
   </div>
+  <div *ngIf="servicesStore.services.length <= 0" class="w-full h-30rem flex align-items-center justify-content-center">Crea qui i tuoi servizi!</div>
 </div>
-<div *ngIf="servicesStore.services.length <= 0" class="w-full h-30rem flex align-items-center justify-content-center">Crea qui i tuoi servizi!</div>
