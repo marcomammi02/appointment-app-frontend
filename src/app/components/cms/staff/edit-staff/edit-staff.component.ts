@@ -67,6 +67,8 @@ export class EditStaffComponent implements OnInit {
 
   form!: FormGroup
 
+  loading: boolean = true
+
   currentStaff?: any
 
   staffId!: number
@@ -104,10 +106,17 @@ export class EditStaffComponent implements OnInit {
   }
 
   async getDetail(id: number) {
-    return this.staffService.getDetail(id).subscribe(res => {
-      this.currentStaff = res;
-      this.buildForm();
-    });
+    return this.staffService.getDetail(id).subscribe({
+      next: (res) => {
+        this.currentStaff = res;
+        this.buildForm();
+        this.loading = false
+      },
+      error: (err) => {
+        console.error(err)
+        this.loading = false
+      }
+    })
   }
 
   buildForm() {

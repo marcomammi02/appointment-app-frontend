@@ -18,7 +18,7 @@ export class AvailabilityService {
   }
 
   findAll(staffId?: number, dayOfWeek?: number): Observable<any> {
-    const options =  { params: { staffId: staffId, dayOfWeek: dayOfWeek } }
+    const options: any =  { params: { staffId: staffId, dayOfWeek: dayOfWeek } }
     return this.http.get(this.apiUrl, options)
   }
 

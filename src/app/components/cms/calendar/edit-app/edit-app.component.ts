@@ -72,7 +72,7 @@ export class EditAppComponent implements OnInit{
       name: ['', Validators.required],
       lastName: ['', Validators.required],
       phone: ['', Validators.required],
-      email: ['', Validators.required],
+      email: [''],
       service: ['', Validators.required],
       staff: [this.appointmentStore.currentStaff],
       startTime: [this.appointmentStore.currentHour],

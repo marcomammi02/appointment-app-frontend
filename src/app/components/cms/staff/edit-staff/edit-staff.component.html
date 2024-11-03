@@ -1,144 +1,149 @@
-<div *ngIf="currentStaff">
-
-  <div class="flex justify-content-between mb-3">
-    <div class="flex align-items-center gap-2 mb-5">
-      <h1 class="cursor-pointer" [routerLink]="'/private/' + shopStore.shopId + '/staff'">Staff</h1>
-      <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
-      <h2>{{ capitalizeFirstLetter(currentStaff.name) }}</h2>
-    </div>
-    <app-delete-btn (click)="confirm2($event)" class="responsive"/>
-  </div>
-  <p class="mb-5">Qui puoi vedere, modificare o eliminare il membro dello staff</p>
-  <form class="flex flex-column gap-5" [formGroup]="form">
-
-    <div>
-      <p-floatLabel>
-        <input pInputText id="name" formControlName="name"/>
-        <label for="name">Nome :</label>
-      </p-floatLabel>
-    </div>
-
-    <div>
-      <p-floatLabel>
-        <input pInputText id="lastName" formControlName="lastName"/>
-        <label for="lastName">Cognome :</label>
-      </p-floatLabel>
-    </div>
-
-    <div>
-      <p-floatLabel>
-        <input pInputText id="role" formControlName="role"/>
-        <label for="role">Ruolo :</label>
-      </p-floatLabel>
-    </div>
-  </form>
-
-  <div *ngIf="week.length > 0">
-    <h2 class="mt-5 mb-3">Orari</h2>
-    <p class="mb-3">Visualizza o modifica gli orari del membro dello staff</p>
-    <table class="responsive-table">
-      <thead>
-      <tr>
-        <th>Giorno</th>
-        <th>Inizio lavoro</th>
-        <th>Inizio pausa</th>
-        <th>Fine pausa</th>
-        <th>Fine lavoro</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let day of availabilityStore.week">
-        <td data-label="Giorno">{{ day.name }}</td>
-        <td data-label="Inizio lavoro">
-          <p-calendar
-            #calendar1
-            inputId="calendar-timeonly"
-            [timeOnly]="true"
-            [stepMinute]="15"
-            [defaultDate]="minDate"
-            [ngModel]="week[day.value]?.startTime"
-            placeholder="- - -"
-            (onSelect)="setStartWork(day.value, $event)"
-            [readonlyInput]="true"
-          >
-            <ng-template pTemplate="footer">
-              <div class="w-full flex justify-content-end">
-                <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'startTime', calendar1)"></span>
-              </div>
-            </ng-template>
-          </p-calendar>
-        </td>
-        <td data-label="Inizio pausa">
-          <p-calendar
-            #calendar2
-            inputId="calendar-timeonly"
-            [timeOnly]="true"
-            [stepMinute]="15"
-            [defaultDate]="minDate"
-            [ngModel]="week[day.value]?.startBreak!"
-            placeholder="- - -"
-            (onSelect)="setStartBreak(day.value, $event)"
-            [readonlyInput]="true"
-          >
-            <ng-template pTemplate="footer">
-              <div class="w-full flex justify-content-end">
-                <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'startBreak', calendar2)"></span>
-              </div>
-            </ng-template>
-          </p-calendar>
-        </td>
-        <td data-label="Fine pausa">
-          <p-calendar
-            #calendar3
-            inputId="calendar-timeonly"
-            [timeOnly]="true"
-            [stepMinute]="15"
-            [defaultDate]="minDate"
-            [ngModel]="week[day.value]?.endBreak!"
-            placeholder="- - -"
-            (onSelect)="setEndBreak(day.value, $event)"
-            [readonlyInput]="true"
-          >
-            <ng-template pTemplate="footer">
-              <div class="w-full flex justify-content-end">
-                <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'endBreak', calendar3)"></span>
-              </div>
-            </ng-template>
-          </p-calendar>
-        </td>
-        <td data-label="Fine lavoro">
-          <p-calendar
-            #calendar4
-            inputId="calendar-timeonly"
-            [timeOnly]="true"
-            [stepMinute]="15"
-            [defaultDate]="minDate"
-            [ngModel]="week[day.value]?.endTime!"
-            placeholder="- - -"
-            (onSelect)="setEndWork(day.value, $event)"
-            [readonlyInput]="true"
-          >
-            <ng-template pTemplate="footer">
-              <div class="w-full flex justify-content-end">
-                <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'endTime', calendar4)"></span>
-              </div>
-            </ng-template>
-          </p-calendar>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="flex justify-content-end gap-3 mt-5">
-    <app-cancel-btn icon="pi pi-times" label="Annulla" [routerLink]="'/private/' + shopStore.shopId + '/staff'"/>
-    <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="update()"/>
-  </div>
-</div>
-<div *ngIf="!currentStaff" class="w-full h-30rem flex flex-column gap-5 align-items-center justify-content-center">
-  Il membro dello staff non è stato trovato!
-  <app-cancel-btn icon="pi pi-arrow-left" label="Indietro" [routerLink]="'/private/' + shopStore.shopId + '/staff'"/>
+<div *ngIf="loading" class="w-full h-30rem flex flex-column gap-5 align-items-center justify-content-center">
+  <i class="pi pi-spinner pi-spin" style="font-size: 2rem"></i>
+  <p>Caricamento in corso...</p>
 </div>
 
+<div *ngIf="!loading">
+  <div *ngIf="currentStaff">
+    <div class="flex justify-content-between mb-3">
+      <div class="flex align-items-center gap-2 mb-5">
+        <h1 class="cursor-pointer" [routerLink]="'/private/' + shopStore.shopId + '/staff'">Staff</h1>
+        <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
+        <h2>{{ capitalizeFirstLetter(currentStaff.name) }}</h2>
+      </div>
+      <app-delete-btn (click)="confirm2($event)" class="responsive"/>
+    </div>
+    <p class="mb-5">Qui puoi vedere, modificare o eliminare il membro dello staff</p>
+    <form class="flex flex-column gap-5" [formGroup]="form">
+
+      <div>
+        <p-floatLabel>
+          <input pInputText id="name" formControlName="name"/>
+          <label for="name">Nome :</label>
+        </p-floatLabel>
+      </div>
+
+      <div>
+        <p-floatLabel>
+          <input pInputText id="lastName" formControlName="lastName"/>
+          <label for="lastName">Cognome :</label>
+        </p-floatLabel>
+      </div>
+
+      <div>
+        <p-floatLabel>
+          <input pInputText id="role" formControlName="role"/>
+          <label for="role">Ruolo :</label>
+        </p-floatLabel>
+      </div>
+    </form>
+
+    <div *ngIf="week.length > 0">
+      <h2 class="mt-5 mb-3">Orari</h2>
+      <p class="mb-3">Visualizza o modifica gli orari del membro dello staff</p>
+      <table class="responsive-table">
+        <thead>
+        <tr>
+          <th>Giorno</th>
+          <th>Inizio lavoro</th>
+          <th>Inizio pausa</th>
+          <th>Fine pausa</th>
+          <th>Fine lavoro</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let day of availabilityStore.week">
+          <td data-label="Giorno">{{ day.name }}</td>
+          <td data-label="Inizio lavoro">
+            <p-calendar
+              #calendar1
+              inputId="calendar-timeonly"
+              [timeOnly]="true"
+              [stepMinute]="15"
+              [defaultDate]="minDate"
+              [ngModel]="week[day.value]?.startTime"
+              placeholder="- - -"
+              (onSelect)="setStartWork(day.value, $event)"
+              [readonlyInput]="true"
+            >
+              <ng-template pTemplate="footer">
+                <div class="w-full flex justify-content-end">
+                  <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'startTime', calendar1)"></span>
+                </div>
+              </ng-template>
+            </p-calendar>
+          </td>
+          <td data-label="Inizio pausa">
+            <p-calendar
+              #calendar2
+              inputId="calendar-timeonly"
+              [timeOnly]="true"
+              [stepMinute]="15"
+              [defaultDate]="minDate"
+              [ngModel]="week[day.value]?.startBreak!"
+              placeholder="- - -"
+              (onSelect)="setStartBreak(day.value, $event)"
+              [readonlyInput]="true"
+            >
+              <ng-template pTemplate="footer">
+                <div class="w-full flex justify-content-end">
+                  <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'startBreak', calendar2)"></span>
+                </div>
+              </ng-template>
+            </p-calendar>
+          </td>
+          <td data-label="Fine pausa">
+            <p-calendar
+              #calendar3
+              inputId="calendar-timeonly"
+              [timeOnly]="true"
+              [stepMinute]="15"
+              [defaultDate]="minDate"
+              [ngModel]="week[day.value]?.endBreak!"
+              placeholder="- - -"
+              (onSelect)="setEndBreak(day.value, $event)"
+              [readonlyInput]="true"
+            >
+              <ng-template pTemplate="footer">
+                <div class="w-full flex justify-content-end">
+                  <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'endBreak', calendar3)"></span>
+                </div>
+              </ng-template>
+            </p-calendar>
+          </td>
+          <td data-label="Fine lavoro">
+            <p-calendar
+              #calendar4
+              inputId="calendar-timeonly"
+              [timeOnly]="true"
+              [stepMinute]="15"
+              [defaultDate]="minDate"
+              [ngModel]="week[day.value]?.endTime!"
+              placeholder="- - -"
+              (onSelect)="setEndWork(day.value, $event)"
+              [readonlyInput]="true"
+            >
+              <ng-template pTemplate="footer">
+                <div class="w-full flex justify-content-end">
+                  <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella" (click)="clearInput(day.value, 'endTime', calendar4)"></span>
+                </div>
+              </ng-template>
+            </p-calendar>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flex justify-content-end gap-3 mt-5">
+      <app-cancel-btn icon="pi pi-times" label="Annulla" [routerLink]="'/private/' + shopStore.shopId + '/staff'"/>
+      <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="update()"/>
+    </div>
+  </div>
+  <div *ngIf="!currentStaff" class="w-full h-30rem flex flex-column gap-5 align-items-center justify-content-center">
+    Il membro dello staff non è stato trovato!
+    <app-cancel-btn icon="pi pi-arrow-left" label="Indietro" [routerLink]="'/private/' + shopStore.shopId + '/staff'"/>
+  </div>
+</div>
 <p-confirmDialog />
 

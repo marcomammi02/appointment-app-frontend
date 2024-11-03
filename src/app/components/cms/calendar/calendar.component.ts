@@ -67,7 +67,7 @@ export class CalendarComponent implements OnInit {
 
   async getAvailabilitiesByDay() {
     try {
-      this.availabilities = await this.availabilitiesService.findAll(null, this.storeAppointments.currentDay.getDay()).toPromise();
+      this.availabilities = await this.availabilitiesService.findAll(undefined, this.storeAppointments.currentDay.getDay()).toPromise();
     } catch (error) {
       console.log(error)
     }
