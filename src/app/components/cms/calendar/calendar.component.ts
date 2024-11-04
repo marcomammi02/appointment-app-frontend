@@ -64,6 +64,7 @@ export class CalendarComponent implements OnInit {
   }
 
   async getAppointments() {
+    this.loading = true 
     return this.appointmentService.getAppointments(formatDateToString(this.storeAppointments.currentDay)).subscribe({
       next: (res: any) => {
         this.storeAppointments.appointments = res;
@@ -200,7 +201,7 @@ export class CalendarComponent implements OnInit {
     if (!calendar.overlayVisible) {
       calendar.showOverlay();
       calendar.cd.detectChanges();
-    }   console.log(calendar.overlayVisible)
+    }
   }
 
   protected readonly firstLetter = firstLetter;
