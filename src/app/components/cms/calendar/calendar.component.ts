@@ -64,7 +64,7 @@ export class CalendarComponent implements OnInit {
   }
 
   async getAppointments() {
-    this.loading = true 
+    this.loading = true
     return this.appointmentService.getAppointments(formatDateToString(this.storeAppointments.currentDay)).subscribe({
       next: (res: any) => {
         this.storeAppointments.appointments = res;

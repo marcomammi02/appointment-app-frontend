@@ -21,9 +21,13 @@
 }
 
 .table-wrapper {
-  overflow-x: auto;  /* Abilita lo scroll orizzontale */
-  max-height: 80vh;  /* Imposta un'altezza massima per il contenitore della tabella */
-  position: relative; /* Mantiene il contenitore posizionato correttamente */
+  overflow-x: auto;
+  max-height: calc(100vh - 150px);
+  position: relative;
+
+  @media screen and (min-width: $lg) {
+    max-height: calc(100vh - 130px);
+  }
 }
 
 table {
@@ -47,7 +51,6 @@ thead th, .fixed-header {
   white-space: nowrap;
   text-align: center;
   padding: 0;
-  max-width: 70px !important;
 }
 
 .fixed-column {
@@ -76,7 +79,7 @@ thead th, .fixed-header {
   .app-background {
     position: absolute;
     inset: 0;
-    opacity: .4;
+    opacity: .7;
   }
 
   h4, p {
@@ -106,17 +109,17 @@ thead th, .fixed-header {
 }
 
 .hour-tag {
-  max-width: 70px;
+  width: 60px;
   text-align: center;
   position: sticky;
   left: 0;
-  height: 80px;
+  height: 20px;
   background-color: #fff;
   border: none;
-  padding: 2rem 1rem;
+  padding: 1.2rem .8rem;
 
   h4 {
-    transform: translateY(-42px);
+    transform: translateY(-28px);
     z-index: 4;
   }
 }
