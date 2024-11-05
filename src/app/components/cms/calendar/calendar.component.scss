@@ -116,10 +116,10 @@ thead th, .fixed-header {
   height: 20px;
   background-color: #fff;
   border: none;
-  padding: 1.2rem .8rem;
+  padding: .6rem .8rem;
 
   h4 {
-    transform: translateY(-28px);
+    transform: translateY(-18px);
     z-index: 4;
   }
 }
@@ -161,4 +161,16 @@ tr:last-child td {
     transition: color .1s ease;
     color: #ff6200;
   }
+}
+
+.full-hour {
+
+}
+
+.quarter-hour {
+  opacity: 0;
+}
+
+.half-hour {
+  opacity: .6;
 }

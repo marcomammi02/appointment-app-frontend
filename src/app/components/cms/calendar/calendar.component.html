@@ -29,7 +29,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let hour of shopStore.workingHours">
-          <th class="hour-tag fixed-column"><h4>{{ hour }}</h4></th>
+          <th class="hour-tag fixed-column"><h4 class="{{getHourClass(hour)}}">{{ hour }}</h4></th>
           <td *ngFor="let staff of storeStaff.staffList" (click)="goToCreation(hour, staff)" class="cursor-pointer" [ngClass]="!checkStaffAvailability(hour, staff.id) ? 'not-available-icon' : ''">
             <ng-container *ngIf="getAppointmentForTime(hour, staff) as apps">
               <div *ngFor="let app of apps" class="appointment flex-column justify-content-center hidden" (click)="goToAppointment(app, hour, staff)"

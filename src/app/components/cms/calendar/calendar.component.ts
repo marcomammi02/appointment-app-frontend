@@ -152,7 +152,7 @@ export class CalendarComponent implements OnInit {
 
   getAppHeight(app: any) {
     let duration: number = timeToMinutes(app.endTime) - timeToMinutes(app.startTime)
-    let pixels: number = (duration / 15) * 82.4;
+    let pixels: number = (duration / 15) * 37.6;
     return `calc(${pixels}px - 8px)`
   }
 
@@ -179,6 +179,23 @@ export class CalendarComponent implements OnInit {
     }
 
     return `3px solid ${app.serviceColor}`;
+  }
+
+  getHourClass(hour: string): string {
+    if (!hour) return ''
+
+    switch (true) {
+      case hour.includes(':00'):
+        return 'full-hour';
+      case hour.includes(':15'):
+        return 'quarter-hour';
+      case hour.includes(':30'):
+        return 'half-hour';
+      case hour.includes(':45'):
+        return 'quarter-hour';
+      default:
+        return '';
+    }
   }
 
 
