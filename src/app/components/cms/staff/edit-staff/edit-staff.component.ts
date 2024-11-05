@@ -71,6 +71,8 @@ export class EditStaffComponent implements OnInit {
 
   loading: boolean = true
 
+  editing: boolean = false
+
   currentStaff?: any
 
   staffId!: number
@@ -177,6 +179,10 @@ export class EditStaffComponent implements OnInit {
   }
 
   update() {
+    if (this.editing) return
+
+    this.editing = true
+
     if (this.form.invalid) {
       let error: MyError = {
         label: 'Attenzione',
@@ -216,6 +222,7 @@ export class EditStaffComponent implements OnInit {
           message: err.message
         }
         this.errorService.showError(error)
+        this.editing = false
       }
     )
   }

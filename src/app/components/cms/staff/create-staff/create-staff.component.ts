@@ -55,7 +55,9 @@ export class CreateStaffComponent implements OnInit {
 
   form!: FormGroup
 
-  minDate!: Date;
+  minDate!: Date
+
+  creating: boolean = false
 
   week: AvailabilityDayDto[] = []
 
@@ -120,6 +122,13 @@ export class CreateStaffComponent implements OnInit {
   }
 
   create() {
+    if (this.creating) {
+      console.log('ciao')
+      return
+    }
+
+    this.creating = true
+
     if (this.form.invalid) {
       let error: MyError = {
         label: 'Attenzione',
@@ -161,6 +170,7 @@ export class CreateStaffComponent implements OnInit {
           message: err.message
         }
         this.errorService.showError(error)
+        this.creating = false
       }
     )
   }

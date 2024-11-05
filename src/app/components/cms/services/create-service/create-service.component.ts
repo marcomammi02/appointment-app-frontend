@@ -51,6 +51,8 @@ export class CreateServiceComponent implements OnInit {
 
   form!: FormGroup
 
+  creating: boolean = true
+
   ngOnInit() {
     this.buildForm()
   }
@@ -66,6 +68,10 @@ export class CreateServiceComponent implements OnInit {
   }
 
   create() {
+    if (this.creating) return
+
+    this.creating = true
+
     if (this.form.invalid) {
       let error: MyError = {
         label: 'Attenzione',
@@ -95,6 +101,7 @@ export class CreateServiceComponent implements OnInit {
           message: err.message
         }
         this.errorService.showError(error)
+        this.creating = false
       }
     )
   }

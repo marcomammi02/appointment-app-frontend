@@ -64,6 +64,8 @@ export class CreateAppComponent implements OnInit{
   form!: FormGroup
   day!: Date
 
+  creating: boolean = false
+
   loading: boolean = true
 
   ngOnInit() {
@@ -123,6 +125,10 @@ export class CreateAppComponent implements OnInit{
   }
 
   create() {
+    if (this.creating) return
+
+    this.creating = true
+
     if (this.form.invalid) {
       this.errorService.showError({
         label: 'Attenzione',
@@ -160,6 +166,7 @@ export class CreateAppComponent implements OnInit{
           label: 'Errore',
           message: err.message
         });
+        this.creating = false
       }
     );
   }

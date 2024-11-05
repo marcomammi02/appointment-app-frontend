@@ -1,3 +1,5 @@
+@import "../../../../styles";
+
 :host ::ng-deep {
   .p-calendar .p-inputtext {
     text-align: center;
@@ -32,7 +34,8 @@ table {
 td {
   border: 1px solid #000;
   margin: 0;
-  min-width: 150px;
+  min-width: 120px;
+  max-width: 500px;
   position: relative;
 }
 
@@ -43,8 +46,8 @@ thead th, .fixed-header {
   background-color: #fff;
   white-space: nowrap;
   text-align: center;
-  padding: 0px;
-  max-width: 75px !important;
+  padding: 0;
+  max-width: 70px !important;
 }
 
 .fixed-column {
@@ -87,11 +90,11 @@ thead th, .fixed-header {
 }
 
 .name-tag {
-  min-width: 150px;
-  height: 50px;
+  min-width: 120px;
+  height: 40px;
   z-index: 2;
 
-  h3 {
+  h4 {
     width: 100%;
     height: 100%;
     display: flex;
@@ -103,11 +106,11 @@ thead th, .fixed-header {
 }
 
 .hour-tag {
-  width: 75px;
-  max-width: 75px;
+  max-width: 70px;
   text-align: center;
   position: sticky;
   left: 0;
+  height: 80px;
   background-color: #fff;
   border: none;
   padding: 2rem 1rem;
@@ -151,6 +154,8 @@ tr:last-child td {
 }
 
 .nav-arrow:hover i{
-  transition: color .1s ease;
-  color: #ff6200;
+  @media screen and (min-width: $lg) {
+    transition: color .1s ease;
+    color: #ff6200;
+  }
 }

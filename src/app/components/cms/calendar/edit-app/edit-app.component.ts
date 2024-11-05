@@ -65,6 +65,8 @@ export class EditAppComponent implements OnInit{
 
   form!: FormGroup
 
+  editing: boolean = false
+
   loading: boolean = true
 
   ngOnInit() {
@@ -142,6 +144,10 @@ export class EditAppComponent implements OnInit{
   }
 
   edit() {
+    if (this.editing) return
+
+    this.editing = true
+
     if (this.form.invalid) {
       this.errorService.showError({
         label: 'Attenzione',
@@ -178,6 +184,7 @@ export class EditAppComponent implements OnInit{
           label: 'Errore',
           message: err.message
         });
+        this.editing = false
       }
     );
   }

@@ -65,6 +65,8 @@ export class EditServiceComponent implements OnInit {
 
   form!: FormGroup
 
+  editing: boolean = false
+
   currentService?: any
 
   loading: boolean = true
@@ -110,6 +112,10 @@ export class EditServiceComponent implements OnInit {
   }
 
   update() {
+    if (this.editing) return
+
+    this.editing = true
+
     if (this.form.invalid) {
       let error: MyError = {
         label: 'Attenzione',
@@ -138,6 +144,7 @@ export class EditServiceComponent implements OnInit {
           message: err.message
         }
         this.errorService.showError(error)
+        this.editing = false
       }
     )
   }
