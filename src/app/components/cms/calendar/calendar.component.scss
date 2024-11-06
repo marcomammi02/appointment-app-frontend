@@ -22,7 +22,7 @@
 
 .table-wrapper {
   overflow-x: auto;
-  max-height: calc(100vh - 150px);
+  max-height: calc(100vh - 170px);
   position: relative;
 
   @media screen and (min-width: $lg) {
@@ -79,7 +79,7 @@ thead th, .fixed-header {
   .app-background {
     position: absolute;
     inset: 0;
-    opacity: .7;
+    opacity: .85;
   }
 
   h4, p {
@@ -104,7 +104,8 @@ thead th, .fixed-header {
     align-items: center;
     justify-content: center;
     background: #e9e8e8;
-    border: 1px
+    border: 1px;
+    padding: 0 1rem;
   }
 }
 
@@ -174,4 +175,5 @@ tr:last-child td {
 .half-hour {
   opacity: .5;
   font-size: .95rem;
+  text-align: end;
 }

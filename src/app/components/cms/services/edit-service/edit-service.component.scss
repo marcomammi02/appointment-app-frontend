@@ -37,11 +37,3 @@ textarea {
   resize: none;
 }
 
-.responsive {
-  margin-top: -70px;
-
-  @media screen and (min-width: $md) {
-    margin-top: 0;
-  }
-}
-

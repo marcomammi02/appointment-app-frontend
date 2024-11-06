@@ -8,7 +8,7 @@
         <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
         <h2>{{ capitalizeFirstLetter(currentStaff.name) }}</h2>
       </div>
-      <app-delete-btn (click)="confirm2($event)" class="responsive"/>
+      <app-delete-btn (click)="confirm2($event)" class="absolute top-0 right-0 m-3"/>
     </div>
     <p class="mb-5">Qui puoi vedere, modificare o eliminare il membro dello staff</p>
     <form class="flex flex-column gap-5" [formGroup]="form">
