@@ -13,6 +13,7 @@ import {LoginPageComponent} from "./components/login-page/login-page.component";
 import {provideHttpClient, withInterceptors} from "@angular/common/http";
 import {authInterceptor} from "./http/auth.interceptor";
 import {AuthGuard} from "./http/auth.guard";
+import { ProfileComponent } from './components/cms/profile/profile.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginPageComponent},
@@ -29,6 +30,7 @@ export const routes: Routes = [
       {path: 'services', component: ServicesComponent },
       {path: 'services/create', component: CreateServiceComponent },
       {path: 'services/:serviceId', component: EditServiceComponent },
+      {path: 'profile', component: ProfileComponent},
       {path: '', redirectTo: 'appointments', pathMatch: 'full'}
     ]},
   {path: '**', redirectTo: 'login'},
