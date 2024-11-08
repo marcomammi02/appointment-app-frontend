@@ -23,6 +23,7 @@ import {map, Observable, switchMap} from "rxjs";
 import {toDateTime} from "../../../../services/utility.service";
 import { CalendarComponent } from "../calendar.component";
 import { LoadingComponent } from "../../../global/loading/loading.component";
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @Component({
   selector: 'app-create-app',
@@ -41,7 +42,8 @@ import { LoadingComponent } from "../../../global/loading/loading.component";
     RouterLink,
     NgIf,
     CalendarComponent,
-    LoadingComponent
+    LoadingComponent,
+    InputTextareaModule
 ],
   templateUrl: './create-app.component.html',
   styleUrl: './create-app.component.scss'
@@ -80,6 +82,7 @@ export class CreateAppComponent implements OnInit{
       lastName: ['', Validators.required],
       phone: ['', Validators.required],
       email: [''],
+      note: [''],
       service: [null, Validators.required],
       staff: [this.appointmentStore.currentStaff],
       startTime: [this.appointmentStore.currentHour],
@@ -147,6 +150,7 @@ export class CreateAppComponent implements OnInit{
           customerLastName: v.lastName,
           customerPhone: v.phone,
           customerEmail: v.email,
+          note: v.note,
           startTime: toDateTime(v.day, v.startTime),
           endTime: toDateTime(v.day, endTime),
           status: 'BOOKED',

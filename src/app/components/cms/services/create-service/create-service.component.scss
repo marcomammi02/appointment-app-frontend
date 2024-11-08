@@ -43,14 +43,16 @@ textarea {
   appearance: none;
   background-color: transparent;
   width: 40px;
-  height: 44px;
+  height: 40px;
   border: none;
   cursor: pointer;
 }
+
 .color-input::-webkit-color-swatch {
   border-radius: 50%;
   border: 2px solid #000000;
 }
+
 .color-input::-moz-color-swatch {
   border-radius: 50%;
   border: 2px solid #000000;

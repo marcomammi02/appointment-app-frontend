@@ -24,6 +24,7 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {CalendarModule} from "primeng/calendar";
 import { LoadingComponent } from "../../../global/loading/loading.component";
 import { NgIf } from '@angular/common';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @Component({
   selector: 'app-edit-app',
@@ -41,7 +42,8 @@ import { NgIf } from '@angular/common';
     ConfirmDialogModule,
     CalendarModule,
     LoadingComponent,
-    NgIf
+    NgIf,
+    InputTextareaModule
 ],
   templateUrl: './edit-app.component.html',
   styleUrl: './edit-app.component.scss',
@@ -81,6 +83,7 @@ export class EditAppComponent implements OnInit{
       lastName: ['', Validators.required],
       phone: ['', Validators.required],
       email: [''],
+      note: [''],
       service: ['', Validators.required],
       staff: [this.appointmentStore.currentStaff],
       startTime: [this.appointmentStore.currentHour],
@@ -98,6 +101,7 @@ export class EditAppComponent implements OnInit{
         lastName: app.customerLastName,
         phone: app.customerPhone,
         email: app.customerEmail,
+        note: app.note,
         service: service,
         staffId: this.appointmentStore.currentStaff,
         startTime: this.appointmentStore.currentHour,
@@ -165,6 +169,7 @@ export class EditAppComponent implements OnInit{
           customerLastName: v.lastName,
           customerPhone: v.phone,
           customerEmail: v.email,
+          note: v.note,
           startTime: toDateTime(v.day, v.startTime),
           endTime: toDateTime(v.day, endTime),
           status: 'BOOKED',
