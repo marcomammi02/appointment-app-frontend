@@ -78,6 +78,7 @@ export class CalendarComponent implements OnInit {
   }
 
   async getAvailabilitiesByDay() {
+    this.availabilities = []
     try {
       this.availabilities = await this.availabilitiesService.findAll(undefined, this.storeAppointments.currentDay.getDay()).toPromise();
     } catch (error) {
@@ -114,17 +115,14 @@ export class CalendarComponent implements OnInit {
     const startTimeMinutes = timeStringToMinutes(av.startTime);
     const endTimeMinutes = timeStringToMinutes(av.endTime);
 
-    // Check within working hours (inclusive of start, exclusive of end)
     const inWorkHours = hourMinutes >= startTimeMinutes && hourMinutes < endTimeMinutes;
 
-    // Handle break times more specifically
     const startBreakMinutes = av.startBreak ? timeStringToMinutes(av.startBreak) : null;
     const endBreakMinutes = av.endBreak ? timeStringToMinutes(av.endBreak) : null;
 
     const inBreakTime = startBreakMinutes !== null && endBreakMinutes !== null &&
       hourMinutes >= startBreakMinutes && hourMinutes < endBreakMinutes;
 
-    // Only return true if within work hours and not in break time
     return inWorkHours && !inBreakTime;
   }
 

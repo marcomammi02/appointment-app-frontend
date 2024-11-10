@@ -3,6 +3,7 @@
     <h1 class="mb-3 hidden lg:block">Appuntamenti</h1>
     <h1 class="mb-3 p-3 absolute top-0 right-0 lg:hidden text-center">Appuntamenti</h1>
 
+    <!-- Day selector -->
     <div class="w-full flex align-items-center justify-content-center border-bottom-1">
       <button (click)="navigateDay(-1)" class="nav-arrow">
         <i class="pi pi-chevron-left"></i>
@@ -20,6 +21,8 @@
   <app-loading *ngIf="loading" />
 
   <div class="table-wrapper" *ngIf="!loading">
+
+    <!-- Table -->
     <table *ngIf="storeAppointments.appointments">
       <thead>
         <tr>
