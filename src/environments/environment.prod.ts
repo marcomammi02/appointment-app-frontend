@@ -1,4 +1,4 @@
 export const environment = {
-  prod: false,
-  apiUrl: 'http://localhost:3000'  // Sostituisci con l'URL del backend NestJS
-  }
+  prod: true,
+  apiUrl: 'https://appointment-app-backend-qfa8.onrender.com'  // Sostituisci con l'URL del backend NestJS
+};
