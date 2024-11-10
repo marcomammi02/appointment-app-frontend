@@ -83,7 +83,7 @@ export class EditAppComponent implements OnInit{
       lastName: ['', Validators.required],
       phone: ['', Validators.required],
       email: [''],
-      note: [''],
+      notes: [''],
       service: ['', Validators.required],
       staff: [this.appointmentStore.currentStaff],
       startTime: [this.appointmentStore.currentHour],
@@ -91,17 +91,23 @@ export class EditAppComponent implements OnInit{
     });
 
     const app = this.appointmentStore.currentApp;
+    console.log(app)
+    if (!app.id) {
+      this.router.navigate([`/private/${this.shopStore.shopId}/appointments`])
+      return
+    }
 
     this.servicesService.getDetail(app.serviceId).subscribe({
       next: (res) => {
       const service = res;
+      console.log()
 
       this.form.patchValue({
         name: app.customerName,
         lastName: app.customerLastName,
         phone: app.customerPhone,
         email: app.customerEmail,
-        note: app.note,
+        notes: app.notes,
         service: service,
         staffId: this.appointmentStore.currentStaff,
         startTime: this.appointmentStore.currentHour,
@@ -169,7 +175,7 @@ export class EditAppComponent implements OnInit{
           customerLastName: v.lastName,
           customerPhone: v.phone,
           customerEmail: v.email,
-          note: v.note,
+          notes: v.note,
           startTime: toDateTime(v.day, v.startTime),
           endTime: toDateTime(v.day, endTime),
           status: 'BOOKED',

@@ -3,7 +3,7 @@ export interface CreateAppointmentDto {
   customerLastName: string
   customerPhone: string
   customerEmail: string
-  note: string
+  notes: string
   startTime: Date | string
   endTime: Date | string
   status: string
@@ -19,7 +19,7 @@ export interface UpdateAppointmentDto {
   customerLastName: string
   customerPhone: string
   customerEmail: string
-  note: string
+  notes: string
   startTime: Date | string
   endTime: Date | string
   status: string
