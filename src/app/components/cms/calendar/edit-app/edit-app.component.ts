@@ -175,7 +175,7 @@ export class EditAppComponent implements OnInit{
           customerLastName: v.lastName,
           customerPhone: v.phone,
           customerEmail: v.email,
-          notes: v.note,
+          notes: v.notes,
           startTime: toDateTime(v.day, v.startTime),
           endTime: toDateTime(v.day, endTime),
           status: 'BOOKED',
