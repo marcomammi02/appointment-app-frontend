@@ -80,14 +80,14 @@ export class EditAppComponent implements OnInit{
   async buildForm() {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
-      lastName: ['', Validators.required],
-      phone: ['', Validators.required],
+      lastName: [''],
+      phone: [''],
       email: [''],
       notes: [''],
       service: ['', Validators.required],
-      staff: [this.appointmentStore.currentStaff],
-      startTime: [this.appointmentStore.currentHour],
-      day: [this.appointmentStore.currentDay]
+      staff: [this.appointmentStore.currentStaff, Validators.required],
+      startTime: [this.appointmentStore.currentHour, Validators.required],
+      day: [this.appointmentStore.currentDay, Validators.required]
     });
 
     const app = this.appointmentStore.currentApp;
