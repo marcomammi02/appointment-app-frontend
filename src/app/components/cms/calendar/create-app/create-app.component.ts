@@ -71,6 +71,9 @@ export class CreateAppComponent implements OnInit{
   loading: boolean = true
 
   ngOnInit() {
+    if (!this.appointmentStore.currentStaff.id) {
+      this.router.navigate([`/private/${this.shopStore.shopId}/appointments`])
+    }
     this.buildForm()
     this.getServices()
     this.getStaff()
