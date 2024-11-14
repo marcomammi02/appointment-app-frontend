@@ -46,6 +46,9 @@ textarea {
   height: 44px;
   border: none;
   cursor: pointer;
+  @media screen and (min-width: $lg) {
+    height: 44px;
+  }
 }
 .color-input::-webkit-color-swatch {
   border-radius: 50%;

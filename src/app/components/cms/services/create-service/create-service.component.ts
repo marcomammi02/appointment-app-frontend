@@ -51,7 +51,7 @@ export class CreateServiceComponent implements OnInit {
 
   form!: FormGroup
 
-  creating: boolean = true
+  creating: boolean = false
 
   ngOnInit() {
     this.buildForm()
