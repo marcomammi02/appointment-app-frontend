@@ -127,8 +127,7 @@ export class CreateStaffComponent implements OnInit {
       return
     }
 
-    this.creating = true
-
+    
     if (this.form.invalid) {
       let error: MyError = {
         label: 'Attenzione',
@@ -137,7 +136,9 @@ export class CreateStaffComponent implements OnInit {
       this.errorService.showError(error)
       return
     }
-
+    
+    this.creating = true
+    
     let v = this.form.value
     const staff: CreateStaffDto = {
       name: v.name,

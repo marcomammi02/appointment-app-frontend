@@ -133,8 +133,7 @@ export class CreateAppComponent implements OnInit{
   create() {
     if (this.creating) return
 
-    this.creating = true
-
+    
     if (this.form.invalid) {
       this.errorService.showError({
         label: 'Attenzione',
@@ -142,6 +141,8 @@ export class CreateAppComponent implements OnInit{
       });
       return;
     }
+    
+    this.creating = true
 
     const v = this.form.value;
     console.log(v.service)

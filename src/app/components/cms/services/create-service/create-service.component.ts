@@ -70,8 +70,7 @@ export class CreateServiceComponent implements OnInit {
   create() {
     if (this.creating) return
 
-    this.creating = true
-
+    
     if (this.form.invalid) {
       let error: MyError = {
         label: 'Attenzione',
@@ -80,6 +79,8 @@ export class CreateServiceComponent implements OnInit {
       this.errorService.showError(error)
       return
     }
+    
+    this.creating = true
 
     let v = this.form.value
     const service: CreateServiceDto = {
