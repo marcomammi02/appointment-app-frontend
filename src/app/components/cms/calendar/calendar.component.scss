@@ -110,17 +110,17 @@ thead th, .fixed-header {
 }
 
 .hour-tag {
-  width: 60px;
+  min-width: 60px;
   text-align: center;
   position: sticky;
   left: 0;
   height: 20px;
   background-color: #fff;
   border: none;
-  padding: .6rem .8rem;
+  height: 33px;
 
   h4 {
-    transform: translateY(-18px);
+    transform: translateY(-16px);
     z-index: 4;
   }
 }
@@ -171,5 +171,4 @@ tr:last-child td {
 .half-hour {
   opacity: .5;
   font-size: .95rem;
-  text-align: end;
 }

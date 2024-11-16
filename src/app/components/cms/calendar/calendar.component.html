@@ -41,7 +41,7 @@
                    'border': getAppWidth(app, staff),
                    }" [ngClass]="alreadyCalled(app, hour) ? 'flex' : 'hidden'">
                 <div class="app-background" [ngStyle]="{'background': getBgColor(app)}"></div>
-                <h4 class="text-center app-text">{{capitalizeFirstLetter(app.customerLastName)}} {{firstLetter(app.customerName)}}.</h4>
+                <h4 class="text-center app-text">{{capitalizeFirstLetter(app.customerLastName)}} {{capitalizeFirstLetter(app.customerName)}}</h4>
                 <p class="text-center app-text">{{capitalizeFirstLetter(app.serviceName)}}</p>
               </div>
             </ng-container>
