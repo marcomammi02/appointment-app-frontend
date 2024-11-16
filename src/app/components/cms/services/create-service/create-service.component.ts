@@ -70,7 +70,6 @@ export class CreateServiceComponent implements OnInit {
   create() {
     if (this.creating) return
 
-    
     if (this.form.invalid) {
       let error: MyError = {
         label: 'Attenzione',

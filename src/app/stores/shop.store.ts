@@ -4,7 +4,7 @@ import {Injectable} from "@angular/core";
   providedIn: 'root'
 })
 export class ShopStore {
-  shopId: number
+  shopId!: number
   workingHours: any = []
   currentShop: any = {}
 }
