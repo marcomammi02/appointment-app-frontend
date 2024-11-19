@@ -99,7 +99,7 @@ export class ProfileComponent implements OnInit {
     if (this.selectedLogo) {
       const path = `uploads/${this.selectedLogo.name}`;
       this.shopService.uploadFile(this.selectedLogo, path).subscribe(
-        (url: any) => {
+        (url: string) => {
           this.downloadURL = url;
           console.log('File uploaded successfully:', url);
         },
@@ -112,7 +112,7 @@ export class ProfileComponent implements OnInit {
 
   edit() {
     if (this.editing) return
-    
+
     this.editing = true
 
     let v = this.form.value
@@ -129,6 +129,7 @@ export class ProfileComponent implements OnInit {
 
     this.shopService.update(shop).subscribe(
       res => {
+        this.uploadFile()
         this.editing = false
       },
       err => {
