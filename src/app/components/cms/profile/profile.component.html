@@ -48,10 +48,22 @@
           <label for="address">Indirizzo</label>
         </p-floatLabel>
       </div>
+
+      <p-fileUpload 
+        mode="basic" 
+        chooseLabel="Choose" 
+        chooseIcon="pi pi-upload"
+        name="demo[]" 
+        url="https://www.primefaces.org/cdn/api/upload.php" 
+        accept="image/*" 
+        maxFileSize="1000000"
+        auto="true"
+        (onUpload)="onFileSelected($event, 'logo')"
+        />
     </form>
 
     <div class="flex justify-content-end gap-3 mt-5">
       <app-cancel-btn icon="pi pi-times" label="Annulla" [routerLink]="'/private/' + shopStore.shopId + '/services'"/>
-      <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="create()"/>
+      <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="edit()"/>
     </div>
 </div>

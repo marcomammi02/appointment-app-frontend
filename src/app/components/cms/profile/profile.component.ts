@@ -15,6 +15,7 @@ import { Router, RouterLink } from '@angular/router';
 import { editShop } from '../../../dtos/shop.dto';
 import { ShopService } from '../../../services/shop.service';
 import { ErrorService, MyError } from '../../../services/error.service';
+import { FileUploadModule } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-profile',
@@ -29,7 +30,8 @@ import { ErrorService, MyError } from '../../../services/error.service';
     InputTextModule,
     PrimaryBtnComponent,
     CancelBtnComponent,
-    RouterLink
+    RouterLink,
+    FileUploadModule
 ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -47,6 +49,11 @@ export class ProfileComponent implements OnInit {
   loading: boolean = false
 
   form!: FormGroup
+
+  selectedLogo: File | null = null
+  selectedCover: File | null = null
+
+  downloadURL: string | null = null;
 
   editing: boolean = false
 
@@ -76,16 +83,40 @@ export class ProfileComponent implements OnInit {
       description: [capitalizeFirstLetter(shop.description)],
       phone: [shop.phoneNumber],
       email: [shop.email],
-      address: [capitalizeFirstLetter(shop.address)]
+      address: [capitalizeFirstLetter(shop.address)],
     });
   }
 
-  create() {
+  onFileSelected(event: any, imgType: string) {
+    if (imgType == 'logo') {
+      this.selectedLogo = event.files[0]
+    } else if (imgType == 'cover') {
+      this.selectedCover = event.files[0]
+    }
+  }
+
+  uploadFile(): void {
+    if (this.selectedLogo) {
+      const path = `uploads/${this.selectedLogo.name}`;
+      this.shopService.uploadFile(this.selectedLogo, path).subscribe(
+        (url: any) => {
+          this.downloadURL = url;
+          console.log('File uploaded successfully:', url);
+        },
+        (error: any) => {
+          console.error('Error uploading file:', error);
+        }
+      );
+    }
+  }
+
+  edit() {
     if (this.editing) return
     
     this.editing = true
 
     let v = this.form.value
+    console.log(v)
     const shop: editShop = {
       name: v.name,
       description: v.description,
