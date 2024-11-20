@@ -49,17 +49,33 @@
         </p-floatLabel>
       </div>
 
-      <p-fileUpload 
+      <div class="flex align-items-center gap-3">
+        Logo: 
+        <p-fileUpload 
         mode="basic" 
-        chooseLabel="Choose" 
+        chooseLabel="Scegli file" 
         chooseIcon="pi pi-upload"
         name="demo[]" 
         url="https://www.primefaces.org/cdn/api/upload.php" 
         accept="image/*" 
         maxFileSize="1000000"
-        auto="true"
-        (onUpload)="onFileSelected($event, 'logo')"
+        (onSelect)="onFileSelected($event, 'logo')"
         />
+      </div>
+
+      <div class="flex align-items-center gap-3">
+        Copertina: 
+        <p-fileUpload 
+        mode="basic" 
+        chooseLabel="Scegli file" 
+        chooseIcon="pi pi-upload"
+        name="demo[]" 
+        url="https://www.primefaces.org/cdn/api/upload.php" 
+        accept="image/*" 
+        maxFileSize="1000000"
+        (onSelect)="onFileSelected($event, 'cover')"
+        />
+      </div>
     </form>
 
     <div class="flex justify-content-end gap-3 mt-5">
@@ -67,3 +83,5 @@
       <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="edit()"/>
     </div>
 </div>
+<p-toast />
+

@@ -16,6 +16,8 @@ import { editShop } from '../../../dtos/shop.dto';
 import { ShopService } from '../../../services/shop.service';
 import { ErrorService, MyError } from '../../../services/error.service';
 import { FileUploadModule } from 'primeng/fileupload';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-profile',
@@ -31,8 +33,10 @@ import { FileUploadModule } from 'primeng/fileupload';
     PrimaryBtnComponent,
     CancelBtnComponent,
     RouterLink,
-    FileUploadModule
-],
+    FileUploadModule,
+    ToastModule
+  ],
+  providers: [MessageService],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
@@ -43,7 +47,8 @@ export class ProfileComponent implements OnInit {
     public shopStore: ShopStore,
     private shopService: ShopService,
     private router: Router,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private messageService: MessageService
   ) {}
 
   loading: boolean = false
@@ -53,7 +58,9 @@ export class ProfileComponent implements OnInit {
   selectedLogo: File | null = null
   selectedCover: File | null = null
 
-  downloadURL: string | null = null;
+  downloadLogoURL?: string
+  downloadCoverURL?: string
+
 
   editing: boolean = false
 
@@ -95,52 +102,100 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  uploadFile(): void {
+  uploadFile(): Promise<void> {
+    const uploads: Promise<void>[] = [];
+  
     if (this.selectedLogo) {
-      const path = `uploads/${this.selectedLogo.name}`;
-      this.shopService.uploadFile(this.selectedLogo, path).subscribe(
-        (url: string) => {
-          this.downloadURL = url;
-          console.log('File uploaded successfully:', url);
+      const path = `logos/${this.shopStore.shopId}`;
+      const logoUpload = new Promise<void>((resolve, reject) => {
+        this.shopService.uploadFile(this.selectedLogo, path).subscribe(
+          (url: string) => {
+            this.downloadLogoURL = url;
+            console.log('Logo uploaded successfully:', url);
+            resolve();
+          },
+          (error: any) => {
+            console.error('Error uploading logo:', error);
+            reject(error);
+          }
+        );
+      });
+      uploads.push(logoUpload);
+    }
+  
+    if (this.selectedCover) {
+      const path = `covers/${this.shopStore.shopId}`;
+      const coverUpload = new Promise<void>((resolve, reject) => {
+        this.shopService.uploadFile(this.selectedCover, path).subscribe(
+          (url: string) => {
+            this.downloadCoverURL = url;
+            console.log('Cover uploaded successfully:', url);
+            resolve();
+          },
+          (error: any) => {
+            console.error('Error uploading cover:', error);
+            reject(error);
+          }
+        );
+      });
+      uploads.push(coverUpload);
+    }
+  
+    // Restituisci una Promise che si risolve quando tutti i caricamenti sono completati
+    return Promise.all(uploads).then(() => {
+    });
+  }
+
+  async edit() {
+    if (this.editing) return;
+  
+    this.editing = true;
+  
+    try {
+      // Aspetta il completamento degli upload
+      await this.uploadFile();
+  
+      let v = this.form.value;
+      console.log(v);
+      const shop: editShop = {
+        name: v.name,
+        description: v.description,
+        address: v.address,
+        phoneNumber: v.phone,
+        email: v.email,
+        logo: this.downloadLogoURL,
+        cover: this.downloadCoverURL,
+      };
+      console.log(this.downloadLogoURL);
+  
+      // Effettua l'update
+      this.shopService.update(shop).subscribe(
+        res => {
+          this.messageService.add({ severity: 'success', summary: '', detail: 'Modifiche salvate' });
+          this.editing = false;
+  
+          // Ricarica la pagina
+          window.location.reload();
         },
-        (error: any) => {
-          console.error('Error uploading file:', error);
+        err => {
+          let error: MyError = {
+            label: 'Errore',
+            message: err.message,
+          };
+          this.errorService.showError(error);
+          this.editing = false;
         }
       );
+    } catch (error) {
+      console.error('Error during upload:', error);
+      let myError: MyError = {
+        label: 'Errore',
+        message: 'Errore durante il caricamento dei file',
+      };
+      this.errorService.showError(myError);
+      this.editing = false;
     }
   }
-
-  edit() {
-    if (this.editing) return
-
-    this.editing = true
-
-    let v = this.form.value
-    console.log(v)
-    const shop: editShop = {
-      name: v.name,
-      description: v.description,
-      address: v.address,
-      phoneNumber: v.phone,
-      email: v.email,
-      logo: v.logo,
-      cover: v.cover
-    }
-
-    this.shopService.update(shop).subscribe(
-      res => {
-        this.uploadFile()
-        this.editing = false
-      },
-      err => {
-        let error: MyError = {
-          label: 'Errore',
-          message: err.message
-        }
-        this.errorService.showError(error)
-        this.editing = false
-      }
-    )
-  }
+  
 
 }

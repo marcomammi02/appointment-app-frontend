@@ -17,7 +17,6 @@ export class ErrorService {
     }, 3000);
   }
 
-
   resetErrors() {
     this.errors = []
   }
