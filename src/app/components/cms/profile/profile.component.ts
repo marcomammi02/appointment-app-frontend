@@ -189,6 +189,16 @@ export class ProfileComponent implements OnInit {
       this.shopService.update(shop).subscribe(
         res => {
           this.messageService.add({ severity: 'success', summary: '', detail: 'Modifiche salvate' });
+          
+          // Aggiorna lo store
+          this.shopStore.currentShop = {
+            ...this.shopStore.currentShop, // Mantieni le altre proprietà esistenti
+            ...shop, // Aggiorna le proprietà modificate
+          };
+
+          // Salva lo store aggiornato nel localStorage
+          localStorage.setItem('currentShop', JSON.stringify(this.shopStore.currentShop));
+
           this.editing = false;
   
           // Ricarica la pagina
