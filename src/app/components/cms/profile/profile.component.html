@@ -9,6 +9,38 @@
   <p class="mb-5">Qui puoi vedere o modificare i dati del tuo profilo</p>
     <form class="flex flex-column gap-5" [formGroup]="form">
 
+      <div class="flex file-box gap-3">
+        <!-- Logo -->
+        <div class="flex flex-column">
+          <label for="logo-upload">Logo</label>
+          <div class="preview-img-box mt-2" (click)="triggerFileInput('logo')">
+            <img [src]="shopStore.currentShop.logo" alt="Logo attuale" />
+          </div>
+          <input 
+            type="file" 
+            id="logo-upload" 
+            accept="image/*" 
+            (change)="onFileSelected($event, 'logo')" 
+            style="display: none;"
+          />
+        </div>
+      
+        <!-- Copertina -->
+        <div class="flex flex-column">
+          <label for="cover-upload">Copertina</label>
+          <div class="preview-img-box mt-2" (click)="triggerFileInput('cover')">
+            <img [src]="shopStore.currentShop.cover" alt="Copertina attuale" />
+          </div>
+          <input 
+            type="file" 
+            id="cover-upload" 
+            accept="image/*" 
+            (change)="onFileSelected($event, 'cover')" 
+            style="display: none;"
+          />
+        </div>
+      </div>
+
       <div>
         <p-floatLabel>
           <input pInputText id="name" formControlName="name"/>
@@ -47,34 +79,6 @@
           <input pInputText id="address" formControlName="address"/>
           <label for="address">Indirizzo</label>
         </p-floatLabel>
-      </div>
-
-      <div class="flex align-items-center gap-3">
-        Logo: 
-        <p-fileUpload 
-        mode="basic" 
-        chooseLabel="Scegli file" 
-        chooseIcon="pi pi-upload"
-        name="demo[]" 
-        url="https://www.primefaces.org/cdn/api/upload.php" 
-        accept="image/*" 
-        maxFileSize="1000000"
-        (onSelect)="onFileSelected($event, 'logo')"
-        />
-      </div>
-
-      <div class="flex align-items-center gap-3">
-        Copertina: 
-        <p-fileUpload 
-        mode="basic" 
-        chooseLabel="Scegli file" 
-        chooseIcon="pi pi-upload"
-        name="demo[]" 
-        url="https://www.primefaces.org/cdn/api/upload.php" 
-        accept="image/*" 
-        maxFileSize="1000000"
-        (onSelect)="onFileSelected($event, 'cover')"
-        />
       </div>
     </form>
 

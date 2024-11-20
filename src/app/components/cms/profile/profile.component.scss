@@ -35,3 +35,25 @@ label {
 textarea {
   resize: none;
 }
+
+.preview-img-box {
+  cursor: pointer; /* Cambia il cursore in una mano */
+  display: inline-block;
+  width: 150px; /* Dimensioni massime dell'immagine */
+  height: 150px;
+  overflow: hidden; /* Evita che l'immagine esca dai limiti */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.preview-img-box img {
+  width: 100%; /* Adatta l'immagine al contenitore */
+  height: 100%;
+  object-fit: contain; /* Taglia l'immagine se necessario */
+}
+
+.file-box label {
+  color: #6b7280;
+  font-size: 12px;
+  margin-left: 1rem !important;
+}

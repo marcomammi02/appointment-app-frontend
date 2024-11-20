@@ -94,21 +94,13 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  onFileSelected(event: any, imgType: string) {
-    if (imgType == 'logo') {
-      this.selectedLogo = event.files[0]
-    } else if (imgType == 'cover') {
-      this.selectedCover = event.files[0]
-    }
-  }
-
   uploadFile(): Promise<void> {
     const uploads: Promise<void>[] = [];
   
     if (this.selectedLogo) {
       const path = `logos/${this.shopStore.shopId}`;
       const logoUpload = new Promise<void>((resolve, reject) => {
-        this.shopService.uploadFile(this.selectedLogo, path).subscribe(
+        this.shopService.uploadFile(this.selectedLogo!, path).subscribe(
           (url: string) => {
             this.downloadLogoURL = url;
             console.log('Logo uploaded successfully:', url);
@@ -126,7 +118,7 @@ export class ProfileComponent implements OnInit {
     if (this.selectedCover) {
       const path = `covers/${this.shopStore.shopId}`;
       const coverUpload = new Promise<void>((resolve, reject) => {
-        this.shopService.uploadFile(this.selectedCover, path).subscribe(
+        this.shopService.uploadFile(this.selectedCover!, path).subscribe(
           (url: string) => {
             this.downloadCoverURL = url;
             console.log('Cover uploaded successfully:', url);
@@ -144,6 +136,31 @@ export class ProfileComponent implements OnInit {
     // Restituisci una Promise che si risolve quando tutti i caricamenti sono completati
     return Promise.all(uploads).then(() => {
     });
+  }
+
+  triggerFileInput(type: 'logo' | 'cover') {
+    if (type === 'logo') {
+      const fileInput = document.getElementById('logo-upload') as HTMLInputElement;
+      fileInput.click();
+    } else if (type === 'cover') {
+      const fileInput = document.getElementById('cover-upload') as HTMLInputElement;
+      fileInput.click();
+    }
+  }
+  
+  onFileSelected(event: Event, type: 'logo' | 'cover') {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (type === 'logo') {
+          this.shopStore.currentShop.logo = reader.result as string; // Anteprima immediata
+        } else if (type === 'cover') {
+          this.shopStore.currentShop.cover = reader.result as string; // Anteprima immediata
+        }
+      };
+      reader.readAsDataURL(file); // Legge il file per mostrarlo come anteprima
+    }
   }
 
   async edit() {
