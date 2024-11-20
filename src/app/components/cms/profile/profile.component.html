@@ -14,7 +14,7 @@
         <div class="flex flex-column">
           <label for="logo-upload">Logo</label>
           <div class="preview-img-box mt-2" (click)="triggerFileInput('logo')">
-            <img [src]="shopStore.currentShop.logo" alt="Logo attuale" />
+            <img [src]="logoPreview" alt="Logo attuale" />
           </div>
           <input 
             type="file" 
@@ -29,7 +29,7 @@
         <div class="flex flex-column">
           <label for="cover-upload">Copertina</label>
           <div class="preview-img-box mt-2" (click)="triggerFileInput('cover')">
-            <img [src]="shopStore.currentShop.cover" alt="Copertina attuale" />
+            <img [src]="coverPreview" alt="Copertina attuale" />
           </div>
           <input 
             type="file" 

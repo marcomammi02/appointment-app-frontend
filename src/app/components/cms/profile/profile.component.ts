@@ -61,23 +61,29 @@ export class ProfileComponent implements OnInit {
   downloadLogoURL?: string
   downloadCoverURL?: string
 
+  logoPreview?: string
+  coverPreview?: string
+
+
 
   editing: boolean = false
-
   ngOnInit(): void {
     this.buildForm()
   }
-
+  
   buildForm() {
     // Retrieve shop from ShopStore or fallback to localStorage
     let shop = this.shopStore.currentShop;
-
+    
     if (!shop.id) {
       // Attempt to retrieve shop from localStorage
       const storedShop = localStorage.getItem('currentShop');
       shop = storedShop ? JSON.parse(storedShop) : null;
     }
 
+    this.logoPreview = shop.logo
+    this.coverPreview = shop.cover
+    
     // Ensure shop is initialized to prevent errors
     if (!shop) {
       console.error('Shop data is not available.');
@@ -154,9 +160,9 @@ export class ProfileComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = () => {
         if (type === 'logo') {
-          this.shopStore.currentShop.logo = reader.result as string; // Anteprima immediata
+          this.logoPreview = reader.result as string; // Anteprima immediata
         } else if (type === 'cover') {
-          this.shopStore.currentShop.cover = reader.result as string; // Anteprima immediata
+          this.coverPreview = reader.result as string; // Anteprima immediata
         }
       };
       reader.readAsDataURL(file); // Legge il file per mostrarlo come anteprima
@@ -180,29 +186,21 @@ export class ProfileComponent implements OnInit {
         address: v.address,
         phoneNumber: v.phone,
         email: v.email,
-        logo: this.downloadLogoURL,
-        cover: this.downloadCoverURL,
+        logo: this.logoPreview,
+        cover: this.coverPreview,
       };
-      console.log(this.downloadLogoURL);
   
       // Effettua l'update
       this.shopService.update(shop).subscribe(
         res => {
-          this.messageService.add({ severity: 'success', summary: '', detail: 'Modifiche salvate' });
-          
-          // Aggiorna lo store
-          this.shopStore.currentShop = {
-            ...this.shopStore.currentShop, // Mantieni le altre proprietà esistenti
-            ...shop, // Aggiorna le proprietà modificate
-          };
+          this.messageService.add({ severity: 'success', summary: '', detail: 'Modifiche salvate' })
+
+          this.shopStore.currentShop = res
 
           // Salva lo store aggiornato nel localStorage
           localStorage.setItem('currentShop', JSON.stringify(this.shopStore.currentShop));
 
           this.editing = false;
-  
-          // Ricarica la pagina
-          window.location.reload();
         },
         err => {
           let error: MyError = {
