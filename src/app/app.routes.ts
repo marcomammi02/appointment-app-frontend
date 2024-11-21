@@ -14,9 +14,11 @@ import {provideHttpClient, withInterceptors} from "@angular/common/http";
 import {authInterceptor} from "./http/auth.interceptor";
 import {AuthGuard} from "./http/auth.guard";
 import { ProfileComponent } from './components/cms/profile/profile.component';
+import { PublicComponent } from './components/public/public.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginPageComponent},
+  {path: ':shopId', component: PublicComponent},
   {path: 'private/:shopId',
     component: CmsComponent,
     canActivate: [AuthGuard],

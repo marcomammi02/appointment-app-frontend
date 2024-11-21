@@ -1,0 +1,11 @@
+<app-loading *ngIf="loading" />
+
+<div class="container" *ngIf="!loading">
+    <div class="cover-box">
+        <img [src]="shopStore.currentShop.cover" alt="Cover">
+    </div>
+    <div class="logo-box">
+        <img [src]="shopStore.currentShop.logo" alt="Cover">
+    </div>
+    <h1 class="text-center">{{ shopStore.currentShop.name }}</h1>
+</div>
