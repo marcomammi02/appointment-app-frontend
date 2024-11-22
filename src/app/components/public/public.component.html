@@ -4,8 +4,29 @@
     <div class="cover-box">
         <img [src]="shopStore.currentShop.cover" alt="Cover">
     </div>
+
     <div class="logo-box">
         <img [src]="shopStore.currentShop.logo" alt="Cover">
     </div>
-    <h1 class="text-center mt-1">{{ shopStore.currentShop.name }}</h1>
+
+    <h1 class="text-center mt-1 mb-2">{{ shopStore.currentShop.name }}</h1>
+
+    <div class="info text-center flex flex-column gap-2">
+        <p *ngIf="shopStore.currentShop.address"><i class="pi mr-2">📍</i>{{shopStore.currentShop.address}}</p>
+        <p *ngIf="shopStore.currentShop.phoneNumber"><i class="pi mr-2">📞</i>{{shopStore.currentShop.phoneNumber}}</p>
+        <p>{{shopStore.currentShop.description}}</p>
+    </div>
+
+    <div class="grid" *ngIf="servicesStore.services.length > 0">
+        <div class="col-12 md:col-6 xl:col-4" *ngFor="let service of servicesStore.services">
+          <div class="card p-3 m-2 text-center shadow-4" [routerLink]="'/private/' + shopStore.shopId + '/services/' + service.id">
+            <h3>{{capitalizeFirstLetter(service.name)}}</h3>
+            <div class="flex justify-content-evenly mt-3">
+              <p><i class="pi pi-clock mr-1"></i> {{getHourTime(service.duration)}}</p>
+              <p><i class="pi pi-wallet mr-1"></i> {{service.price}} €</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="servicesStore.services.length <= 0" class="w-full h-30rem flex align-items-center justify-content-center">Questo profilo non ha servizi disponibili</div>
 </div>

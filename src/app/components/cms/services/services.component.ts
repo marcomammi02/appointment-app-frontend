@@ -6,9 +6,10 @@ import {ServicesStore} from "../../../stores/services.store";
 import {CreateServiceComponent} from "./create-service/create-service.component";
 import {EditServiceComponent} from "./edit-service/edit-service.component";
 import {RouterLink} from "@angular/router";
-import {capitalizeFirstLetter} from "../../../services/utility.service";
 import {ShopStore} from "../../../stores/shop.store";
 import { LoadingComponent } from "../../global/loading/loading.component";
+import {capitalizeFirstLetter} from "../../../services/utility.service";
+
 
 @Component({
   selector: 'app-services',
