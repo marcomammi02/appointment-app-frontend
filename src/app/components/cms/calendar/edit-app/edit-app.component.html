@@ -9,31 +9,34 @@
     </div>
     <app-delete-btn (click)="confirm2($event)" class="responsive"/>
   </div>
-  
+
   <p class="mb-5">Dati del cliente</p>
   <form class="flex flex-column gap-5" [formGroup]="form">
-    
+
     <div>
       <p-floatLabel>
         <input pInputText id="name" formControlName="name"/>
         <label for="name">Nome *</label>
       </p-floatLabel>
     </div>
-    
+
     <div>
       <p-floatLabel>
         <input pInputText id="lastName" formControlName="lastName"/>
         <label for="lastName">Cognome</label>
       </p-floatLabel>
     </div>
-    
-    <div>
-      <p-floatLabel>
+
+    <div class="grid justify-content-between">
+      <p-floatLabel class="col-10 lg:col-12">
         <input pInputText id="phone" formControlName="phone"/>
         <label for="phone">Telefono</label>
       </p-floatLabel>
+      <a class="col-1 lg:hidden call-btn flex align-items-center" [href]="'tel:' + shopStore.currentShop.phone">
+        <i class="pi pi-phone" style="font-size: 1.5rem"></i>
+      </a>
     </div>
-    
+
     <div>
       <p-floatLabel>
         <input pInputText id="email" formControlName="email"/>
@@ -54,9 +57,9 @@
         <label for="float-input">Note </label>
       </p-floatLabel>
     </div>
-    
+
     <p>Dati dell'appuntamento</p>
-    
+
     <div class="grid">
       <div class="col-7">
         <p-floatLabel >
@@ -68,7 +71,7 @@
           <label for="service">Servizio *</label>
         </p-floatLabel>
       </div>
-      
+
       <div class="col-5">
         <p-floatLabel class="staff-label">
           <p-dropdown
@@ -80,7 +83,7 @@
         </p-floatLabel>
       </div>
     </div>
-    
+
     <div class="grid">
       <div class="col-5">
         <p-floatLabel>
@@ -92,7 +95,7 @@
           <label for="day">Giorno *</label>
         </p-floatLabel>
       </div>
-      
+
       <div class="col-7">
         <p-floatLabel class="time-label">
           <p-dropdown
@@ -103,14 +106,13 @@
         </p-floatLabel>
       </div>
     </div>
-    
+
   </form>
-  
+
   <div class="flex justify-content-end gap-3 mt-5">
     <app-cancel-btn icon="pi pi-times" label="Annulla" [routerLink]="'/private/' + shopStore.shopId + '/appointments'"/>
     <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="edit()"/>
   </div>
 </div>
-  
+
   <p-confirmDialog />
-  

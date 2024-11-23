@@ -156,7 +156,7 @@ export class EditAppComponent implements OnInit{
   edit() {
     if (this.editing) return
 
-    
+
     if (this.form.invalid) {
       this.errorService.showError({
         label: 'Attenzione',
@@ -164,9 +164,9 @@ export class EditAppComponent implements OnInit{
       });
       return;
     }
-    
+
     this.editing = true
-    
+
     const v = this.form.value;
 
     this.getEndtime(v.startTime, v.service.id).pipe(

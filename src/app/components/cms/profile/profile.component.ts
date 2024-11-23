@@ -70,11 +70,11 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm()
   }
-  
+
   buildForm() {
     // Retrieve shop from ShopStore or fallback to localStorage
     let shop = this.shopStore.currentShop;
-    
+
     if (!shop.id) {
       // Attempt to retrieve shop from localStorage
       const storedShop = localStorage.getItem('currentShop');
@@ -83,7 +83,7 @@ export class ProfileComponent implements OnInit {
 
     this.logoPreview = shop.logo
     this.coverPreview = shop.cover
-    
+
     // Ensure shop is initialized to prevent errors
     if (!shop) {
       console.error('Shop data is not available.');
@@ -102,7 +102,7 @@ export class ProfileComponent implements OnInit {
 
   uploadFile(): Promise<void> {
     const uploads: Promise<void>[] = [];
-  
+
     if (this.selectedLogo) {
       const path = `logos/${this.shopStore.shopId}`;
       const logoUpload = new Promise<void>((resolve, reject) => {
@@ -120,7 +120,7 @@ export class ProfileComponent implements OnInit {
       });
       uploads.push(logoUpload);
     }
-  
+
     if (this.selectedCover) {
       const path = `covers/${this.shopStore.shopId}`;
       const coverUpload = new Promise<void>((resolve, reject) => {
@@ -138,7 +138,7 @@ export class ProfileComponent implements OnInit {
       });
       uploads.push(coverUpload);
     }
-  
+
     // Restituisci una Promise che si risolve quando tutti i caricamenti sono completati
     return Promise.all(uploads).then(() => {
     });
@@ -153,7 +153,7 @@ export class ProfileComponent implements OnInit {
       fileInput.click();
     }
   }
-  
+
   onFileSelected(event: Event, type: 'logo' | 'cover') {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
@@ -171,13 +171,13 @@ export class ProfileComponent implements OnInit {
 
   async edit() {
     if (this.editing) return;
-  
+
     this.editing = true;
-  
+
     try {
       // Aspetta il completamento degli upload
       await this.uploadFile();
-  
+
       let v = this.form.value;
       console.log(v);
       const shop: editShop = {
@@ -189,7 +189,7 @@ export class ProfileComponent implements OnInit {
         logo: this.logoPreview,
         cover: this.coverPreview,
       };
-  
+
       // Effettua l'update
       this.shopService.update(shop).subscribe(
         res => {
@@ -221,6 +221,6 @@ export class ProfileComponent implements OnInit {
       this.editing = false;
     }
   }
-  
+
 
 }
