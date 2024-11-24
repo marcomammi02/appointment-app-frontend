@@ -90,6 +90,8 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
+    console.log(shop)
+
     // Build form with shop data
     this.form = this.formBuilder.group({
       name: [capitalizeFirstLetter(shop.name)],
@@ -97,6 +99,9 @@ export class ProfileComponent implements OnInit {
       phone: [shop.phoneNumber],
       email: [shop.email],
       address: [capitalizeFirstLetter(shop.address)],
+      facebookUrl: [shop.facebookUrl],
+      instagramUrl: [shop.instagramUrl],
+      tiktokUrl: [shop.tiktokUrl]
     });
   }
 
@@ -140,8 +145,7 @@ export class ProfileComponent implements OnInit {
     }
   
     // Restituisci una Promise che si risolve quando tutti i caricamenti sono completati
-    return Promise.all(uploads).then(() => {
-    });
+    return Promise.all(uploads).then(() => {});
   }
 
   triggerFileInput(type: 'logo' | 'cover') {
@@ -188,6 +192,9 @@ export class ProfileComponent implements OnInit {
         email: v.email,
         logo: this.logoPreview,
         cover: this.coverPreview,
+        facebookUrl: v.facebookUrl,
+        instagramUrl: v.instagramUrl,
+        tiktokUrl: v.tiktokUrl
       };
   
       // Effettua l'update

@@ -15,6 +15,11 @@
         <p *ngIf="shopStore.currentShop.address"><i class="pi mr-2">📍</i>{{shopStore.currentShop.address}}</p>
         <p *ngIf="shopStore.currentShop.phoneNumber"><i class="pi mr-2">📞</i>{{shopStore.currentShop.phoneNumber}}</p>
         <p>{{shopStore.currentShop.description}}</p>
+        <div class="flex align-content-center justify-content-center mt-2">
+          <a *ngIf="shopStore.currentShop.instagramUrl" [href]="shopStore.currentShop.instagramUrl">
+            <i class="pi pi-instagram" style="font-size: 1.5rem"></i>
+          </a>
+        </div>
     </div>
 
     <div class="grid" *ngIf="servicesStore.services.length > 0">

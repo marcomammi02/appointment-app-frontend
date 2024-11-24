@@ -6,4 +6,7 @@ export interface editShop {
     email?: string
     logo?: string
     cover?: string
+    facebookUrl?: string
+    instagramUrl?: string
+    tiktokUrl?: string
 }
