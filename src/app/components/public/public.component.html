@@ -15,9 +15,20 @@
         <p *ngIf="shopStore.currentShop.address"><i class="pi mr-2">📍</i>{{shopStore.currentShop.address}}</p>
         <p *ngIf="shopStore.currentShop.phoneNumber"><i class="pi mr-2">📞</i>{{shopStore.currentShop.phoneNumber}}</p>
         <p>{{shopStore.currentShop.description}}</p>
-        <div class="flex align-content-center justify-content-center mt-2">
+        <div class="flex align-content-center justify-content-center mt-2 gap-5">
+          <!-- facebook url -->
+          <a *ngIf="shopStore.currentShop.facebookUrl" [href]="shopStore.currentShop.facebookUrl">
+            <i class="pi pi-facebook" style="font-size: 1.5rem"></i>
+          </a>
+
+           <!-- instagram url -->
           <a *ngIf="shopStore.currentShop.instagramUrl" [href]="shopStore.currentShop.instagramUrl">
             <i class="pi pi-instagram" style="font-size: 1.5rem"></i>
+          </a>
+
+          <!-- tiktok url -->
+          <a *ngIf="shopStore.currentShop.tiktokUrl" [href]="shopStore.currentShop.tiktokUrl">
+            <i class="pi pi-tiktok" style="font-size: 1.5rem"></i>
           </a>
         </div>
     </div>
