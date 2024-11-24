@@ -26,8 +26,10 @@ export class AppComponent implements OnInit{
   }
   ngOnInit() {
     this.setCalendarTranslation()
+    this.setFullScreen()
   }
   title = 'appointment-app-frontend';
+  elem = document.documentElement
 
   // This function translate all the calendars in the application
   setCalendarTranslation() {
@@ -45,5 +47,11 @@ export class AppComponent implements OnInit{
       dateFormat: 'dd/mm/yy',
       firstDayOfWeek: 1
     });
+  }
+
+  setFullScreen() {
+    if(this.elem.requestFullscreen) {
+      this.elem.requestFullscreen()
+    }
   }
 }

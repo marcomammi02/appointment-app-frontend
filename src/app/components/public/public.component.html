@@ -13,7 +13,7 @@
 
     <div class="info text-center flex flex-column gap-2">
         <p *ngIf="shopStore.currentShop.address"><i class="pi mr-2">📍</i>{{shopStore.currentShop.address}}</p>
-        <p *ngIf="shopStore.currentShop.phoneNumber"><i class="pi mr-2">📞</i>{{shopStore.currentShop.phoneNumber}}</p>
+        <a class="phone-number" [href]="'tel:' + shopStore.currentShop.phoneNumber" *ngIf="shopStore.currentShop.phoneNumber"><i class="pi mr-2">📞</i>{{shopStore.currentShop.phoneNumber}}</a>
         <p>{{shopStore.currentShop.description}}</p>
         <div *ngIf="shopStore.currentShop.facebookUrl || shopStore.currentShop.instagramUrl || shopStore.currentShop.tiktokUrl" class="flex align-content-center justify-content-center mt-2 gap-5">
           <!-- facebook url -->
