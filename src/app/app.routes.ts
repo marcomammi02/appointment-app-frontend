@@ -15,10 +15,12 @@ import {authInterceptor} from "./http/auth.interceptor";
 import {AuthGuard} from "./http/auth.guard";
 import { ProfileComponent } from './components/cms/profile/profile.component';
 import { PublicComponent } from './components/public/public.component';
+import { BookingPageComponent } from './components/public/booking-page/booking-page.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginPageComponent},
   {path: ':shopId', component: PublicComponent},
+  {path: ':shopId/service/:serviceId', component: BookingPageComponent},
   {path: 'private/:shopId',
     component: CmsComponent,
     canActivate: [AuthGuard],
