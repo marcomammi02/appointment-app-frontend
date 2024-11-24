@@ -16,26 +16,26 @@
           <div class="preview-img-box mt-2" (click)="triggerFileInput('logo')">
             <img [src]="logoPreview" alt="Logo attuale" />
           </div>
-          <input 
-            type="file" 
-            id="logo-upload" 
-            accept="image/*" 
-            (change)="onFileSelected($event, 'logo')" 
+          <input
+            type="file"
+            id="logo-upload"
+            accept="image/*"
+            (change)="onFileSelected($event, 'logo')"
             style="display: none;"
           />
         </div>
-      
+
         <!-- Copertina -->
         <div class="flex flex-column">
           <label for="cover-upload">Copertina</label>
           <div class="preview-img-box mt-2" (click)="triggerFileInput('cover')">
             <img [src]="coverPreview" alt="Copertina attuale" />
           </div>
-          <input 
-            type="file" 
-            id="cover-upload" 
-            accept="image/*" 
-            (change)="onFileSelected($event, 'cover')" 
+          <input
+            type="file"
+            id="cover-upload"
+            accept="image/*"
+            (change)="onFileSelected($event, 'cover')"
             style="display: none;"
           />
         </div>

@@ -33,9 +33,11 @@
         </div>
     </div>
 
+    <h2 class="text-center mt-3 mb-2">Servizi</h2>
+
     <div class="grid" *ngIf="servicesStore.services.length > 0">
         <div class="col-12 md:col-6 xl:col-4" *ngFor="let service of servicesStore.services">
-          <div class="card p-3 m-2 text-center shadow-4" [routerLink]="'/private/' + shopStore.shopId + '/services/' + service.id">
+          <div class="card p-3 mx-3 my-2 text-center shadow-4" [routerLink]="">
             <h3>{{capitalizeFirstLetter(service.name)}}</h3>
             <div class="flex justify-content-evenly mt-3">
               <p><i class="pi pi-clock mr-1"></i> {{getHourTime(service.duration)}}</p>
