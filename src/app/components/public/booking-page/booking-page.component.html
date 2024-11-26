@@ -1,1 +1,6 @@
-<p>booking-page works!</p>
+<app-loading *ngIf="loading" />
+
+<div class="container text-center" *ngIf="!loading">
+  <h2>{{service.name}}</h2>
+  <p>{{service.description}}</p>
+</div>
