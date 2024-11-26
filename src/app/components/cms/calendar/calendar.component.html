@@ -3,27 +3,36 @@
     <h1 class="mb-3 hidden lg:block">Appuntamenti</h1>
     <h1 class="mb-3 p-3 absolute top-0 right-0 lg:hidden text-center">Appuntamenti</h1>
 
-    <!-- Day selector -->
-    <div class="w-full flex align-items-center justify-content-center border-bottom-1">
-      <button (click)="navigateDay(-1)" class="nav-arrow">
-        <i class="pi pi-chevron-left"></i>
-      </button>
-      <div class="flex align-items-center justify-content-center cursor-pointer w-15rem" (click)="openCalendar(calendar)">
-        <p class="ml-5 font-medium">{{ getDayOfWeek(storeAppointments.currentDay) }}</p>
-        <p-calendar #calendar [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy" class="w-10rem" (onSelect)="changeDate()"></p-calendar>
+    <div class="flex justify-content-between border-bottom-1 pb-2">
+      <!-- Day selector -->
+      <div class="w-full flex align-items-center justify-content-start">
+        <button (click)="navigateDay(-1)" class="nav-arrow">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+        <div class="flex align-items-center justify-content-center cursor-pointer w-15rem" (click)="openCalendar(calendar)">
+          <p class="ml-5 font-medium">{{ getDayOfWeek(storeAppointments.currentDay) }}</p>
+          <p-calendar #calendar [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy" class="w-10rem" (onSelect)="changeDate()"></p-calendar>
+        </div>
+        <button (click)="navigateDay(1)" class="nav-arrow">
+          <i class="pi pi-chevron-right"></i>
+        </button>
       </div>
-      <button (click)="navigateDay(1)" class="nav-arrow">
-        <i class="pi pi-chevron-right"></i>
-      </button>
+
+      <!-- Go to today btn -->
+      <app-primary-btn class="" (click)="goToToday()" label="Oggi"/>
     </div>
   </div>
 
   <app-loading *ngIf="loading" />
 
-  <div class="table-wrapper" *ngIf="!loading">
+  <div class="table-wrapper" #scrollableContainer *ngIf="!loading">
 
     <!-- Table -->
     <table *ngIf="storeAppointments.appointments">
+
+      <!-- Time marker line -->
+      <div class="time-marker" id="time-marker" *ngIf="isToday(storeAppointments.currentDay)" [ngStyle]="{ top: currentTimePosition, opacity: markerOpacity }"></div>
+
       <thead>
         <tr>
           <th class="fixed-column"></th>

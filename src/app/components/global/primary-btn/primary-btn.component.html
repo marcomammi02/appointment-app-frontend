@@ -1,4 +1,4 @@
 <div class="flex justify-content-center align-items-center shadow-4">
-  <i class="mr-2 font-semibold" [class]="icon"></i>
+  <i *ngIf="icon" class="mr-2 font-semibold" [class]="icon"></i>
   <p class="font-bold">{{ label }}</p>
 </div>

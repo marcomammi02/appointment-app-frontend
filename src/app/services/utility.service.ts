@@ -11,6 +11,7 @@ export function formatDateToString(date: Date): string {
   const day = ('0' + date.getDate()).slice(-2);
   return `${year}-${month}-${day}`;
 }
+
 export function toDateTime(inputDay: Date, inputTime: string) {
   const day = formatDateToString(inputDay)
   return `${day}T${inputTime}:00Z`
@@ -44,6 +45,12 @@ export function timeToMinutes(time: string): number {
 export function timeStringToMinutes(time: string): number {
   const [hours, minutes] = time.split(':').map(Number);
   return hours * 60 + minutes;
+}
+
+// This function transforms a time string "12:30" to an hour value as a number
+export function timeStringToHour(time: string): number {
+  const [hours] = time.split(':').map(Number);
+  return hours;
 }
 
 export function firstLetter(str: string): string {

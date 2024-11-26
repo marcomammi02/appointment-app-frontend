@@ -11,7 +11,7 @@
 
     <h1 class="text-center mt-1 mb-2">{{ shopStore.currentShop.name }}</h1>
 
-    <div class="info text-center flex flex-column gap-2">
+    <div class="info text-center flex flex-column gap-2 px-5">
         <p *ngIf="shopStore.currentShop.address"><i class="pi mr-2">📍</i>{{shopStore.currentShop.address}}</p>
         <a class="phone-number" [href]="'tel:' + shopStore.currentShop.phoneNumber" *ngIf="shopStore.currentShop.phoneNumber"><i class="pi mr-2">📞</i>{{shopStore.currentShop.phoneNumber}}</a>
         <p>{{shopStore.currentShop.description}}</p>

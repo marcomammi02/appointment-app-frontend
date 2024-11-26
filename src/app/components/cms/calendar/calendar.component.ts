@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Staff, StaffStore} from "../../../stores/staff.store";
 import {NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
 import {StoreAppointments} from "../../../stores/appointment.store";
@@ -15,6 +15,7 @@ import {
   firstLetter,
   formatDateToString,
   getDayOfWeek, minutesToTime,
+  timeStringToHour,
   timeStringToMinutes,
   timeToMinutes, toDateTime,
   toTime
@@ -38,7 +39,7 @@ import { LoadingComponent } from "../../global/loading/loading.component";
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
   constructor(
     public storeStaff: StaffStore,
     public storeAppointments: StoreAppointments,
@@ -53,6 +54,12 @@ export class CalendarComponent implements OnInit {
 
   loading: boolean = true
 
+  currentTimePosition: string = '0px';
+  markerOpacity: number = 1
+  intervalId: any;
+
+  @ViewChild('time-marker', { static: false }) timeMarker?: ElementRef;
+
   ngOnInit() {
     this.getStaff()
     this.getHours()
@@ -61,6 +68,11 @@ export class CalendarComponent implements OnInit {
     this.storeAppointments.currentStaff = ''
     this.storeAppointments.currentHour = ''
     this.availabilities = []
+    setTimeout(() => this.scrollToTimeMarker(), 300);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.intervalId);
   }
 
   async getAppointments() {
@@ -92,10 +104,53 @@ export class CalendarComponent implements OnInit {
     })
   }
 
-  getHours() {
+  async getHours() {
     this.availabilitiesService.getWorkingHours(this.shopStore.shopId).subscribe(res => {
       this.shopStore.workingHours = res
+
+      this.updateCurrentTimePosition();
+
+      // Aggiorna la posizione ogni minuto
+      this.intervalId = setInterval(() => this.updateCurrentTimePosition(), 60000);
     })
+  }
+
+  updateCurrentTimePosition() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    
+    // Adatta l'altezza per il tuo layout (es. 80px per ogni ora)
+    const hourHeight = (33 * 4); 
+    const minuteHeight = hourHeight / 60; 
+
+    // Calcola la posizione in pixel
+    const shortedHours = hours - timeStringToHour(this.shopStore.workingHours[0])
+    if (hours >= timeStringToHour(this.shopStore.workingHours[this.shopStore.workingHours.length - 1])) {
+      this.markerOpacity = 0
+      return
+    }
+
+    const position = (shortedHours * hourHeight + minutes * minuteHeight) + 40;
+
+    this.currentTimePosition = `${position}px`;
+  }
+
+  @ViewChild('scrollableContainer') scrollableContainer?: ElementRef;
+
+  scrollToTimeMarker() {
+    const marker = document.getElementById('time-marker');
+    const container = this.scrollableContainer?.nativeElement;
+  
+    if (container && marker && this.isToday(this.storeAppointments.currentDay)) {
+      const markerPosition = marker.offsetTop;
+      const containerHeight = container.clientHeight;
+  
+      container.scrollTo({
+        top: markerPosition - containerHeight / 2,
+        behavior: 'smooth'
+      });
+    }
   }
 
   getAppointmentForTime(hour: string, staff: Staff): any[] {
@@ -126,7 +181,14 @@ export class CalendarComponent implements OnInit {
     return inWorkHours && !inBreakTime;
   }
 
-
+  isToday(date: Date): boolean {
+    const today = new Date();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
+  }
 
   alreadyCalled(app: any, hour: string) {
     return toTime(app.startTime) == hour;
@@ -217,6 +279,11 @@ export class CalendarComponent implements OnInit {
       calendar.showOverlay();
       calendar.cd.detectChanges();
     }
+  }
+
+  goToToday() {
+    this.storeAppointments.currentDay = new Date
+    this.ngOnInit()
   }
 
   protected readonly firstLetter = firstLetter;
