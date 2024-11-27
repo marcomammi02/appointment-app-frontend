@@ -68,7 +68,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.storeAppointments.currentStaff = ''
     this.storeAppointments.currentHour = ''
     this.availabilities = []
-    setTimeout(() => this.scrollToTimeMarker(), 300);
   }
 
   ngOnDestroy() {
@@ -109,6 +108,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.shopStore.workingHours = res
 
       this.updateCurrentTimePosition();
+      setTimeout(() => this.scrollToTimeMarker(), 300);
 
       // Aggiorna la posizione ogni minuto
       this.intervalId = setInterval(() => this.updateCurrentTimePosition(), 60000);
@@ -119,13 +119,17 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes();
-    
+
     // Adatta l'altezza per il tuo layout (es. 80px per ogni ora)
-    const hourHeight = (33 * 4); 
-    const minuteHeight = hourHeight / 60; 
+    const hourHeight = (33 * 4);
+    const minuteHeight = hourHeight / 60;
 
     // Calcola la posizione in pixel
     const shortedHours = hours - timeStringToHour(this.shopStore.workingHours[0])
+    if (hours < timeStringToHour(this.shopStore.workingHours[0])) {
+      this.markerOpacity = 0
+      return
+    }
     if (hours >= timeStringToHour(this.shopStore.workingHours[this.shopStore.workingHours.length - 1])) {
       this.markerOpacity = 0
       return
@@ -141,11 +145,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
   scrollToTimeMarker() {
     const marker = document.getElementById('time-marker');
     const container = this.scrollableContainer?.nativeElement;
-  
+
     if (container && marker && this.isToday(this.storeAppointments.currentDay)) {
       const markerPosition = marker.offsetTop;
       const containerHeight = container.clientHeight;
-  
+
       container.scrollTo({
         top: markerPosition - containerHeight / 2,
         behavior: 'smooth'

@@ -2,7 +2,7 @@
 
 <div *ngIf="!loading">
   <div *ngIf="currentService">
-    
+
     <div class="flex justify-content-between mb-3">
       <div class="flex align-items-center gap-2 mb-5">
         <h1 class="cursor-pointer" [routerLink]="'/private/' + shopStore.shopId + '/services'">Servizi</h1>
@@ -13,14 +13,14 @@
     </div>
     <p class="mb-5">Qui puoi vedere, modificare o eliminare il tuo servizio</p>
     <form class="flex flex-column gap-5" [formGroup]="form">
-      
+
       <div>
         <p-floatLabel>
           <input pInputText id="name" formControlName="name"/>
           <label for="name">Nome :</label>
         </p-floatLabel>
       </div>
-      
+
       <div>
         <p-floatLabel>
           <textarea
@@ -32,12 +32,12 @@
           <label for="float-input">Descrizione :</label>
         </p-floatLabel>
       </div>
-      
+
       <div class="flex align-items-center">
         <p class="mr-3 inline">Colore del servizio:</p>
         <input class="color-input" type="color" formControlName="color">
       </div>
-      
+
       <div class="grid">
         <div class="col-5">
           <p-floatLabel>
@@ -49,7 +49,7 @@
             <label for="float-label">Durata :</label>
           </p-floatLabel>
         </div>
-        
+
         <div class="col-7">
           <p-floatLabel class="price-label">
             <p-inputNumber id="price" class="w-full" formControlName="price" currency="EUR" suffix=" €"/>
@@ -58,7 +58,7 @@
         </div>
       </div>
     </form>
-    
+
     <div class="flex justify-content-end gap-3 mt-5">
       <app-cancel-btn icon="pi pi-times" label="Annulla" [routerLink]="'/private/' + shopStore.shopId + '/services'"/>
       <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="update()"/>
