@@ -12,9 +12,13 @@
   </div>
 
   <!-- Service info -->
-  <div class="service-container mx-5">
+  <div class="card p-3 mx-3 shadow-4">
     <h1>{{capitalizeFirstLetter(service.name)}}</h1>
     <p class="mt-3">{{service.description}}</p>
+    <div class="flex justify-content-between mt-3">
+      <p><i class="pi pi-clock mr-1"></i> {{getHourTime(service.duration)}}</p>
+      <p><i class="pi pi-wallet mr-1"></i> {{service.price}} €</p>
+    </div>
   </div>
 
 </div>
