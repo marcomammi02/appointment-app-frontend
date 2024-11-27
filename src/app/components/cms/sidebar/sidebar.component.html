@@ -10,7 +10,7 @@
   <!-- Main content of the sidebar -->
   <div class="column relative shadow-8">
     <!-- Shop header with logo and name -->
-    <div class="p-3 flex align-items-center gap-3 text-white">
+    <div class="p-3 flex align-items-center gap-3 text-white" (click)="navigate('profile')">
       <img [src]="shopStore.currentShop.logo">
       <h3 class="shop-name">{{shopStore.currentShop.name}}</h3>
     </div>
