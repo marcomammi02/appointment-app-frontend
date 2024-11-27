@@ -2,14 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingComponent } from "../../global/loading/loading.component";
 import { NgIf } from '@angular/common';
 import { ServicesService } from '../../../services/services.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ShopStore } from '../../../stores/shop.store';
+import { capitalizeFirstLetter } from '../../../services/utility.service';
 
 @Component({
   selector: 'app-booking-page',
   standalone: true,
   imports: [
     LoadingComponent,
-    NgIf
+    NgIf,
+    RouterModule
   ],
   templateUrl: './booking-page.component.html',
   styleUrl: './booking-page.component.scss'
@@ -18,7 +21,8 @@ export class BookingPageComponent implements OnInit {
 
   constructor(
     private servicesService: ServicesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public shopStore: ShopStore
   ) {}
 
   loading: boolean = true
@@ -28,11 +32,20 @@ export class BookingPageComponent implements OnInit {
   service?: any
 
   ngOnInit(): void {
-    this.extractShopIdFromUrl()
+    this.extractServiceIdFromUrl()
     this.getService()
+    this.getShop()
   }
 
-  extractShopIdFromUrl(): void {
+  getShop() {
+    if (!this.shopStore.currentShop.id) {
+      // Attempt to retrieve shop from localStorage
+      const storedShop = localStorage.getItem('currentShop');
+      this.shopStore.currentShop = storedShop ? JSON.parse(storedShop) : null;
+    }
+  }
+
+  extractServiceIdFromUrl(): void {
     // Estrapola il parametro `serviceId` dall'URL e lo converte in numero
     const serviceIdParam = this.route.snapshot.paramMap.get('serviceId');
     this.serviceId = serviceIdParam ? +serviceIdParam : 0
@@ -51,4 +64,6 @@ export class BookingPageComponent implements OnInit {
       }
     )
   }
+
+  protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
 }

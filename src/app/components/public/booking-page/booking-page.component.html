@@ -1,6 +1,20 @@
 <app-loading *ngIf="loading" />
 
-<div class="container text-center" *ngIf="!loading">
-  <h2>{{service.name}}</h2>
-  <p>{{service.description}}</p>
+<div class="container text-center p-3" *ngIf="!loading">
+
+  <!-- Header -->
+  <div class="flex align-items-center gap-2 mb-5">
+    <div class="img-container mr-2">
+      <img [src]="shopStore.currentShop.logo" alt="Logo">
+    </div>
+    <h2 class="cursor-pointer" [routerLink]="'/' + shopStore.shopId">{{ capitalizeFirstLetter(shopStore.currentShop.name) }}</h2>
+    <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
+    <h3>Prenotazione</h3>
+  </div>
+
+  <!-- Service info -->
+  <div class="service-container">
+    <h1>{{capitalizeFirstLetter(service.name)}}</h1>
+  </div>
+
 </div>
