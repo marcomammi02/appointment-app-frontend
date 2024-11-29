@@ -1,5 +1,11 @@
 @import "../../../../styles";
 
+:host ::ng-deep {
+  .p-dropdown {
+    width: 100%;
+}
+}
+
 .container {
     max-width: 700px;
     margin: 0 auto !important;

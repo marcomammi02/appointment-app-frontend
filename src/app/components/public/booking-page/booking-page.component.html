@@ -4,7 +4,7 @@
 
   <!-- Header -->
   <div class="flex align-items-center gap-2 mb-5">
-    <div class="img-container mr-2 cursor-pointer" [routerLink]="'/' + shopStore.shopId">
+    <div class="img-container mr-2 cursor-pointer" [routerLink]="'/' + shopStore.currentShop.id">
       <img [src]="shopStore.currentShop.logo" alt="Logo">
     </div>
     <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
@@ -12,7 +12,7 @@
   </div>
 
   <!-- Service info -->
-  <div class="card p-3 mx-3 shadow-4">
+  <div class="card p-3 mx-3 shadow-4 mb-5">
     <h1>{{capitalizeFirstLetter(service.name)}}</h1>
     <p class="mt-3">{{service.description}}</p>
     <div class="flex justify-content-between mt-3">
@@ -21,4 +21,14 @@
     </div>
   </div>
 
+ <!-- Staff selection -->
+<div class="text-left">
+  <label for="staffId" class="block mb-1">Seleziona un membro dello staff</label>
+  <p-dropdown
+    class="w-full"
+    [(ngModel)]="selectedStaff"
+    [options]="staffStore.staffList"
+    optionLabel="name"
+    id="staffId"
+  ></p-dropdown>
 </div>

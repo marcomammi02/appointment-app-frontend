@@ -5,6 +5,12 @@ import { ServicesService } from '../../../services/services.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ShopStore } from '../../../stores/shop.store';
 import { capitalizeFirstLetter } from '../../../services/utility.service';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { DropdownModule } from 'primeng/dropdown';
+import { StaffStore } from '../../../stores/staff.store';
+import { StaffService } from '../../../services/staff.service';
+import { Location } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-booking-page',
@@ -12,7 +18,10 @@ import { capitalizeFirstLetter } from '../../../services/utility.service';
   imports: [
     LoadingComponent,
     NgIf,
-    RouterModule
+    RouterModule,
+    FloatLabelModule,
+    DropdownModule,
+    FormsModule
   ],
   templateUrl: './booking-page.component.html',
   styleUrl: './booking-page.component.scss'
@@ -22,7 +31,10 @@ export class BookingPageComponent implements OnInit {
   constructor(
     private servicesService: ServicesService,
     private route: ActivatedRoute,
-    public shopStore: ShopStore
+    public shopStore: ShopStore,
+    public staffStore: StaffStore,
+    private staffService: StaffService,
+    private location: Location
   ) {}
 
   loading: boolean = true
@@ -31,18 +43,27 @@ export class BookingPageComponent implements OnInit {
 
   service?: any
 
+  selectedStaff!: any
+
   ngOnInit(): void {
     this.extractServiceIdFromUrl()
     this.getService()
     this.getShop()
+    this.getStaff()
   }
-
+  
   getShop() {
     if (!this.shopStore.currentShop.id) {
-      // Attempt to retrieve shop from localStorage
-      const storedShop = localStorage.getItem('currentShop');
-      this.shopStore.currentShop = storedShop ? JSON.parse(storedShop) : null;
+      this.location.back()
     }
+  }
+
+  getStaff() {
+    this.staffService.getStaff().subscribe(res => {
+      this.staffStore.staffList = res
+      this.staffStore.staffList.push({name: 'Qualsiasi'})
+      this.selectedStaff = this.staffStore.staffList[this.staffStore.staffList.length - 1]
+    })
   }
 
   extractServiceIdFromUrl(): void {
