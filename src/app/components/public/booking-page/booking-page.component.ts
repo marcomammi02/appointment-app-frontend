@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Host, OnInit } from '@angular/core';
 import { LoadingComponent } from "../../global/loading/loading.component";
 import { NgIf } from '@angular/common';
 import { ServicesService } from '../../../services/services.service';
@@ -61,8 +61,10 @@ export class BookingPageComponent implements OnInit {
   getStaff() {
     this.staffService.getStaff().subscribe(res => {
       this.staffStore.staffList = res
-      this.staffStore.staffList.push({name: 'Qualsiasi'})
-      this.selectedStaff = this.staffStore.staffList[this.staffStore.staffList.length - 1]
+      let whoever = {name: 'Qualsiasi'}
+      this.staffStore.staffList = [whoever, ...this.staffStore.staffList]
+      console.log(this.staffStore.staffList)
+      this.selectedStaff = whoever
     })
   }
 
