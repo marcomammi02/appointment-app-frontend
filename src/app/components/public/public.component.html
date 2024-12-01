@@ -2,11 +2,11 @@
 
 <div class="container" *ngIf="!loading">
     <div class="cover-box">
-        <img [src]="shopStore.currentShop.cover" alt="Cover">
+        <img [src]="shopStore.currentShop.cover ? shopStore.currentShop.cover : 'app/assets/images/default-cover.png'" alt="Cover">
     </div>
 
     <div class="logo-box">
-        <img [src]="shopStore.currentShop.logo" alt="Cover">
+        <img [src]="shopStore.currentShop.logo ? shopStore.currentShop.logo : 'app/assets/images/default-logo.png'" alt="Cover">
     </div>
 
     <h1 class="text-center mt-1 mb-2">{{ shopStore.currentShop.name }}</h1>

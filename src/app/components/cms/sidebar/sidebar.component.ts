@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NgClass, NgStyle} from "@angular/common";
+import {NgClass, NgIf, NgStyle} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
 import {ShopStore} from "../../../stores/shop.store";
 import {AuthService} from "../../../services/auth.service";
@@ -11,6 +11,7 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
   imports: [
     NgClass,
     NgStyle,
+    NgIf,
     RouterLink,
     ConfirmDialogModule
   ],

@@ -4,12 +4,17 @@ import {ShopStore} from "../stores/shop.store";
 import {CreateAppointmentDto, UpdateAppointmentDto} from "../dtos/appointments.dto";
 import {UpdateAvailabilityDto} from "../dtos/availability.dto";
 import {environment} from "../../environments/environment";
+import { StoreAppointments } from "../stores/appointment.store";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppointmentService {
-  constructor(private http: HttpClient, private shopStore: ShopStore) {}
+  constructor(
+    private http: HttpClient, 
+    private shopStore: ShopStore,
+    private storeAppointment: StoreAppointments
+  ) {}
 
   private apiUrl: string = environment.apiUrl + '/appointments'
 
@@ -32,7 +37,10 @@ export class AppointmentService {
 
   delete(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`)
+  }
 
+  setCurretDayToToday() {
+    this.storeAppointment.currentDay = new Date
   }
 }
 

@@ -23,6 +23,7 @@ import {AvailabilityService} from "../../../../services/availability.service";
 import {AvailabilityDayDto, CreateAvailabilityDto, UpdateAvailabilityDto} from "../../../../dtos/availability.dto";
 import {ShopStore} from "../../../../stores/shop.store";
 import { LoadingComponent } from "../../../global/loading/loading.component";
+import { ShopService } from '../../../../services/shop.service';
 
 
 @Component({
@@ -63,7 +64,8 @@ export class EditStaffComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private confirmationService: ConfirmationService,
-    public shopStore: ShopStore
+    public shopStore: ShopStore,
+    private shopService: ShopService
   ) {
   }
 
@@ -89,7 +91,7 @@ export class EditStaffComponent implements OnInit {
 
       if (id) {
         this.getDetail(+id);
-        this.availabilityService.findAll(this.staffId).subscribe((res: AvailabilityDayDto[]) => {
+        this.availabilityService.findAll(this.shopStore.currentShop.id, this.staffId).subscribe((res: AvailabilityDayDto[]) => {
           res.forEach(av => {
             this.week[av.dayOfWeek] = {
               id: av.id,
@@ -98,7 +100,8 @@ export class EditStaffComponent implements OnInit {
               startBreak: av.startBreak,
               endBreak: av.endBreak,
               endTime: av.endTime,
-              staffId: av.staffId
+              staffId: av.staffId,
+              shopId: av.shopId
             }
           })
         });
@@ -232,7 +235,9 @@ export class EditStaffComponent implements OnInit {
     if (this.staffId != null) {
       this.staffService.delete(+this.staffId).subscribe(
         res => {
+          this.availabilityService.deleteMany(this.staffId).subscribe()
           this.router.navigate([`/private/${this.shopStore.shopId}/staff`])
+
         },
         err => console.error(err.message)
       )

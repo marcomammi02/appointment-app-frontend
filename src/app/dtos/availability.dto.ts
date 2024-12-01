@@ -6,6 +6,7 @@ export interface AvailabilityDayDto {
   endBreak?: string | null
   endTime?: string | null
   staffId: number
+  shopId: number
 }
 
 export interface CreateAvailabilityDto {
@@ -15,6 +16,7 @@ export interface CreateAvailabilityDto {
   endBreak?: string | null
   endTime?: string | null
   staffId: number
+  shopId: number
 }
 
 export interface UpdateAvailabilityDto {

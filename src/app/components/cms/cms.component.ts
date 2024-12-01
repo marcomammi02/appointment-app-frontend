@@ -28,7 +28,18 @@ export class CmsComponent implements OnInit{
       this.shopStore.shopId = Number(storedShopId);
     }
 
-    this.shopService.getShop()
+    this.getShop()
   }
+
+  getShop() {
+    // Retrieve shop from ShopStore or fallback to localStorage
+    let shop = this.shopStore.currentShop;
+
+    if (!shop.id) {
+      // Attempt to retrieve shop from localStorage
+      const storedShop = localStorage.getItem('currentShop');
+      this.shopStore.currentShop = storedShop ? JSON.parse(storedShop) : null;
+    }
+ }
 
 }

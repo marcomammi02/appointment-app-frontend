@@ -4,13 +4,17 @@ import { NgIf } from '@angular/common';
 import { ServicesService } from '../../../services/services.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ShopStore } from '../../../stores/shop.store';
-import { capitalizeFirstLetter } from '../../../services/utility.service';
+import { capitalizeFirstLetter, getDayOfWeek } from '../../../services/utility.service';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DropdownModule } from 'primeng/dropdown';
 import { StaffStore } from '../../../stores/staff.store';
 import { StaffService } from '../../../services/staff.service';
 import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StoreAppointments } from '../../../stores/appointment.store';
+import { CalendarModule } from 'primeng/calendar';
+import { AvailabilityService } from '../../../services/availability.service';
+import { AppointmentService } from '../../../services/appointment.service';
 
 @Component({
   selector: 'app-booking-page',
@@ -21,7 +25,8 @@ import { FormsModule } from '@angular/forms';
     RouterModule,
     FloatLabelModule,
     DropdownModule,
-    FormsModule
+    FormsModule,
+    CalendarModule
   ],
   templateUrl: './booking-page.component.html',
   styleUrl: './booking-page.component.scss'
@@ -34,7 +39,10 @@ export class BookingPageComponent implements OnInit {
     public shopStore: ShopStore,
     public staffStore: StaffStore,
     private staffService: StaffService,
-    private location: Location
+    private location: Location,
+    public storeAppointments: StoreAppointments,
+    private appointmentService: AppointmentService,
+    private availabilitiesService: AvailabilityService
   ) {}
 
   loading: boolean = true
@@ -45,11 +53,15 @@ export class BookingPageComponent implements OnInit {
 
   selectedStaff!: any
 
+  availabilities: any[] = []
+
   ngOnInit(): void {
     this.extractServiceIdFromUrl()
     this.getService()
     this.getShop()
     this.getStaff()
+    this.appointmentService.setCurretDayToToday()
+    this.getAvailabilitiesByDay()
   }
   
   getShop() {
@@ -63,7 +75,6 @@ export class BookingPageComponent implements OnInit {
       this.staffStore.staffList = res
       let whoever = {name: 'Qualsiasi'}
       this.staffStore.staffList = [whoever, ...this.staffStore.staffList]
-      console.log(this.staffStore.staffList)
       this.selectedStaff = whoever
     })
   }
@@ -79,13 +90,22 @@ export class BookingPageComponent implements OnInit {
       (res) => {
         this.service = res
         this.loading = false
-        console.log(res)
       },
       (err) => {
         this.loading = false
         console.error(err)
       }
     )
+  }
+
+  async getAvailabilitiesByDay() {
+    this.availabilities = []
+    try {
+      console.log('ShopID:' + this.shopStore.currentShop.id)
+      this.availabilities = await this.availabilitiesService.findAll(this.shopStore.currentShop.id, undefined, this.storeAppointments.currentDay.getDay()).toPromise();
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   getHourTime(minutes: number): string {
@@ -96,5 +116,23 @@ export class BookingPageComponent implements OnInit {
     return `${hours} h ${min} min`;
   }
 
+  navigateDay(days: number) {
+    const newDate = new Date(this.storeAppointments.currentDay);
+    newDate.setDate(newDate.getDate() + days);
+    this.storeAppointments.currentDay = newDate;
+  }
+
+  openCalendar(calendar: any) {
+    if (!calendar.overlayVisible) {
+      calendar.showOverlay();
+      calendar.cd.detectChanges();
+    }
+  }
+
+  changeDate() {
+
+  }
+
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
+  protected readonly getDayOfWeek = getDayOfWeek;
 }

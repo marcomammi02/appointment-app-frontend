@@ -66,7 +66,6 @@ export class CreateStaffComponent implements OnInit {
     this.minDate.setHours(12, 0, 0)
     this.buildForm()
     this.week = this.availabilityService.week
-    console.log(this.week)
   }
 
   buildForm() {
@@ -122,10 +121,7 @@ export class CreateStaffComponent implements OnInit {
   }
 
   create() {
-    if (this.creating) {
-      console.log('ciao')
-      return
-    }
+    if (this.creating) return
 
     
     if (this.form.invalid) {
@@ -158,7 +154,8 @@ export class CreateStaffComponent implements OnInit {
               startBreak: av.startBreak ? av.startBreak : null,
               endBreak: av.endBreak ? av.endBreak : null,
               endTime: av.endTime!,
-              staffId: res.id
+              staffId: res.id,
+              shopId: this.shopStore.currentShop.id
             }
             this.availabilityService.create(createAvailability).subscribe()
           }

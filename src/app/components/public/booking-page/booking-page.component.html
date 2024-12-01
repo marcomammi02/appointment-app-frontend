@@ -5,7 +5,7 @@
   <!-- Header -->
   <div class="flex align-items-center gap-2 mb-5">
     <div class="img-container mr-2 cursor-pointer" [routerLink]="'/' + shopStore.currentShop.id">
-      <img [src]="shopStore.currentShop.logo" alt="Logo">
+      <img [src]="shopStore.currentShop.logo ? shopStore.currentShop.logo : 'app/assets/images/default-logo.png'" alt="Logo">
     </div>
     <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
     <h2>Prenotazione</h2>
@@ -22,13 +22,33 @@
   </div>
 
  <!-- Staff selection -->
-<div class="text-left">
-  <label for="staffId" class="block mb-1">Seleziona un membro dello staff</label>
-  <p-dropdown
-    class="w-full"
-    [(ngModel)]="selectedStaff"
-    [options]="staffStore.staffList"
-    optionLabel="name"
-    id="staffId"
-  ></p-dropdown>
+  <div class="text-left mb-5">
+    <label for="staffId" class="block mb-1">Seleziona un membro dello staff</label>
+    <p-dropdown
+      class="w-full"
+      [(ngModel)]="selectedStaff"
+      [options]="staffStore.staffList"
+      optionLabel="name"
+      id="staffId"
+    ></p-dropdown>
+  </div>
+
+  <!-- Day selector -->
+  <div class="w-full flex align-items-center justify-content-center">
+    <button (click)="navigateDay(-1)" class="nav-arrow">
+      <i class="pi pi-chevron-left"></i>
+    </button>
+    <div class="flex align-items-center justify-content-center cursor-pointer w-15rem" (click)="openCalendar(calendar)">
+      <p class="ml-5 font-medium">{{ getDayOfWeek(storeAppointments.currentDay) }}</p>
+      <p-calendar #calendar [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy" class="w-10rem" (onSelect)="changeDate()"></p-calendar>
+    </div>
+    <button (click)="navigateDay(1)" class="nav-arrow">
+      <i class="pi pi-chevron-right"></i>
+    </button>
+  </div>
+
+  <!-- Availabilities container -->
+  <div>
+
+  </div>
 </div>

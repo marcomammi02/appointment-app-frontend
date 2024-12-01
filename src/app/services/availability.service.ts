@@ -17,26 +17,30 @@ export class AvailabilityService {
     return this.http.post(this.apiUrl, availability)
   }
 
-  findAll(staffId?: number, dayOfWeek?: number): Observable<any> {
-    const options: any =  { params: { staffId: staffId, dayOfWeek: dayOfWeek } }
+  findAll( shopId: number, staffId?: number, dayOfWeek?: number): Observable<any> {
+    const options: any =  { params: { shopId: shopId, staffId: staffId, dayOfWeek: dayOfWeek } }
     return this.http.get(this.apiUrl, options)
   }
 
   get week(): AvailabilityDayDto[] {
     return [
-      {id: 0, dayOfWeek: 0, startTime: '', startBreak: '', endBreak: '', endTime: '', staffId: 0},
-      {id: 0, dayOfWeek: 1, startTime: '', startBreak: '', endBreak: '', endTime: '', staffId: 0},
-      {id: 0, dayOfWeek: 2, startTime: '', startBreak: '', endBreak: '', endTime: '', staffId: 0},
-      {id: 0, dayOfWeek: 3, startTime: '', startBreak: '', endBreak: '', endTime: '', staffId: 0},
-      {id: 0, dayOfWeek: 4, startTime: '', startBreak: '', endBreak: '', endTime: '', staffId: 0},
-      {id: 0, dayOfWeek: 5, startTime: '', startBreak: '', endBreak: '', endTime: '', staffId: 0},
-      {id: 0, dayOfWeek: 6, startTime: '', startBreak: '', endBreak: '', endTime: '', staffId: 0},
+      {id: 0, dayOfWeek: 0, startTime: '', startBreak: '', endBreak: '', endTime: '', staffId: 0, shopId: 0},
+      {id: 0, dayOfWeek: 1, startTime: '', startBreak: '', endBreak: '', endTime: '', staffId: 0, shopId: 0},
+      {id: 0, dayOfWeek: 2, startTime: '', startBreak: '', endBreak: '', endTime: '', staffId: 0, shopId: 0},
+      {id: 0, dayOfWeek: 3, startTime: '', startBreak: '', endBreak: '', endTime: '', staffId: 0, shopId: 0},
+      {id: 0, dayOfWeek: 4, startTime: '', startBreak: '', endBreak: '', endTime: '', staffId: 0, shopId: 0},
+      {id: 0, dayOfWeek: 5, startTime: '', startBreak: '', endBreak: '', endTime: '', staffId: 0, shopId: 0},
+      {id: 0, dayOfWeek: 6, startTime: '', startBreak: '', endBreak: '', endTime: '', staffId: 0, shopId: 0},
 
     ]
   }
 
   update(id: number, updateAvailability:UpdateAvailabilityDto) {
     return this.http.patch(`${this.apiUrl}/${id}`, updateAvailability)
+  }
+
+  deleteMany(staffId: number) {
+    return this.http.delete(`${this.apiUrl}/${staffId}`)
   }
 
   getWorkingHours(shopId: number) {

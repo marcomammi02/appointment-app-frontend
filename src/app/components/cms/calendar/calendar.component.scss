@@ -147,6 +147,13 @@ tr:last-child td {
   font-size: 1.5rem;
 }
 
+.nav-arrow:hover i{
+  @media screen and (min-width: $lg) {
+    transition: color .1s ease;
+    color: #ff6200;
+  }
+}
+
 .not-available-icon {
   background: repeating-linear-gradient(
     45deg,
@@ -155,13 +162,6 @@ tr:last-child td {
     #e9e6e6 10px,
     #e9e6e6 20px
   );
-}
-
-.nav-arrow:hover i{
-  @media screen and (min-width: $lg) {
-    transition: color .1s ease;
-    color: #ff6200;
-  }
 }
 
 .quarter-hour {

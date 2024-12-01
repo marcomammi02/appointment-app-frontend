@@ -3,7 +3,25 @@
 :host ::ng-deep {
   .p-dropdown {
     width: 100%;
-}
+  }
+  
+  .p-calendar .p-inputtext {
+    text-align: center;
+    border: none;
+    &:hover {
+      cursor: pointer;
+      border-color: transparent;
+    }
+  }
+
+  .p-calendar:not(.p-calendar-disabled).p-focus > .p-inputtext {
+    box-shadow: none;
+    border-color: transparent;
+  }
+
+  .p-calendar .p-datepicker {
+    left: -100px !important;
+  }
 }
 
 .container {
@@ -30,4 +48,24 @@
   border-radius: $border-radius;
   transition: all .2s ease;
   background: #fcf8f7;
+}
+
+.calendar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-arrow {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.nav-arrow:hover i{
+  @media screen and (min-width: $lg) {
+    transition: color .1s ease;
+    color: #ff6200;
+  }
 }

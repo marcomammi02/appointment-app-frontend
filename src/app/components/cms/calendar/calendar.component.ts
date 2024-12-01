@@ -91,7 +91,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   async getAvailabilitiesByDay() {
     this.availabilities = []
     try {
-      this.availabilities = await this.availabilitiesService.findAll(undefined, this.storeAppointments.currentDay.getDay()).toPromise();
+      this.availabilities = await this.availabilitiesService.findAll(this.shopStore.currentShop.id, undefined, this.storeAppointments.currentDay.getDay()).toPromise();
     } catch (error) {
       console.log(error)
     }
