@@ -46,5 +46,4 @@ export class CmsComponent implements OnInit{
       this.shopStore.currentShop = storedShop ? JSON.parse(storedShop) : null;
     }
  }
-
 }
