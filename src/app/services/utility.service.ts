@@ -49,6 +49,7 @@ export function timeStringToMinutes(time: string): number {
 
 // This function transforms a time string "12:30" to an hour value as a number
 export function timeStringToHour(time: string): number {
+  if (!time) return 0
   const [hours] = time.split(':').map(Number);
   return hours;
 }
