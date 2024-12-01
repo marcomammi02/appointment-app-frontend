@@ -23,12 +23,17 @@ export class CmsComponent implements OnInit{
   }
 
   ngOnInit() {
+    if (!this.shopStore.shopId) {
+      this.getShopId()
+    }
+    this.shopService.getShop()
+  }
+
+  getShopId() {
     const storedShopId = localStorage.getItem('shopId');
     if (storedShopId) {
       this.shopStore.shopId = Number(storedShopId);
     }
-
-    this.getShop()
   }
 
   getShop() {

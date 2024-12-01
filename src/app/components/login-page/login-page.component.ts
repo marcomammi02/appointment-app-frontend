@@ -49,8 +49,10 @@ export class LoginPageComponent implements OnInit {
     try {
       const res = await this.authService.login(v.email, v.password).toPromise();
       this.shopStore.shopId = res.shopId;
-      this.router.navigate([`private/${this.shopStore.shopId}`]);
+      
+      // Save shopId in localstorage
       localStorage.setItem('shopId', this.shopStore.shopId.toString());
+      this.router.navigate([`private/${this.shopStore.shopId}`]);
     } catch (error) {
       const err: MyError = {
         label: 'Attenzione',
