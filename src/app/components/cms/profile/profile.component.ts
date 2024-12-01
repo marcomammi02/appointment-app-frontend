@@ -31,7 +31,6 @@ import { ToastModule } from 'primeng/toast';
     InputNumberModule,
     InputTextModule,
     PrimaryBtnComponent,
-    CancelBtnComponent,
     RouterLink,
     FileUploadModule,
     ToastModule

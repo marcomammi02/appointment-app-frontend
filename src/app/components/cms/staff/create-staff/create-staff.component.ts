@@ -32,7 +32,6 @@ import {ShopStore} from "../../../../stores/shop.store";
     DropdownModule,
     PrimaryBtnComponent,
     CancelBtnComponent,
-    NgClass,
     RouterLink,
     NgForOf,
     CalendarModule

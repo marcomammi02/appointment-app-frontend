@@ -22,7 +22,8 @@ export class ShopService {
     return this.http.get(`${this.apiUrl}/${this.shopStore.shopId}`).subscribe(
       (res: any) => {
         this.shopStore.currentShop = res;
-        console.log(this.shopStore.currentShop)
+        
+        // Set currentShop in localStorage
         localStorage.setItem('currentShop', JSON.stringify(res));
       },
       (error) => {

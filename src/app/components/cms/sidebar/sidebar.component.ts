@@ -9,10 +9,7 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
   selector: 'app-sidebar',
   standalone: true,
   imports: [
-    NgClass,
     NgStyle,
-    NgIf,
-    RouterLink,
     ConfirmDialogModule
   ],
   templateUrl: './sidebar.component.html',
@@ -36,7 +33,7 @@ export class SidebarComponent  {
 
   logout() {
     this.confirmationService.confirm({
-      target: event.target as EventTarget,
+      target: event!.target as EventTarget,
       message: `Confermi di voler uscire?`,
       header: 'Attenzione',
       icon: 'pi pi-info-circle',

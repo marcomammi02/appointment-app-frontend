@@ -39,7 +39,6 @@ import { ShopService } from '../../../../services/shop.service';
     DropdownModule,
     PrimaryBtnComponent,
     CancelBtnComponent,
-    NgClass,
     RouterLink,
     NgIf,
     DeleteBtnComponent,

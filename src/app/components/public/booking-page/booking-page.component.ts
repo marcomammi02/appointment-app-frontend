@@ -51,7 +51,7 @@ export class BookingPageComponent implements OnInit {
 
   service?: any
 
-  selectedStaff!: any
+  selectedStaff: any = {}
 
   availabilities: any[] = []
 
@@ -101,8 +101,8 @@ export class BookingPageComponent implements OnInit {
   async getAvailabilitiesByDay() {
     this.availabilities = []
     try {
-      console.log('ShopID:' + this.shopStore.currentShop.id)
-      this.availabilities = await this.availabilitiesService.findAll(this.shopStore.currentShop.id, undefined, this.storeAppointments.currentDay.getDay()).toPromise();
+      this.availabilities = await this.availabilitiesService.findAll(this.shopStore.currentShop.id, this.selectedStaff.id, this.storeAppointments.currentDay.getDay()).toPromise();
+      console.log(this.availabilities)
     } catch (error) {
       console.log(error)
     }
@@ -120,6 +120,7 @@ export class BookingPageComponent implements OnInit {
     const newDate = new Date(this.storeAppointments.currentDay);
     newDate.setDate(newDate.getDate() + days);
     this.storeAppointments.currentDay = newDate;
+    this.changeDate()
   }
 
   openCalendar(calendar: any) {
@@ -130,7 +131,7 @@ export class BookingPageComponent implements OnInit {
   }
 
   changeDate() {
-
+    this.getAvailabilitiesByDay()
   }
 
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;

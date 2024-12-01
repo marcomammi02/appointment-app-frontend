@@ -36,7 +36,6 @@ import { LoadingComponent } from "../../../global/loading/loading.component";
     DropdownModule,
     PrimaryBtnComponent,
     CancelBtnComponent,
-    NgClass,
     RouterLink,
     NgIf,
     DeleteBtnComponent,

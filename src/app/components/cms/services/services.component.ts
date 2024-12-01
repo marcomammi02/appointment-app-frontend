@@ -15,7 +15,9 @@ import {capitalizeFirstLetter} from "../../../services/utility.service";
   selector: 'app-services',
   standalone: true,
   imports: [
-    PrimaryBtnComponent, CommonModule, CreateServiceComponent, EditServiceComponent, RouterLink,
+    PrimaryBtnComponent,
+    CommonModule, 
+    RouterLink,
     LoadingComponent
 ],
   templateUrl: './services.component.html',

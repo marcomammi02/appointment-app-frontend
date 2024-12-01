@@ -29,7 +29,6 @@ import { LoadingComponent } from "../../global/loading/loading.component";
     NgForOf,
     NgIf,
     PrimaryBtnComponent,
-    RouterLink,
     CalendarModule,
     FormsModule,
     NgClass,

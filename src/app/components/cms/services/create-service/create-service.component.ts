@@ -30,7 +30,6 @@ import {ColorPickerModule} from "primeng/colorpicker";
     DropdownModule,
     PrimaryBtnComponent,
     CancelBtnComponent,
-    NgClass,
     RouterLink,
     ColorPickerModule
   ],
