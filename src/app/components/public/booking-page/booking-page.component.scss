@@ -4,7 +4,7 @@
   .p-dropdown {
     width: 100%;
   }
-  
+
   .p-calendar .p-inputtext {
     text-align: center;
     border: none;
@@ -46,7 +46,6 @@
 
 .card {
   border-radius: $border-radius;
-  transition: all .2s ease;
   background: #fcf8f7;
 }
 
@@ -67,5 +66,17 @@
   @media screen and (min-width: $lg) {
     transition: color .1s ease;
     color: #ff6200;
+  }
+}
+
+.slot {
+  list-style: none;
+  border-radius: 8px;
+  transition: all .2s ease;
+  background: #fcf8f7;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.05);
   }
 }

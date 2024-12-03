@@ -1,6 +1,6 @@
 import { Component, Host, OnInit } from '@angular/core';
 import { LoadingComponent } from "../../global/loading/loading.component";
-import { NgIf } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { ServicesService } from '../../../services/services.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ShopStore } from '../../../stores/shop.store';
@@ -26,7 +26,8 @@ import { AppointmentService } from '../../../services/appointment.service';
     FloatLabelModule,
     DropdownModule,
     FormsModule,
-    CalendarModule
+    CalendarModule,
+    CommonModule
   ],
   templateUrl: './booking-page.component.html',
   styleUrl: './booking-page.component.scss'
@@ -55,15 +56,15 @@ export class BookingPageComponent implements OnInit {
 
   availabilities: any[] = []
 
+  slots: any[] = []
+
   ngOnInit(): void {
     this.extractServiceIdFromUrl()
-    this.getService()
     this.getShop()
-    this.getStaff()
+    this.getService()
     this.appointmentService.setCurretDayToToday()
-    this.getAvailabilitiesByDay()
   }
-  
+
   getShop() {
     if (!this.shopStore.currentShop.id) {
       this.location.back()
@@ -85,26 +86,51 @@ export class BookingPageComponent implements OnInit {
     this.serviceId = serviceIdParam ? +serviceIdParam : 0
   }
 
-  getService() {
-    this.servicesService.getDetail(this.serviceId).subscribe(
+  async getService() {
+    return this.servicesService.getDetail(this.serviceId).subscribe(
       (res) => {
-        this.service = res
-        this.loading = false
+        this.service = res;
+        this.getStaff()
+        this.getAvailabilitiesByDay()
       },
       (err) => {
-        this.loading = false
-        console.error(err)
+        this.loading = false;
+        console.error(err);
       }
     )
   }
 
   async getAvailabilitiesByDay() {
-    this.availabilities = []
+    this.availabilities = [];
+    this.slots = []; // Array per memorizzare gli slot generati
+    const step = 15; // Intervallo in minuti per il calcolo degli slot
+
     try {
-      this.availabilities = await this.availabilitiesService.findAll(this.shopStore.currentShop.id, this.selectedStaff.id, this.storeAppointments.currentDay.getDay()).toPromise();
-      console.log(this.availabilities)
+      // Recupera le availabilities
+      this.availabilities = await this.availabilitiesService
+        .findAll(this.shopStore.currentShop.id, this.selectedStaff.id, this.storeAppointments.currentDay.getDay())
+        .toPromise();
+
+      console.log('Availabilities:', this.availabilities);
+
+      // Calcola gli slot per ogni availability
+      this.availabilities.forEach((availability) => {
+        if (this.service?.duration) {
+          const slots = this.generateSlotsFromAvailability(availability, this.service.duration, step);
+          this.slots.push(...slots);
+        } else {
+          console.warn('Service duration is undefined. Skipping slot generation.');
+        }
+      });
+
+      // Rimuove duplicati dagli slot
+      this.slots = this.removeDuplicateSlots(this.slots);
+
+      console.log('Generated Slots:', this.slots);
+      this.loading = false
     } catch (error) {
-      console.log(error)
+      this.loading = false
+      console.error(error);
     }
   }
 
@@ -133,6 +159,58 @@ export class BookingPageComponent implements OnInit {
   changeDate() {
     this.getAvailabilitiesByDay()
   }
+
+  // Metodo per calcolare gli slot basati su una disponibilità
+generateSlotsFromAvailability(
+  availability: any,
+  serviceDuration: number,
+  step: number
+): { start: string; end: string }[] {
+  const { startTime, endTime, startBreak, endBreak } = availability;
+  const slots: any[] = [];
+  const stepMs = step * 60 * 1000; // Step in millisecondi
+  const durationMs = serviceDuration * 60 * 1000; // Durata del servizio in millisecondi
+
+  const parseTime = (time: string) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const now = new Date();
+    now.setHours(hours, minutes, 0, 0);
+    return now;
+  };
+
+  const addSlots = (start: Date, end: Date) => {
+    let current = start;
+    while (current < end) {
+      const slotEnd = new Date(current.getTime() + durationMs);
+      if (slotEnd <= end) {
+        slots.push({ start: current.toTimeString().slice(0, 5), end: slotEnd.toTimeString().slice(0, 5) });
+      }
+      current = new Date(current.getTime() + stepMs);
+    }
+  };
+
+  // Genera slot prima della pausa
+  addSlots(parseTime(startTime), parseTime(startBreak || endTime));
+
+  // Genera slot dopo la pausa
+  if (startBreak && endBreak) {
+    addSlots(parseTime(endBreak), parseTime(endTime));
+  }
+
+  return slots;
+}
+
+// Metodo per rimuovere duplicati dagli slot
+removeDuplicateSlots(slots: { start: string; end: string }[]): { start: string; end: string }[] {
+  const uniqueSlots = new Map(); // Utilizziamo una mappa per tenere traccia degli slot unici
+  slots.forEach((slot) => {
+    const key = `${slot.start}-${slot.end}`; // Crea una chiave unica basata su start e end
+    if (!uniqueSlots.has(key)) {
+      uniqueSlots.set(key, slot); // Aggiunge lo slot se non esiste già
+    }
+  });
+  return Array.from(uniqueSlots.values()); // Ritorna gli slot come array
+}
 
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
   protected readonly getDayOfWeek = getDayOfWeek;

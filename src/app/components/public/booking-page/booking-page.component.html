@@ -1,6 +1,6 @@
 <app-loading *ngIf="loading" />
 
-<div class="container text-center p-3" *ngIf="!loading">
+<div class="container text-center p-3" *ngIf="!loading && selectedStaff && selectedStaff.name && service && service.duration">
 
   <!-- Header -->
   <div class="flex align-items-center gap-2 mb-5">
@@ -12,7 +12,7 @@
   </div>
 
   <!-- Service info -->
-  <div class="card p-3 mx-3 shadow-4 mb-5">
+  <div *ngIf="service.id" class="card p-3 mx-3 shadow-4 mb-5">
     <h1>{{capitalizeFirstLetter(service.name)}}</h1>
     <p class="mt-3">{{service.description}}</p>
     <div class="flex justify-content-between mt-3">
@@ -48,8 +48,11 @@
     </button>
   </div>
 
-  <!-- Availabilities container -->
-  <div>
-
+  <!-- Slots container -->
+  <div *ngIf="slots.length > 0">
+      <ul class="flex flex-wrap w-full mx-auto justify-content-center">
+        <li class="slot px-3 py-2 m-2 shadow-4" *ngFor="let slot of slots">{{ slot.start }}</li>
+      </ul>
   </div>
+  <div class="mt-8" *ngIf="slots.length <= 0">Nessuna disponibilità</div>
 </div>
