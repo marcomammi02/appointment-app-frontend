@@ -49,10 +49,11 @@
   </div>
 
   <!-- Slots container -->
-  <div *ngIf="slots.length > 0">
+   <app-loading *ngIf="avLoading" [small]="true"/>
+  <div *ngIf="slots.length > 0 && !avLoading">
       <ul class="flex flex-wrap w-full mx-auto justify-content-center">
         <li class="slot px-3 py-2 m-2 shadow-4" *ngFor="let slot of slots">{{ slot.start }}</li>
       </ul>
   </div>
-  <div class="mt-8" *ngIf="slots.length <= 0">Nessuna disponibilità</div>
+  <div class="mt-8" *ngIf="slots.length <= 0 && !avLoading">Nessuna disponibilità</div>
 </div>

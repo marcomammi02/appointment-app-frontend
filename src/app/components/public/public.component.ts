@@ -35,14 +35,16 @@ export class PublicComponent implements OnInit {
 
   ngOnInit(): void {
     this.extractShopIdFromUrl()
-    this.shopService.getShop()
-    this.getServices()
   }
 
   extractShopIdFromUrl(): void {
     // Estrapola il parametro `shopId` dall'URL e lo converte in numero
     const shopIdParam = this.route.snapshot.paramMap.get('shopId');
     this.shopStore.shopId = shopIdParam ? +shopIdParam : 0;
+
+    this.shopService.getShop()
+    
+    this.getServices()
   }
 
   async getServices() {

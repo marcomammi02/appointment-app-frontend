@@ -48,6 +48,8 @@ export class BookingPageComponent implements OnInit {
 
   loading: boolean = true
 
+  avLoading: boolean = true
+
   serviceId!: number
 
   service?: any
@@ -104,6 +106,7 @@ export class BookingPageComponent implements OnInit {
     this.availabilities = [];
     this.slots = []; // Array per memorizzare gli slot generati
     const step = 15; // Intervallo in minuti per il calcolo degli slot
+    this.avLoading = true
 
     try {
       // Recupera le availabilities
@@ -128,6 +131,7 @@ export class BookingPageComponent implements OnInit {
 
       console.log('Generated Slots:', this.slots);
       this.loading = false
+      this.avLoading = false
     } catch (error) {
       this.loading = false
       console.error(error);
