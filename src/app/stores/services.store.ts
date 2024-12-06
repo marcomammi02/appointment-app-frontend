@@ -7,6 +7,8 @@ import {ServiceDto} from "../dtos/services.dto";
 export class ServicesStore {
   services: any = []
 
+  currentService: any = {}
+
   durations = [
     {name: '15 min', minutes: 15},
     {name: '30 min', minutes: 30},

@@ -1,6 +1,6 @@
-import { Component, Host, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoadingComponent } from "../../global/loading/loading.component";
-import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { ServicesService } from '../../../services/services.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ShopStore } from '../../../stores/shop.store';
@@ -15,6 +15,7 @@ import { StoreAppointments } from '../../../stores/appointment.store';
 import { CalendarModule } from 'primeng/calendar';
 import { AvailabilityService } from '../../../services/availability.service';
 import { AppointmentService } from '../../../services/appointment.service';
+import { ServicesStore } from '../../../stores/services.store';
 
 @Component({
   selector: 'app-booking-page',
@@ -27,15 +28,16 @@ import { AppointmentService } from '../../../services/appointment.service';
     DropdownModule,
     FormsModule,
     CalendarModule,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './booking-page.component.html',
-  styleUrl: './booking-page.component.scss'
+  styleUrl: './booking-page.component.scss',
 })
 export class BookingPageComponent implements OnInit {
 
   constructor(
     private servicesService: ServicesService,
+    private storeService: ServicesStore,
     private route: ActivatedRoute,
     public shopStore: ShopStore,
     public staffStore: StaffStore,
@@ -43,7 +45,7 @@ export class BookingPageComponent implements OnInit {
     private location: Location,
     public storeAppointments: StoreAppointments,
     private appointmentService: AppointmentService,
-    private availabilitiesService: AvailabilityService
+    private availabilitiesService: AvailabilityService,
   ) {}
 
   loading: boolean = true
@@ -92,6 +94,7 @@ export class BookingPageComponent implements OnInit {
     return this.servicesService.getDetail(this.serviceId).subscribe(
       (res) => {
         this.service = res;
+        this.storeService.currentService = res
         this.getStaff()
         this.getAvailabilitiesByDay()
       },
