@@ -21,6 +21,7 @@ export class StoreAppointments {
   ]
 
   currentStaff: any = {}
+  currentStaffId!: number
   currentDay: Date = new Date
   currentHour: string = ''
   currentEndHour: string = ''

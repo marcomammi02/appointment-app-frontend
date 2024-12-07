@@ -17,6 +17,12 @@ import { AvailabilityService } from '../../../services/availability.service';
 import { AppointmentService } from '../../../services/appointment.service';
 import { ServicesStore } from '../../../stores/services.store';
 
+class Slot {
+  start!: string
+  end!: string
+  staffId!: number[]
+}
+
 @Component({
   selector: 'app-booking-page',
   standalone: true,
@@ -33,6 +39,7 @@ import { ServicesStore } from '../../../stores/services.store';
   templateUrl: './booking-page.component.html',
   styleUrl: './booking-page.component.scss',
 })
+
 export class BookingPageComponent implements OnInit {
 
   constructor(
@@ -63,7 +70,7 @@ export class BookingPageComponent implements OnInit {
 
   availabilities: any[] = []
 
-  slots: any[] = []
+  slots: Slot[] = []
 
   ngOnInit(): void {
     this.extractServiceIdFromUrl()
@@ -175,66 +182,87 @@ export class BookingPageComponent implements OnInit {
     availability: any,
     serviceDuration: number,
     step: number
-  ): { start: string; end: string }[] {
-    const { startTime, endTime, startBreak, endBreak } = availability;
-    const slots: any[] = [];
+  ): Slot[] {
+    const { startTime, endTime, startBreak, endBreak, staffId } = availability;
+    const slots: Slot[] = [];
     const stepMs = step * 60 * 1000; // Step in millisecondi
     const durationMs = serviceDuration * 60 * 1000; // Durata del servizio in millisecondi
-
+  
     const parseTime = (time: string) => {
       const [hours, minutes] = time.split(':').map(Number);
       const now = new Date();
       now.setHours(hours, minutes, 0, 0);
       return now;
     };
-
+  
     const addSlots = (start: Date, end: Date) => {
       let current = start;
       while (current < end) {
         const slotEnd = new Date(current.getTime() + durationMs);
         if (slotEnd <= end) {
-          slots.push({ start: current.toTimeString().slice(0, 5), end: slotEnd.toTimeString().slice(0, 5) });
+          // Aggiungi lo staffId all'interno dello slot
+          slots.push({ 
+            start: current.toTimeString().slice(0, 5), 
+            end: slotEnd.toTimeString().slice(0, 5),
+            staffId: [staffId] // Associa lo staffId allo slot
+          });
         }
         current = new Date(current.getTime() + stepMs);
       }
     };
-
+  
     // Genera slot prima della pausa
     addSlots(parseTime(startTime), parseTime(startBreak || endTime));
-
+  
     // Genera slot dopo la pausa
     if (startBreak && endBreak) {
       addSlots(parseTime(endBreak), parseTime(endTime));
     }
-
+  
     return slots;
   }
 
   // Metodo per rimuovere duplicati dagli slot
-  removeDuplicateSlots(slots: { start: string; end: string }[]): { start: string; end: string }[] {
-    const uniqueSlots = new Map(); // Utilizziamo una mappa per tenere traccia degli slot unici
+  removeDuplicateSlots(slots: Slot[]): Slot[] {
+    const uniqueSlots = new Map<string, Slot>(); // Mappa per tenere traccia degli slot unici
+  
     slots.forEach((slot) => {
       const key = `${slot.start}-${slot.end}`; // Crea una chiave unica basata su start e end
-      if (!uniqueSlots.has(key)) {
-        uniqueSlots.set(key, slot); // Aggiunge lo slot se non esiste già
+      
+      if (uniqueSlots.has(key)) {
+        // Se la chiave esiste, aggiungi l'ID dello staff all'array esistente
+        const existingSlot = uniqueSlots.get(key);
+        if (existingSlot) {
+          // Aggiungi lo staffId solo se non è già presente nell'array
+          slot.staffId.forEach((id) => {
+            if (!existingSlot.staffId.includes(id)) {
+              existingSlot.staffId.push(id);
+            }
+          });
+        }
+      } else {
+        // Se la chiave non esiste, aggiungi il nuovo slot
+        uniqueSlots.set(key, { ...slot });
       }
     });
-    return Array.from(uniqueSlots.values()); // Ritorna gli slot come array
+  
+    return Array.from(uniqueSlots.values()); // Ritorna gli slot unici come array
   }
+  
 
   goToDataPage(slot: any) {
     this.storeAppointments.currentHour = slot.start
     this.storeAppointments.currentEndHour = slot.end
     if (!this.selectedStaff.id) {
-      this.storeAppointments.currentStaff = this.getCasualStaff(this.originalStaffList)
+      this.storeAppointments.currentStaffId = this.getCasualStaff(slot.staffId)
     } else { 
-      this.storeAppointments.currentStaff = this.selectedStaff
+      this.storeAppointments.currentStaffId = this.selectedStaff.id
     }
     this.router.navigate(['/' + this.shopStore.currentShop.id + '/service/' + this.service.id + '/datas'])
   }
 
   // Return casual staff member
-  getCasualStaff(staffList: any[]): any {
+  getCasualStaff(staffList: number[]): any {
     if (!staffList || staffList.length === 0) {
       return null; // Restituisce null se la lista è vuota o non valida
     }

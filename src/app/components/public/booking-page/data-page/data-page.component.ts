@@ -104,7 +104,7 @@ export class DataPageComponent implements OnInit{
       serviceName: this.storeService.currentService.name,
       serviceId: this.storeService.currentService.id,
       serviceColor: this.storeService.currentService.color,
-      staffId: this.storeAppointments.currentStaff.id,
+      staffId: this.storeAppointments.currentStaffId,
       shopId: this.shopStore.shopId
     };
     console.log(appointment)
