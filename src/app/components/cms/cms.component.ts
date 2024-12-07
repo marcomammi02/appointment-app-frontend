@@ -26,7 +26,7 @@ export class CmsComponent implements OnInit{
     if (!this.shopStore.shopId) {
       this.getShopId()
     }
-    this.shopService.getShop()
+    this.getShop()
   }
 
   getShopId() {
@@ -43,7 +43,11 @@ export class CmsComponent implements OnInit{
     if (!shop.id) {
       // Attempt to retrieve shop from localStorage
       const storedShop = localStorage.getItem('currentShop');
-      this.shopStore.currentShop = storedShop ? JSON.parse(storedShop) : null;
+      if (storedShop) {
+        this.shopStore.currentShop = JSON.parse(storedShop)
+      } else {
+        this.shopService.getShop()
+      }
     }
  }
 }

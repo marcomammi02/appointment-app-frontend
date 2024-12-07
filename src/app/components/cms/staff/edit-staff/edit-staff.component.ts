@@ -88,6 +88,8 @@ export class EditStaffComponent implements OnInit {
       const id = params.get('staffId');
       this.staffId = +id!;
 
+      console.log(this.shopStore.currentShop.id)
+
       if (id) {
         this.getDetail(+id);
         this.availabilityService.findAll(this.shopStore.currentShop.id, this.staffId).subscribe((res: AvailabilityDayDto[]) => {

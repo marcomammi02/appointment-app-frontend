@@ -21,7 +21,6 @@ import {CreateAppointmentDto} from "../../../../dtos/appointments.dto";
 import {AppointmentService} from "../../../../services/appointment.service";
 import {map, Observable, switchMap} from "rxjs";
 import {toDateTime} from "../../../../services/utility.service";
-import { CalendarComponent } from "../calendar.component";
 import { LoadingComponent } from "../../../global/loading/loading.component";
 import { InputTextareaModule } from 'primeng/inputtextarea';
 

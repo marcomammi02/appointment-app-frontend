@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingComponent } from "../../global/loading/loading.component";
 import { CommonModule, NgIf } from '@angular/common';
 import { ServicesService } from '../../../services/services.service';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ShopStore } from '../../../stores/shop.store';
 import { capitalizeFirstLetter, getDayOfWeek } from '../../../services/utility.service';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -46,6 +46,7 @@ export class BookingPageComponent implements OnInit {
     public storeAppointments: StoreAppointments,
     private appointmentService: AppointmentService,
     private availabilitiesService: AvailabilityService,
+    private router: Router
   ) {}
 
   loading: boolean = true
@@ -55,6 +56,8 @@ export class BookingPageComponent implements OnInit {
   serviceId!: number
 
   service?: any
+
+  originalStaffList: any = []
 
   selectedStaff: any = {}
 
@@ -77,9 +80,9 @@ export class BookingPageComponent implements OnInit {
 
   getStaff() {
     this.staffService.getStaff().subscribe(res => {
-      this.staffStore.staffList = res
+      this.originalStaffList = res
       let whoever = {name: 'Qualsiasi'}
-      this.staffStore.staffList = [whoever, ...this.staffStore.staffList]
+      this.staffStore.staffList = [whoever, ...this.originalStaffList]
       this.selectedStaff = whoever
     })
   }
@@ -217,6 +220,26 @@ removeDuplicateSlots(slots: { start: string; end: string }[]): { start: string; 
     }
   });
   return Array.from(uniqueSlots.values()); // Ritorna gli slot come array
+}
+
+goToDataPage(slot: any) {
+  this.storeAppointments.currentHour = slot.start
+  this.storeAppointments.currentEndHour = slot.end
+  if (!this.selectedStaff.id) {
+    this.selectedStaff = this.getCasualStaff(this.originalStaffList)
+  }
+  this.storeAppointments.currentStaff = this.selectedStaff
+  console.log(this.storeAppointments.currentStaff)
+  // this.router.navigate(['/' + this.shopStore.currentShop.id + '/service/' + this.service.id + '/datas'])
+}
+
+// Return casual staff member
+getCasualStaff(staffList: any[]): any {
+  if (!staffList || staffList.length === 0) {
+    return null; // Restituisce null se la lista è vuota o non valida
+  }
+  const randomIndex = Math.floor(Math.random() * staffList.length);
+  return staffList[randomIndex];
 }
 
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;

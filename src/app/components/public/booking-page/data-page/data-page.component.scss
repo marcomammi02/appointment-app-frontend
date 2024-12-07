@@ -1,5 +1,47 @@
 @import "../../../../../styles";
 
+:host ::ng-deep {
+  .p-dropdown, .p-inputnumber-input {
+    border-radius: 10px !important;
+    width: 100% !important;
+
+    &:hover {
+      border-color: #d1d5db;
+    }
+  }
+
+   .staff-label > span,
+   .time-label > span {
+    margin-left: 2rem !important;
+  }
+
+  .p-calendar {
+    width: 100%;
+
+    .p-inputtext {
+      border-radius: 10px !important;
+    }
+  }
+}
+
+input {
+  border-radius: 10px !important;
+  width: 100%;
+
+  &:hover {
+    border-color: #d1d5db;
+  }
+}
+
+label {
+  margin-top: -8px !important;
+}
+
+textarea {
+  resize: none;
+}
+
+
 .container {
     max-width: 700px;
     margin: 0 auto !important;

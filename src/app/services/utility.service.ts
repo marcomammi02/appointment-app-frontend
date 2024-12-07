@@ -12,6 +12,14 @@ export function formatDateToString(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
+// From dateTime to "dd/mm/yyyy"
+export function formatDateToStringDayFirst(date: Date): string {
+  const year = date.getFullYear();
+  const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  const day = ('0' + date.getDate()).slice(-2);
+  return `${day}/${month}/${year}`;
+}
+
 export function toDateTime(inputDay: Date, inputTime: string) {
   const day = formatDateToString(inputDay)
   return `${day}T${inputTime}:00Z`
