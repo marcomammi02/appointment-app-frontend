@@ -1,0 +1,19 @@
+<div class="page w-screen h-screen flex flex-column gap-8 justify-content-center align-items-center">
+
+    <div class="container p-3 shadow-4 h-min text-center">
+        <div class="logo-box">
+            <img [src]="shopStore.currentShop.logo ? shopStore.currentShop.logo : 'app/assets/images/default-logo.png'" alt="Cover">
+        </div>
+        
+        <h2 class="my-3">Appuntamento confermato!</h2>
+        
+        <p>{{formatDateToStringDayFirst(storeAppointments.currentDay)}}</p>
+        <h2>{{getDayOfWeek(storeAppointments.currentDay)}}</h2>
+        <p>{{storeAppointments.currentHour}}</p>
+
+        <p class="mt-3">Ti aspettiamo!</p>
+    
+    </div>
+
+    <app-cancel-btn icon="pi pi-arrow-left" label="Home" [routerLink]="'/' + this.shopStore.currentShop.id"/>
+</div>

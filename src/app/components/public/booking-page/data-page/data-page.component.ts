@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingComponent } from "../../../global/loading/loading.component";
 import { ShopStore } from '../../../../stores/shop.store';
 import { NgIf } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ServicesStore } from '../../../../stores/services.store';
 import { capitalizeFirstLetter, formatDateToStringDayFirst, getDayOfWeek, toDateTime } from '../../../../services/utility.service';
 import { Location } from '@angular/common';
@@ -40,7 +40,8 @@ export class DataPageComponent implements OnInit{
     public storeAppointments: StoreAppointments,
     private formBuilder: FormBuilder,
     private errorService: ErrorService,
-    private appointmentService: AppointmentService
+    private appointmentService: AppointmentService,
+    private router: Router
   ) {}
 
   loading: boolean = false
@@ -111,7 +112,8 @@ export class DataPageComponent implements OnInit{
 
     return this.appointmentService.create(appointment).subscribe(
       res => {
-        console.log(res)
+        console.log('Appointment created')
+        this.router.navigate(['/' + this.shopStore.currentShop.id + '/service/' + this.storeService.currentService.id + '/datas/confirm'])
       },
       err => {
         this.errorService.showError({
