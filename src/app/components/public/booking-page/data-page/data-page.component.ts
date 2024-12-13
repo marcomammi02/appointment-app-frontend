@@ -90,6 +90,7 @@ export class DataPageComponent implements OnInit{
     }
     
     this.creating = true
+    this.shopStore.transparentLoading = true
 
     const v = this.form.value
 
@@ -113,6 +114,7 @@ export class DataPageComponent implements OnInit{
     return this.appointmentService.create(appointment).subscribe(
       res => {
         console.log('Appointment created')
+        this.shopStore.transparentLoading = false
         this.router.navigate(['/' + this.shopStore.currentShop.id + '/service/' + this.storeService.currentService.id + '/datas/confirm'])
       },
       err => {
@@ -121,6 +123,7 @@ export class DataPageComponent implements OnInit{
           message: err.message
         });
         this.creating = false
+        this.shopStore.transparentLoading = false
       }
     );
   }
