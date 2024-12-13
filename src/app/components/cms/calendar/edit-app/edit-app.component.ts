@@ -166,6 +166,7 @@ export class EditAppComponent implements OnInit{
     }
 
     this.editing = true
+    this.shopStore.transparentLoading = true
 
     const v = this.form.value;
 
@@ -190,7 +191,10 @@ export class EditAppComponent implements OnInit{
         return this.appointmentService.update(this.appointmentStore.currentApp.id, appointment);
       })
     ).subscribe(
-      () => this.router.navigate([`/private/${this.shopStore.shopId}/appointments`]),
+      () => {
+        this.editing = false
+        this.shopStore.transparentLoading = false
+      },
       err => {
         this.errorService.showError({
           label: 'Errore',

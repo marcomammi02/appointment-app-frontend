@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginPageComponent } from '../../login-page/login-page.component';
 import { LoadingComponent } from "../../global/loading/loading.component";
 import { NgIf } from '@angular/common';
 import { PrimaryBtnComponent } from '../../global/primary-btn/primary-btn.component';
@@ -10,13 +9,11 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { ShopStore } from '../../../stores/shop.store';
 import { capitalizeFirstLetter } from '../../../services/utility.service';
-import { CancelBtnComponent } from "../../global/cancel-btn/cancel-btn.component";
 import { Router, RouterLink } from '@angular/router';
 import { editShop } from '../../../dtos/shop.dto';
 import { ShopService } from '../../../services/shop.service';
 import { ErrorService, MyError } from '../../../services/error.service';
 import { FileUploadModule } from 'primeng/fileupload';
-import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
 @Component({
@@ -35,7 +32,6 @@ import { ToastModule } from 'primeng/toast';
     FileUploadModule,
     ToastModule
   ],
-  providers: [MessageService],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
@@ -47,7 +43,6 @@ export class ProfileComponent implements OnInit {
     private shopService: ShopService,
     private router: Router,
     private errorService: ErrorService,
-    private messageService: MessageService
   ) {}
 
   loading: boolean = false
@@ -176,6 +171,7 @@ export class ProfileComponent implements OnInit {
     if (this.editing) return;
 
     this.editing = true;
+    this.shopStore.transparentLoading = true
 
     try {
       // Aspetta il completamento degli upload
@@ -199,14 +195,13 @@ export class ProfileComponent implements OnInit {
       // Effettua l'update
       this.shopService.update(shop).subscribe(
         res => {
-          this.messageService.add({ severity: 'success', summary: '', detail: 'Modifiche salvate' })
-
           this.shopStore.currentShop = res
 
           // Salva lo store aggiornato nel localStorage
           localStorage.setItem('currentShop', JSON.stringify(this.shopStore.currentShop));
 
           this.editing = false;
+          this.shopStore.transparentLoading = false
         },
         err => {
           let error: MyError = {
@@ -215,6 +210,7 @@ export class ProfileComponent implements OnInit {
           };
           this.errorService.showError(error);
           this.editing = false;
+          this.shopStore.transparentLoading = false
         }
       );
     } catch (error) {

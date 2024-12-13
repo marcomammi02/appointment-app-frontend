@@ -6,13 +6,23 @@ import {InputTextModule} from "primeng/inputtext";
 import {ToastModule} from 'primeng/toast';
 import {ErrorService} from "./services/error.service";
 import {MessageService, PrimeNGConfig} from "primeng/api";
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import {environment} from "../environments/environment";
+import { LoadingTransparentComponent } from "./components/global/loading-transparent/loading-transparent.component";
+import { ShopStore } from './stores/shop.store';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, FloatLabelModule, InputTextModule, ToastModule, TranslateModule],
+  imports: [
+    RouterOutlet,
+    CommonModule, 
+    FloatLabelModule, 
+    InputTextModule, 
+    ToastModule, 
+    TranslateModule,
+    LoadingTransparentComponent
+  ],
   providers: [MessageService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -20,7 +30,8 @@ import {environment} from "../environments/environment";
 export class AppComponent implements OnInit{
   constructor(
     public errorService: ErrorService,
-    private primengConfig: PrimeNGConfig
+    private primengConfig: PrimeNGConfig,
+    public shopStore: ShopStore
   ) {
     console.log('Production: ' + environment.prod)
   }
