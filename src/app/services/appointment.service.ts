@@ -5,6 +5,7 @@ import {CreateAppointmentDto, UpdateAppointmentDto} from "../dtos/appointments.d
 import {UpdateAvailabilityDto} from "../dtos/availability.dto";
 import {environment} from "../../environments/environment";
 import { StoreAppointments } from "../stores/appointment.store";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class AppointmentService {
     return this.http.post(this.apiUrl, appointment)
   }
 
-  getAppointments(day: string) {
+  getAppointments(day: string): Observable<any> {
     const options = { params: { day: day } }
     return this.http.get(`${this.apiUrl}/shop/${this.shopStore.shopId}`, options)
   }

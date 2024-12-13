@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ShopStore } from '../../../../../stores/shop.store';
 import { capitalizeFirstLetter, formatDateToStringDayFirst, getDayOfWeek } from '../../../../../services/utility.service';
 import { StoreAppointments } from '../../../../../stores/appointment.store';
 import { CancelBtnComponent } from "../../../../global/cancel-btn/cancel-btn.component";
 import { RouterModule } from '@angular/router';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-confirm-app',
@@ -15,11 +17,22 @@ import { RouterModule } from '@angular/router';
   templateUrl: './confirm-app.component.html',
   styleUrl: './confirm-app.component.scss'
 })
-export class ConfirmAppComponent {
+export class ConfirmAppComponent implements OnInit {
   constructor(
     public shopStore: ShopStore,
-    public storeAppointments: StoreAppointments
+    public storeAppointments: StoreAppointments,
+    private location: Location,
   ) {}
+
+  ngOnInit(): void {
+    this.goBack()
+  }
+
+  goBack() {
+    if (!this.shopStore.currentShop.id) {
+      this.location.back()
+    }
+  }
 
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
   protected readonly formatDateToStringDayFirst = formatDateToStringDayFirst;
