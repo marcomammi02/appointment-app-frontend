@@ -46,6 +46,8 @@ export class LoginPageComponent implements OnInit {
 
   async submit() {
     const v = this.form.value;
+
+    this.shopStore.transparentLoading = true
     try {
       const res = await this.authService.login(v.email, v.password).toPromise();
       this.shopStore.shopId = res.shopId;
@@ -53,12 +55,14 @@ export class LoginPageComponent implements OnInit {
       // Save shopId in localstorage
       localStorage.setItem('shopId', this.shopStore.shopId.toString());
       this.router.navigate([`private/${this.shopStore.shopId}`]);
+      this.shopStore.transparentLoading = false
     } catch (error) {
       const err: MyError = {
         label: 'Attenzione',
         message: 'Email o Password errati'
       }
       this.errorService.showError(err)
+      this.shopStore.transparentLoading = false
     }
   }
 }
