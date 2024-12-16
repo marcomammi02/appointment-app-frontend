@@ -5,6 +5,7 @@ import {ShopStore} from "../../../stores/shop.store";
 import {AuthService} from "../../../services/auth.service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
+import { ShopService } from '../../../services/shop.service';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -21,7 +22,8 @@ export class SidebarComponent  {
     private router: Router,
     public shopStore: ShopStore,
     private authService: AuthService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private shopService: ShopService
   ) {
   }
   displaySidebar: boolean = false
@@ -46,6 +48,7 @@ export class SidebarComponent  {
 
       accept: () => {
         this.authService.logout()
+        this.shopService.resetLocalStorage()
         this.router.navigate([`login`])
       }
     });

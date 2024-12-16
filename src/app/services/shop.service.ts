@@ -32,6 +32,20 @@ export class ShopService {
     );
   }
 
+  async getShopPublic() {
+    return this.http.get(`${this.apiUrl}/${this.shopStore.shopId}`).subscribe(
+      (res: any) => {
+        this.shopStore.currentShop = res;
+        
+        // Set currentShop in localStorage
+        localStorage.setItem('currentShopPublic', JSON.stringify(res));
+      },
+      (error) => {
+        console.error('Failed to fetch shop:', error);
+      }
+    );
+  }
+
   update(shop: editShop) {
     return this.http.patch(`${this.apiUrl}/${this.shopStore.shopId}`, shop).pipe(
       finalize(() => this.getShop()) // Refresh shop data after the update
@@ -58,5 +72,10 @@ export class ShopService {
         }
       );
     });
+  }
+
+  resetLocalStorage(): void {
+    localStorage.clear();
+    console.log('Local storage has been reset.');
   }
 }

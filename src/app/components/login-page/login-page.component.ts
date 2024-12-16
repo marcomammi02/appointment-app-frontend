@@ -8,6 +8,7 @@ import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {ShopStore} from "../../stores/shop.store";
 import { ErrorService, MyError } from '../../services/error.service';
+import { ShopService } from '../../services/shop.service';
 
 @Component({
   selector: 'app-login-page',
@@ -28,7 +29,8 @@ export class LoginPageComponent implements OnInit {
     private authService: AuthService,
     private shopStore: ShopStore,
     private router: Router,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private shopService: ShopService
   ) {}
 
   form!: FormGroup
@@ -49,6 +51,7 @@ export class LoginPageComponent implements OnInit {
 
     this.shopStore.transparentLoading = true
     try {
+      this.shopService.resetLocalStorage()
       const res = await this.authService.login(v.email, v.password).toPromise();
       this.shopStore.shopId = res.shopId;
       

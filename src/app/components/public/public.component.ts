@@ -42,7 +42,7 @@ export class PublicComponent implements OnInit {
     const shopIdParam = this.route.snapshot.paramMap.get('shopId');
     this.shopStore.shopId = shopIdParam ? +shopIdParam : 0;
 
-    this.shopService.getShop()
+    this.shopService.getShopPublic()
     
     this.getServices()
   }
