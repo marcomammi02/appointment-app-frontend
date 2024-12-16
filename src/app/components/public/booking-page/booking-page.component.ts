@@ -74,7 +74,10 @@ export class BookingPageComponent implements OnInit {
 
   appointments: any[] = []
 
+  today!: Date
+
   ngOnInit(): void {
+    this.today = new Date
     this.extractServiceIdFromUrl()
     this.getShop()
     this.getService()
@@ -312,6 +315,7 @@ export class BookingPageComponent implements OnInit {
   }
 
   navigateDay(days: number) {
+    if (this.isToday() && days == -1) return
     const newDate = new Date(this.storeAppointments.currentDay);
     newDate.setDate(newDate.getDate() + days);
     this.storeAppointments.currentDay = newDate;
