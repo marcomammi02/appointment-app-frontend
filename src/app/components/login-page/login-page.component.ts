@@ -54,7 +54,7 @@ export class LoginPageComponent implements OnInit {
       this.shopService.resetLocalStorage()
       const res = await this.authService.login(v.email, v.password).toPromise();
       this.shopStore.shopId = res.shopId;
-      
+
       // Save shopId in localstorage
       localStorage.setItem('shopId', this.shopStore.shopId.toString());
       this.router.navigate([`private/${this.shopStore.shopId}`]);

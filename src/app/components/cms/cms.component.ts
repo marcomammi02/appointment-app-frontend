@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SidebarComponent} from "./sidebar/sidebar.component";
-import {ActivatedRoute, RouterOutlet} from "@angular/router";
+import {RouterOutlet} from "@angular/router";
 import {ShopService} from "../../services/shop.service";
 import {ShopStore} from "../../stores/shop.store";
 
@@ -14,40 +14,51 @@ import {ShopStore} from "../../stores/shop.store";
   templateUrl: './cms.component.html',
   styleUrl: './cms.component.scss'
 })
-export class CmsComponent implements OnInit{
+export class CmsComponent implements OnInit {
 
   constructor(
     private shopService: ShopService,
     private shopStore: ShopStore,
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    if (!this.shopStore.shopId) {
-      this.getShopId()
-    }
-    this.getShop()
+    this.initializeShop();
   }
 
-  getShopId() {
-    const storedShopId = localStorage.getItem('shopId');
+  // Metodo principale per inizializzare lo stato dello shop
+  private initializeShop() {
+    const storedShopId = this.loadShopIdFromStorage();
+    const storedShop = this.loadShopFromStorage();
+
+    // Se abbiamo uno shopId o uno shop valido in memoria, li sincronizziamo
     if (storedShopId) {
-      this.shopStore.shopId = Number(storedShopId);
+      this.shopStore.shopId = storedShopId;
+    }
+
+    if (storedShop && storedShop.id) {
+      this.shopStore.currentShop = storedShop;
+    }
+
+    // Se manca lo shop, recuperiamo i dati dal backend
+    if (!this.shopStore.currentShop.id || !this.shopStore.shopId) {
+      this.fetchShopFromService();
     }
   }
 
-  getShop() {
-    // Retrieve shop from ShopStore or fallback to localStorage
-    let shop = this.shopStore.currentShop;
+  // Recupera lo shopId da localStorage
+  private loadShopIdFromStorage(): number | null {
+    const storedShopId = localStorage.getItem('shopId');
+    return storedShopId ? Number(storedShopId) : null;
+  }
 
-    if (!shop.id) {
-      // Attempt to retrieve shop from localStorage
-      const storedShop = localStorage.getItem('currentShop');
-      if (storedShop) {
-        this.shopStore.currentShop = JSON.parse(storedShop)
-      } else {
-        this.shopService.getShop()
-      }
-    }
- }
+  // Recupera lo shop da localStorage
+  private loadShopFromStorage(): any | null {
+    const storedShop = localStorage.getItem('currentShop');
+    return storedShop ? JSON.parse(storedShop) : null;
+  }
+
+  // Recupera i dati dello shop dal servizio
+  private fetchShopFromService() {
+    this.shopService.getShop()
+  };
 }
