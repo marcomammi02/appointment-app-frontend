@@ -123,7 +123,7 @@ export class BookingPageComponent implements OnInit {
     this.appointments = [];
     const step = 15; // Intervallo in minuti per il calcolo degli slot
     this.avLoading = true;
-  
+
     try {
       // Recupera le availabilities
       this.availabilities = await this.availabilitiesService
@@ -133,25 +133,25 @@ export class BookingPageComponent implements OnInit {
           this.storeAppointments.currentDay.getDay()
         )
         .toPromise();
-  
+
       console.log('Availabilities:', this.availabilities);
-  
+
       // Recupera gli appuntamenti
       this.appointments = await this.appointmentService
         .getAppointments(formatDateToString(this.storeAppointments.currentDay))
         .toPromise();
-  
+
       console.log('Appointments:', this.appointments);
-  
+
       // Genera gli slot occupati dagli appuntamenti
       const occupiedSlots: Slot[] = [];
       this.appointments.forEach((appointment) => {
         const slots = this.generateSlotFromAppointment(appointment, step);
         occupiedSlots.push(...slots);
       });
-  
+
       console.log('Occupied Slots:', occupiedSlots);
-  
+
       // Calcola gli slot disponibili per ogni availability
       this.availabilities.forEach((availability) => {
         if (this.service?.duration) {
@@ -166,10 +166,10 @@ export class BookingPageComponent implements OnInit {
           console.warn('Service duration is undefined. Skipping slot generation.');
         }
       });
-  
+
       // Rimuove duplicati dagli slot
       this.slots = this.removeDuplicateSlots(this.slots);
-  
+
       console.log('Available Slots:', this.slots);
       this.loading = false;
       this.avLoading = false;
@@ -189,14 +189,15 @@ export class BookingPageComponent implements OnInit {
     const slots: Slot[] = [];
     const stepMs = step * 60 * 1000; // Step in millisecondi
     const durationMs = serviceDuration * 60 * 1000; // Durata del servizio in millisecondi
-  
+    const now = new Date(); // Ottieni l'orario corrente
+
     const parseTime = (time: string) => {
       const [hours, minutes] = time.split(':').map(Number);
-      const now = new Date();
-      now.setHours(hours, minutes, 0, 0);
-      return now;
+      const date = new Date(); // Usa la data corrente
+      date.setHours(hours, minutes, 0, 0);
+      return date;
     };
-  
+
     const addSlots = (start: Date, end: Date) => {
       let current = start;
       while (current < end) {
@@ -209,32 +210,49 @@ export class BookingPageComponent implements OnInit {
           };
           // Verifica che lo slot non si sovrapponga agli slot occupati
           if (!this.isSlotOccupied(slot, occupiedSlots)) {
-            slots.push(slot);
+            // Se è oggi, mostra solo gli slot futuri
+            if (this.isToday() && current >= now) {
+              slots.push(slot);
+            }
+            // Altrimenti, aggiungi tutti gli slot
+            else if (!this.isToday()) {
+              slots.push(slot);
+            }
           }
         }
         current = new Date(current.getTime() + stepMs);
       }
     };
-  
+
     // Genera slot prima della pausa
     addSlots(parseTime(startTime), parseTime(startBreak || endTime));
-  
+
     // Genera slot dopo la pausa
     if (startBreak && endBreak) {
       addSlots(parseTime(endBreak), parseTime(endTime));
     }
-  
+
     // Ordinare gli slot in base all'orario di inizio
     slots.sort((a, b) => {
       const timeA = new Date(`1970-01-01T${a.start}:00`).getTime();
       const timeB = new Date(`1970-01-01T${b.start}:00`).getTime();
       return timeA - timeB;
     });
-  
+
     return slots;
   }
-  
-  
+
+  // Controlla se il giorno corrente è oggi
+  isToday(): boolean {
+    const today = new Date();
+    const selectedDay = this.storeAppointments.currentDay;
+    return (
+      today.getDate() === selectedDay.getDate() &&
+      today.getMonth() === selectedDay.getMonth() &&
+      today.getFullYear() === selectedDay.getFullYear()
+    );
+  }
+
  // Metodo che verifica se uno slot è occupato, tenendo conto della presenza di più membri dello staff
   isSlotOccupied(slot: Slot, occupiedSlots: Slot[]): boolean {
   const slotStart = new Date(`1970-01-01T${slot.start}:00`);
@@ -244,7 +262,7 @@ export class BookingPageComponent implements OnInit {
   return occupiedSlots.some((occupied) => {
     const occupiedStart = new Date(`1970-01-01T${occupied.start}:00`);
     const occupiedEnd = new Date(`1970-01-01T${occupied.end}:00`);
-    
+
     // Controlla la sovrapposizione tra lo slot e gli slot occupati
     const isOverlapping =
       (slotStart < occupiedEnd && slotEnd > occupiedStart); // Se sovrappone in qualsiasi modo
@@ -252,22 +270,22 @@ export class BookingPageComponent implements OnInit {
     // Se lo slot si sovrappone con uno degli slot occupati e contiene tutti gli stessi staffId
     if (isOverlapping) {
       // Verifica che tutti i membri dello staff nello slot siano già occupati
-      return slot.staffId.every((staffId) => 
+      return slot.staffId.every((staffId) =>
         occupied.staffId.includes(staffId)
       );
     }
-    
+
     return false;
   });
   }
 
-  
+
   generateSlotFromAppointment(appointment: any, step: number): Slot[] {
     const startTime = new Date(appointment.startTime);
     const endTime = new Date(appointment.endTime);
     const durationMs = step * 60 * 1000;
     const occupiedSlots: Slot[] = [];
-  
+
     let current = startTime;
     while (current < endTime) {
       const slotEnd = new Date(current.getTime() + durationMs);
@@ -280,11 +298,11 @@ export class BookingPageComponent implements OnInit {
       }
       current = new Date(current.getTime() + durationMs);
     }
-  
+
     return occupiedSlots;
   }
-  
-  
+
+
   getHourTime(minutes: number): string {
     const hours = Math.floor(minutes / 60);
     const min = minutes % 60;
@@ -314,10 +332,10 @@ export class BookingPageComponent implements OnInit {
   // Metodo per rimuovere duplicati dagli slot
   removeDuplicateSlots(slots: Slot[]): Slot[] {
     const uniqueSlots = new Map<string, Slot>(); // Mappa per tenere traccia degli slot unici
-  
+
     slots.forEach((slot) => {
       const key = `${slot.start}-${slot.end}`; // Crea una chiave unica basata su start e end
-      
+
       if (uniqueSlots.has(key)) {
         // Se la chiave esiste, aggiungi l'ID dello staff all'array esistente
         const existingSlot = uniqueSlots.get(key);
@@ -334,17 +352,17 @@ export class BookingPageComponent implements OnInit {
         uniqueSlots.set(key, { ...slot });
       }
     });
-  
+
     return Array.from(uniqueSlots.values()); // Ritorna gli slot unici come array
   }
-  
+
 
   goToDataPage(slot: any) {
     this.storeAppointments.currentHour = slot.start
     this.storeAppointments.currentEndHour = slot.end
     if (!this.selectedStaff.id) {
       this.storeAppointments.currentStaffId = this.getCasualStaff(slot.staffId)
-    } else { 
+    } else {
       this.storeAppointments.currentStaffId = this.selectedStaff.id
     }
     this.router.navigate(['/' + this.shopStore.currentShop.id + '/service/' + this.service.id + '/datas'])
