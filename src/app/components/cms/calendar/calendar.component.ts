@@ -293,4 +293,5 @@ export class CalendarComponent implements OnInit, OnDestroy {
   protected readonly firstLetter = firstLetter;
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
   protected readonly getDayOfWeek = getDayOfWeek;
+  protected readonly toTime = toTime;
 }

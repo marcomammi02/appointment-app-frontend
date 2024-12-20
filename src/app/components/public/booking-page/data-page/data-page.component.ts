@@ -111,7 +111,7 @@ export class DataPageComponent implements OnInit{
     };
     console.log(appointment)
 
-    return this.appointmentService.create(appointment).subscribe(
+    return this.appointmentService.createPublic(appointment).subscribe(
       res => {
         console.log('Appointment created')
         this.shopStore.transparentLoading = false

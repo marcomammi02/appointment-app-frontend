@@ -12,7 +12,7 @@ import { Observable } from "rxjs";
 })
 export class AppointmentService {
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private shopStore: ShopStore,
     private storeAppointment: StoreAppointments
   ) {}
@@ -21,6 +21,10 @@ export class AppointmentService {
 
   create(appointment: CreateAppointmentDto) {
     return this.http.post(this.apiUrl, appointment)
+  }
+
+  createPublic(appointment: CreateAppointmentDto) {
+    return this.http.post(`${this.apiUrl}/public`, appointment)
   }
 
   getAppointments(day: string): Observable<any> {
