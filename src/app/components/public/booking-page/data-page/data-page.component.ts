@@ -88,7 +88,7 @@ export class DataPageComponent implements OnInit{
       });
       return null
     }
-    
+
     this.creating = true
     this.shopStore.transparentLoading = true
 
@@ -120,7 +120,7 @@ export class DataPageComponent implements OnInit{
       err => {
         this.errorService.showError({
           label: 'Errore',
-          message: err.message
+          message: 'Scegli un\'altro orario, qualcuno ti ha appena rubato il posto!'
         });
         this.creating = false
         this.shopStore.transparentLoading = false
