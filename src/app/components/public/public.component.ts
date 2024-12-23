@@ -34,17 +34,22 @@ export class PublicComponent implements OnInit {
   loading: boolean = true
 
   ngOnInit(): void {
-    this.extractShopIdFromUrl()
+    this.extractSlugFromUrl()
   }
 
-  extractShopIdFromUrl(): void {
-    // Estrapola il parametro `shopId` dall'URL e lo converte in numero
-    const shopIdParam = this.route.snapshot.paramMap.get('shopId');
-    this.shopStore.shopId = shopIdParam ? +shopIdParam : 0;
-
-    this.shopService.getShopPublic()
-    
-    this.getServices()
+  async extractSlugFromUrl() {
+    const slug = this.route.snapshot.paramMap.get('slug');
+    this.shopStore.slug = slug ? slug : "";
+  
+    try {
+      // Aspetta che getShopPublic() sia completata
+      await this.shopService.getShopPublic();
+  
+      // Dopo che getShopPublic è completato, esegui getServices()
+      this.getServices();
+    } catch (error) {
+      console.error('Errore durante il recupero del negozio', error);
+    }
   }
 
   async getServices() {

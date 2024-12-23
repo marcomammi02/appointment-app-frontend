@@ -21,11 +21,11 @@ import { ConfirmAppComponent } from './components/public/booking-page/data-page/
 
 export const routes: Routes = [
   {path: 'login', component: LoginPageComponent},
-  {path: ':shopId', component: PublicComponent},
-  {path: ':shopId/service/:serviceId', component: BookingPageComponent},
-  {path: ':shopId/service/:serviceId/datas', component: DataPageComponent},
-  {path: ':shopId/service/:serviceId/datas/confirm', component: ConfirmAppComponent},
-  {path: 'private/:shopId',
+  {path: ':slug', component: PublicComponent},
+  {path: ':slug/service/:serviceId', component: BookingPageComponent},
+  {path: ':slug/service/:serviceId/datas', component: DataPageComponent},
+  {path: ':slug/service/:serviceId/datas/confirm', component: ConfirmAppComponent},
+  {path: 'private/:slug',
     component: CmsComponent,
     canActivate: [AuthGuard],
     children: [

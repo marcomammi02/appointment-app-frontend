@@ -33,17 +33,21 @@ export class ShopService {
   }
 
   async getShopPublic() {
-    return this.http.get(`${this.apiUrl}/${this.shopStore.shopId}`).subscribe(
-      (res: any) => {
-        this.shopStore.currentShop = res;
-        
-        // Set currentShop in localStorage
-        localStorage.setItem('currentShopPublic', JSON.stringify(res));
-      },
-      (error) => {
-        console.error('Failed to fetch shop:', error);
-      }
-    );
+    try {
+      const res: any = await new Promise<any>((resolve, reject) => {
+        this.http.get(`${this.apiUrl}/slug/${this.shopStore.slug}`).subscribe(
+          (response) => resolve(response),
+          (error) => reject(error)
+        );
+      });
+      this.shopStore.currentShop = res;
+      this.shopStore.shopId = res.id;
+  
+      // Set currentShop in localStorage
+      localStorage.setItem('currentShopPublic', JSON.stringify(res));
+    } catch (error) {
+      console.error('Failed to fetch shop:', error);
+    }
   }
 
   update(shop: editShop) {

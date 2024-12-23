@@ -369,7 +369,7 @@ export class BookingPageComponent implements OnInit {
     } else {
       this.storeAppointments.currentStaffId = this.selectedStaff.id
     }
-    this.router.navigate(['/' + this.shopStore.currentShop.id + '/service/' + this.service.id + '/datas'])
+    this.router.navigate(['/' + this.shopStore.slug + '/service/' + this.service.id + '/datas'])
   }
 
   // Return casual staff member

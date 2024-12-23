@@ -107,7 +107,7 @@ export class DataPageComponent implements OnInit{
       serviceId: this.storeService.currentService.id,
       serviceColor: this.storeService.currentService.color,
       staffId: this.storeAppointments.currentStaffId,
-      shopId: this.shopStore.shopId
+      shopId: this.shopStore.currentShop.id
     };
     console.log(appointment)
 
@@ -115,7 +115,7 @@ export class DataPageComponent implements OnInit{
       res => {
         console.log('Appointment created')
         this.shopStore.transparentLoading = false
-        this.router.navigate(['/' + this.shopStore.currentShop.id + '/service/' + this.storeService.currentService.id + '/datas/confirm'])
+        this.router.navigate(['/' + this.shopStore.slug + '/service/' + this.storeService.currentService.id + '/datas/confirm'])
       },
       err => {
         this.errorService.showError({

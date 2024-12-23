@@ -5,6 +5,7 @@ import {Injectable} from "@angular/core";
 })
 export class ShopStore {
   shopId!: number
+  slug!: string
   workingHours: any = []
   currentShop: any = {}
 
