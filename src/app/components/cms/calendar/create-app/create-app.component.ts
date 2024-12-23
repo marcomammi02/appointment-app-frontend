@@ -128,7 +128,7 @@ export class CreateAppComponent implements OnInit{
   create() {
     if (this.creating) return
 
-    
+
     if (this.form.invalid) {
       this.errorService.showError({
         label: 'Attenzione',
@@ -136,8 +136,10 @@ export class CreateAppComponent implements OnInit{
       });
       return;
     }
-    
+
     this.creating = true
+
+    this.shopStore.transparentLoading = true
 
     const v = this.form.value;
     console.log(v.service)
@@ -163,13 +165,17 @@ export class CreateAppComponent implements OnInit{
         return this.appointmentService.create(appointment);
       })
     ).subscribe(
-      () => this.router.navigate([`/private/${this.shopStore.shopId}/appointments`]),
+      () => {
+        this.router.navigate([`/private/${this.shopStore.shopId}/appointments`])
+        this.shopStore.transparentLoading = false
+      },
       err => {
         this.errorService.showError({
           label: 'Errore',
-          message: err.message
+          message: ''
         });
         this.creating = false
+        this.shopStore.transparentLoading = false
       }
     );
   }

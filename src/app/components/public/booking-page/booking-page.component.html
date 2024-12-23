@@ -41,7 +41,7 @@
     </button>
     <div class="flex align-items-center justify-content-center cursor-pointer w-15rem" (click)="openCalendar(calendar)">
       <p class="ml-5 font-medium">{{ getDayOfWeek(storeAppointments.currentDay) }}</p>
-      <p-calendar #calendar [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy" class="w-10rem" (onSelect)="changeDate()"></p-calendar>
+      <p-calendar #calendar [minDate]="today" [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy" class="w-10rem" (onSelect)="changeDate()"></p-calendar>
     </div>
     <button (click)="navigateDay(1)" class="nav-arrow">
       <i class="pi pi-chevron-right"></i>
