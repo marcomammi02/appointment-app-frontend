@@ -136,7 +136,7 @@ export class EditServiceComponent implements OnInit {
 
     this.servicesService.update(this.currentService.id, service).subscribe(
       res => {
-        this.router.navigate([`/private/${this.shopStore.shopId}/services`])
+        this.router.navigate([`/private/${this.shopStore.slug}/services`])
       },
       err => {
         let error: MyError = {
@@ -153,7 +153,7 @@ export class EditServiceComponent implements OnInit {
     if (this.serviceId != null) {
       this.servicesService.delete(+this.serviceId).subscribe(
         res => {
-          this.router.navigate([`/private/${this.shopStore.shopId}/services`])
+          this.router.navigate([`/private/${this.shopStore.slug}/services`])
         },
         err => console.error(err.message)
       )

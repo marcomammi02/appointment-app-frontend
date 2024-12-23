@@ -3,12 +3,12 @@
 <div *ngIf="!loading">
   <div class="flex justify-content-between mb-3">
     <h1>Servizi</h1>
-    <app-primary-btn icon="pi pi-plus" class="absolute top-0 right-0 p-3" label="Crea Servizio" [routerLink]="'/private/' + shopStore.shopId + '/services/create'"/>
+    <app-primary-btn icon="pi pi-plus" class="absolute top-0 right-0 p-3" label="Crea Servizio" [routerLink]="'/private/' + shopStore.slug + '/services/create'"/>
   </div>
 
   <div class="grid" *ngIf="servicesStore.services.length > 0">
     <div class="col-12 md:col-6 xl:col-4" *ngFor="let service of servicesStore.services">
-      <div class="card p-3 m-2 text-center shadow-4" [routerLink]="'/private/' + shopStore.shopId + '/services/' + service.id">
+      <div class="card p-3 m-2 text-center shadow-4" [routerLink]="'/private/' + shopStore.slug + '/services/' + service.id">
         <div class="color-icon" [ngStyle]="{'background': getServiceColor(service)}"></div>
         <h3>{{capitalizeFirstLetter(service.name)}}</h3>
         <div class="flex justify-content-evenly mt-3">

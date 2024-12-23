@@ -159,7 +159,7 @@ export class CreateStaffComponent implements OnInit {
             this.availabilityService.create(createAvailability).subscribe()
           }
         })
-        this.router.navigate([`/private/${this.shopStore.shopId}/staff`])
+        this.router.navigate([`/private/${this.shopStore.slug}/staff`])
       },
       err => {
         let error: MyError = {

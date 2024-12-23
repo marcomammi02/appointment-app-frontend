@@ -67,7 +67,7 @@ export class CreateAppComponent implements OnInit{
 
   ngOnInit() {
     if (!this.appointmentStore.currentStaff.id) {
-      this.router.navigate([`/private/${this.shopStore.shopId}/appointments`])
+      this.router.navigate([`/private/${this.shopStore.slug}/appointments`])
     }
     this.buildForm()
     this.getServices()
@@ -166,7 +166,7 @@ export class CreateAppComponent implements OnInit{
       })
     ).subscribe(
       () => {
-        this.router.navigate([`/private/${this.shopStore.shopId}/appointments`])
+        this.router.navigate([`/private/${this.shopStore.slug}/appointments`])
         this.shopStore.transparentLoading = false
       },
       err => {

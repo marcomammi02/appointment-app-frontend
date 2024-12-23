@@ -3,7 +3,7 @@
 <div *ngIf="!loading">
   <div class="flex justify-content-between mb-3">
     <div class="flex sm:align-items-center gap-2 mb-5 flex-column sm:flex-row">
-      <h1 class="cursor-pointer" [routerLink]="'/private/' + shopStore.shopId + '/appointments'">Appuntamenti</h1>
+      <h1 class="cursor-pointer" [routerLink]="'/private/' + shopStore.slug + '/appointments'">Appuntamenti</h1>
       <i class="pi pi-angle-right hidden sm:block" style="font-size: 1.5rem"></i>
       <h2>{{capitalizeFirstLetter(appointmentStore.currentApp.customerLastName)}} {{capitalizeFirstLetter(appointmentStore.currentApp.customerName)}}</h2>
     </div>
@@ -110,7 +110,7 @@
   </form>
 
   <div class="flex justify-content-end gap-3 mt-5">
-    <app-cancel-btn icon="pi pi-times" label="Annulla" [routerLink]="'/private/' + shopStore.shopId + '/appointments'"/>
+    <app-cancel-btn icon="pi pi-times" label="Annulla" [routerLink]="'/private/' + shopStore.slug + '/appointments'"/>
     <app-primary-btn icon="pi pi-check" label="Conferma" class="block w-min" (click)="edit()"/>
   </div>
 </div>

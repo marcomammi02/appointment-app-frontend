@@ -93,7 +93,7 @@ export class EditAppComponent implements OnInit{
     const app = this.appointmentStore.currentApp;
     console.log(app)
     if (!app.id) {
-      this.router.navigate([`/private/${this.shopStore.shopId}/appointments`])
+      this.router.navigate([`/private/${this.shopStore.slug}/appointments`])
       return
     }
 
@@ -226,7 +226,7 @@ export class EditAppComponent implements OnInit{
 
   delete() {
    return this.appointmentService.delete(this.appointmentStore.currentApp.id).subscribe(res => {
-      this.router.navigate([`/private/${this.shopStore.shopId}/appointments`])
+      this.router.navigate([`/private/${this.shopStore.slug}/appointments`])
      }
    )
   }

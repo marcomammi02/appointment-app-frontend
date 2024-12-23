@@ -29,7 +29,7 @@ export class SidebarComponent  {
   displaySidebar: boolean = false
 
   navigate(label: string) {
-    this.router.navigate([`private/${this.shopStore.shopId}/${label}`])
+    this.router.navigate([`private/${this.shopStore.slug}/${label}`])
     this.displaySidebar = false
   }
 

@@ -203,7 +203,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if (!this.checkStaffAvailability(hour, staff.id)) return
     this.storeAppointments.currentHour = hour
     this.storeAppointments.currentStaff = staff
-    this.router.navigate([`/private/${this.shopStore.shopId}/appointments/create`])
+    this.router.navigate([`/private/${this.shopStore.slug}/appointments/create`])
   }
 
   goToAppointment(app: any, hour: string, staff: any) {
@@ -211,7 +211,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.storeAppointments.currentHour = hour
     this.storeAppointments.currentStaff = staff
     this.storeAppointments.currentApp = app
-    this.router.navigate([`/private/${this.shopStore.shopId}/appointments/${app.id}`])
+    this.router.navigate([`/private/${this.shopStore.slug}/appointments/${app.id}`])
   }
 
   getAppHeight(app: any) {

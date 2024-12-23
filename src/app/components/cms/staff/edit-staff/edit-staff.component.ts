@@ -219,7 +219,7 @@ export class EditStaffComponent implements OnInit {
             this.availabilityService.update(av.id, updateAvailability).subscribe()
           }
         })
-        this.router.navigate([`/private/${this.shopStore.shopId}/staff`])
+        this.router.navigate([`/private/${this.shopStore.slug}/staff`])
       },
       err => {
         let error: MyError = {
@@ -237,7 +237,7 @@ export class EditStaffComponent implements OnInit {
       this.staffService.delete(+this.staffId).subscribe(
         res => {
           this.availabilityService.deleteMany(this.staffId).subscribe()
-          this.router.navigate([`/private/${this.shopStore.shopId}/staff`])
+          this.router.navigate([`/private/${this.shopStore.slug}/staff`])
 
         },
         err => console.error(err.message)

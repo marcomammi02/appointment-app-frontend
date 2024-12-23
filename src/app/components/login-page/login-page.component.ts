@@ -54,10 +54,12 @@ export class LoginPageComponent implements OnInit {
       this.shopService.resetLocalStorage()
       const res = await this.authService.login(v.email, v.password).toPromise();
       this.shopStore.shopId = res.shopId;
+      this.shopStore.slug = res.slug
 
-      // Save shopId in localstorage
+      // Save shopId and slug in localstorage
       localStorage.setItem('shopId', this.shopStore.shopId.toString());
-      this.router.navigate([`private/${this.shopStore.shopId}`]);
+      localStorage.setItem('slug', this.shopStore.slug);
+      this.router.navigate([`private/${this.shopStore.slug}`]);
       this.shopStore.transparentLoading = false
     } catch (error) {
       const err: MyError = {

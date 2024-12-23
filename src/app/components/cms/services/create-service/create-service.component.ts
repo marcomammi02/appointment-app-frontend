@@ -92,7 +92,7 @@ export class CreateServiceComponent implements OnInit {
 
     this.servicesService.create(service).subscribe(
       res => {
-        this.router.navigate([`/private/${this.shopStore.shopId}/services`])
+        this.router.navigate([`/private/${this.shopStore.slug}/services`])
       },
       err => {
         let error: MyError = {

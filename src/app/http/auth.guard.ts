@@ -20,14 +20,15 @@ export class AuthGuard implements CanActivate {
       return false;
     }
 
-    const routeShopId = +route.params['shopId'];
-    const storeShopId = +localStorage.getItem('shopId')
+    const routeSlug = route.params['slug'];
+    const storeSlug = localStorage.getItem('slug')
 
 
     // Controlla se gli ID corrispondono
-    if (routeShopId !== storeShopId) {
+    if (routeSlug !== storeSlug) {
       this.authService.logout(); // Effettua il logout
       localStorage.removeItem('shopId')
+      localStorage.removeItem('slug')
       this.router.navigate(['/login']); // Reindirizza alla pagina di login
       return false;
     }
