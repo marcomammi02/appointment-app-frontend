@@ -31,7 +31,7 @@ export class SidebarComponent  {
   navigate(label: string) {
     this.router.navigate([`private/${this.shopStore.slug}/${label}`])
     this.displaySidebar = false
-  }
+  } 
 
   logout() {
     this.confirmationService.confirm({

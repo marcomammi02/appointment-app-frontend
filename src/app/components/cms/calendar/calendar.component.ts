@@ -90,7 +90,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   async getAvailabilitiesByDay() {
     this.availabilities = []
     try {
-      console.log('ShopId: ', this.shopStore.currentShop.id)
       this.availabilities = await this.availabilitiesService.findAll(this.shopStore.shopId, undefined, this.storeAppointments.currentDay.getDay()).toPromise();
     } catch (error) {
       console.log(error)
@@ -119,26 +118,41 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes();
-
-    // Adatta l'altezza per il tuo layout (es. 80px per ogni ora)
-    const hourHeight = (33 * 4);
+  
+    console.log(hours, minutes);
+  
+    // Adatta l'altezza per il tuo layout (es. 33px per quarto d'ora)
+    const hourHeight = 33 * 4;
     const minuteHeight = hourHeight / 60;
-
-    // Calcola la posizione in pixel
-    const shortedHours = hours - timeStringToHour(this.shopStore.workingHours[0])
-    if (hours < timeStringToHour(this.shopStore.workingHours[0])) {
-      this.markerOpacity = 0
-      return
+  
+    // Converte il primo orario di lavoro in ore e minuti
+    const [startHour, startMinute] = this.shopStore.workingHours[0]
+      .split(':')
+      .map((part: string) => parseInt(part, 10));
+  
+    // Confronta l'ora corrente con l'inizio dell'orario di lavoro
+    const shortedHours = hours - startHour;
+    const shortedMinutes = minutes - startMinute;
+  
+    // Controlla se il marker è fuori dall'orario lavorativo
+    if (hours < startHour || (hours === startHour && minutes < startMinute)) {
+      this.markerOpacity = 0;
+      return;
     }
-    if (hours >= timeStringToHour(this.shopStore.workingHours[this.shopStore.workingHours.length - 1])) {
-      this.markerOpacity = 0
-      return
+  
+    const endHour = timeStringToHour(this.shopStore.workingHours[this.shopStore.workingHours.length - 1]);
+    if (hours > endHour || (hours === endHour && minutes > 0)) {
+      this.markerOpacity = 0;
+      return;
     }
-
-    const position = (shortedHours * hourHeight + minutes * minuteHeight) + 40;
-
+  
+    // Calcola la posizione in pixel (considera ore e minuti dall'inizio della giornata lavorativa)
+    const position = (shortedHours * hourHeight + shortedMinutes * minuteHeight) + 40;
+    console.log(position);
+  
     this.currentTimePosition = `${position}px`;
   }
+  
 
   @ViewChild('scrollableContainer') scrollableContainer?: ElementRef;
 
@@ -203,7 +217,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if (!this.checkStaffAvailability(hour, staff.id)) return
     this.storeAppointments.currentHour = hour
     this.storeAppointments.currentStaff = staff
-    this.router.navigate([`/private/${this.shopStore.slug}/appointments/create`])
+    this.router.navigate([`/private/${this.shopStore.shopId}/appointments/create`])
   }
 
   goToAppointment(app: any, hour: string, staff: any) {
@@ -211,7 +225,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.storeAppointments.currentHour = hour
     this.storeAppointments.currentStaff = staff
     this.storeAppointments.currentApp = app
-    this.router.navigate([`/private/${this.shopStore.slug}/appointments/${app.id}`])
+    this.router.navigate([`/private/${this.shopStore.shopId}/appointments/${app.id}`])
   }
 
   getAppHeight(app: any) {
