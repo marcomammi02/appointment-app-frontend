@@ -59,6 +59,7 @@
           <p-dropdown
           [options]="this.servicesStore.services"
           formControlName="service"
+          (onChange)="getServiceDuration(form.value.service)"
           optionLabel="name"
           id="service"/>
           <label for="service">Servizio *</label>
@@ -77,26 +78,40 @@
       </div>
     </div>
     
+    <div class="col-6">
+      <p-floatLabel>
+        <p-calendar
+        formControlName="day"
+        readonlyInput
+        dateFormat="dd/mm/yy"
+        id="day" />
+        <label for="day">Giorno *</label>
+      </p-floatLabel>
+    </div>
+    
     <div class="grid">
       <div class="col-5">
         <p-floatLabel>
-          <p-calendar
-          formControlName="day"
-          readonlyInput
-          dateFormat="dd/mm/yy"
-          id="day" />
-          <label for="day">Giorno *</label>
-        </p-floatLabel>
-      </div>
-      
-      <div class="col-7">
-        <p-floatLabel class="time-label">
           <p-dropdown
           [options]="this.shopStore.workingHours"
+          (onChange)="getServiceDuration(form.value.service)"
           formControlName="startTime"
           id="startTime"/>
           <label for="startTime">Orario *</label>
         </p-floatLabel>
+      </div>
+      
+      <div class="col-7">
+        <p-floatLabel class="duration-label">
+          <p-dropdown
+          [options]="servicesStore.durations"
+          formControlName="duration"
+          (onChange)="getEndtime(form.value.startTime, form.value.service, form.value.duration)"
+          optionLabel="name"
+          id="float-label"/>
+          <label for="float-label">Durata *</label>
+        </p-floatLabel>
+        <p *ngIf="endTime" class=" mt-2 mr-2 text-right text-xs">Termina alle {{ endTime }}</p>
       </div>
     </div>
   </form>

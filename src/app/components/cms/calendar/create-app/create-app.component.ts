@@ -19,7 +19,7 @@ import {StoreAppointments} from "../../../../stores/appointment.store";
 import {ErrorService} from "../../../../services/error.service";
 import {CreateAppointmentDto} from "../../../../dtos/appointments.dto";
 import {AppointmentService} from "../../../../services/appointment.service";
-import {map, Observable, switchMap} from "rxjs";
+import {map, Observable, of, switchMap} from "rxjs";
 import {toDateTime} from "../../../../services/utility.service";
 import { LoadingComponent } from "../../../global/loading/loading.component";
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -62,8 +62,10 @@ export class CreateAppComponent implements OnInit{
   day!: Date
 
   creating: boolean = false
-
+  duration: number = 0
   loading: boolean = true
+
+  endTime?: string
 
   ngOnInit() {
     if (!this.appointmentStore.currentStaff.id) {
@@ -84,26 +86,37 @@ export class CreateAppComponent implements OnInit{
       service: [null, Validators.required],
       staff: [this.appointmentStore.currentStaff, Validators.required],
       startTime: [this.appointmentStore.currentHour, Validators.required],
+      duration: [this.findDuration(this.duration), Validators.required],
       day: [this.appointmentStore.currentDay, Validators.required]
     })
   }
 
-  getEndtime(startTime: string, serviceId: number): Observable<string> {
+  findDuration(duration: number) {
+    return this.servicesStore.durations.find(d => d.minutes == duration)
+  }
+
+
+  getServiceDuration(service: any) {
+    this.form.patchValue({
+      duration: this.findDuration(service.duration),
+    })
+
+    this.getEndtime(this.form.value.startTime, this.form.value.service, this.form.value.duration)
+  }
+
+  getEndtime(startTime: string, service: any, duration: any): Observable<string> {
     const [hours, minutes] = startTime.split(':').map(Number);
     const startMinutes = hours * 60 + minutes;
 
-    return this.servicesService.getDetail(serviceId).pipe(
-      map((res: any) => {
-        const duration = res.duration;
-        const endMinutes = startMinutes + duration;
+    const serviceDuration = service.duration;
+    const endMinutes = duration ? startMinutes + duration.minutes : startMinutes + serviceDuration;
 
-        const endHours = Math.floor(endMinutes / 60);
-        const endMins = endMinutes % 60;
-        const formattedEndTime = `${String(endHours).padStart(2, '0')}:${String(endMins).padStart(2, '0')}`;
+    const endHours = Math.floor(endMinutes / 60);
+    const endMins = endMinutes % 60;
+    const formattedEndTime = `${String(endHours).padStart(2, '0')}:${String(endMins).padStart(2, '0')}`;
 
-        return formattedEndTime;
-      })
-    );
+    this.endTime = formattedEndTime
+    return of(formattedEndTime);
   }
 
   async getServices() {
@@ -144,7 +157,7 @@ export class CreateAppComponent implements OnInit{
     const v = this.form.value;
     console.log(v.service)
 
-    this.getEndtime(v.startTime, v.service.id).pipe(
+    this.getEndtime(v.startTime, v.service, v.duration).pipe(
       switchMap(endTime => {
         const appointment: CreateAppointmentDto = {
           customerName: v.name,

@@ -118,9 +118,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes();
-  
-    console.log(hours, minutes);
-  
+    
     // Adatta l'altezza per il tuo layout (es. 33px per quarto d'ora)
     const hourHeight = 33 * 4;
     const minuteHeight = hourHeight / 60;
@@ -148,7 +146,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   
     // Calcola la posizione in pixel (considera ore e minuti dall'inizio della giornata lavorativa)
     const position = (shortedHours * hourHeight + shortedMinutes * minuteHeight) + 40;
-    console.log(position);
   
     this.currentTimePosition = `${position}px`;
   }
@@ -217,7 +214,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if (!this.checkStaffAvailability(hour, staff.id)) return
     this.storeAppointments.currentHour = hour
     this.storeAppointments.currentStaff = staff
-    this.router.navigate([`/private/${this.shopStore.shopId}/appointments/create`])
+    this.router.navigate([`/private/${this.shopStore.slug}/appointments/create`])
   }
 
   goToAppointment(app: any, hour: string, staff: any) {
@@ -225,7 +222,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.storeAppointments.currentHour = hour
     this.storeAppointments.currentStaff = staff
     this.storeAppointments.currentApp = app
-    this.router.navigate([`/private/${this.shopStore.shopId}/appointments/${app.id}`])
+    this.router.navigate([`/private/${this.shopStore.slug}/appointments/${app.id}`])
   }
 
   getAppHeight(app: any) {
