@@ -53,7 +53,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   loading: boolean = true
 
-  currentTimePosition: string = '0px';
+  currentTimePosition: string = '';
   markerOpacity: number = 1
   intervalId: any;
 
@@ -145,7 +145,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
 
     // Calcola la posizione in pixel (considera ore e minuti dall'inizio della giornata lavorativa)
-    const position = (shortedHours * hourHeight + shortedMinutes * minuteHeight) + 40;
+    const position = (shortedHours * hourHeight + shortedMinutes * minuteHeight);
 
     this.currentTimePosition = `${position}px`;
   }
@@ -299,10 +299,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   goToToday() {
     this.storeAppointments.currentDay = new Date
     this.ngOnInit()
-  }
-
-  getMarkerWidth() {
-    return`${(this.storeStaff.staffList.length * 160) + 60}px`
   }
 
   protected readonly firstLetter = firstLetter;

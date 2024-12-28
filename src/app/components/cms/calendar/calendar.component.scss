@@ -176,8 +176,15 @@ tr:last-child td {
 
 .time-marker {
   position: absolute;
-  overflow: visible;
   height: 2px;
-  background-color: #ff6200; // Colore della linea
+  background-color: #ff6200; /* Colore della linea */
   z-index: 10;
+
+  /* Adatta la larghezza alla tabella interna */
+  left: 0;
+  width: 100%;
+  transform: translateX(0);
+
+  /* Segue lo scroll orizzontale */
+  pointer-events: none;
 }
