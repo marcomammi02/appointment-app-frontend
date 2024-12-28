@@ -118,38 +118,38 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes();
-    
+
     // Adatta l'altezza per il tuo layout (es. 33px per quarto d'ora)
     const hourHeight = 33 * 4;
     const minuteHeight = hourHeight / 60;
-  
+
     // Converte il primo orario di lavoro in ore e minuti
     const [startHour, startMinute] = this.shopStore.workingHours[0]
       .split(':')
       .map((part: string) => parseInt(part, 10));
-  
+
     // Confronta l'ora corrente con l'inizio dell'orario di lavoro
     const shortedHours = hours - startHour;
     const shortedMinutes = minutes - startMinute;
-  
+
     // Controlla se il marker è fuori dall'orario lavorativo
     if (hours < startHour || (hours === startHour && minutes < startMinute)) {
       this.markerOpacity = 0;
       return;
     }
-  
+
     const endHour = timeStringToHour(this.shopStore.workingHours[this.shopStore.workingHours.length - 1]);
     if (hours > endHour || (hours === endHour && minutes > 0)) {
       this.markerOpacity = 0;
       return;
     }
-  
+
     // Calcola la posizione in pixel (considera ore e minuti dall'inizio della giornata lavorativa)
     const position = (shortedHours * hourHeight + shortedMinutes * minuteHeight) + 40;
-  
+
     this.currentTimePosition = `${position}px`;
   }
-  
+
 
   @ViewChild('scrollableContainer') scrollableContainer?: ElementRef;
 
@@ -299,6 +299,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
   goToToday() {
     this.storeAppointments.currentDay = new Date
     this.ngOnInit()
+  }
+
+  getMarkerWidth() {
+    return`${(this.storeStaff.staffList.length * 160) + 60}px`
   }
 
   protected readonly firstLetter = firstLetter;

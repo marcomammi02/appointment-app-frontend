@@ -31,7 +31,7 @@
     <table *ngIf="storeAppointments.appointments">
 
       <!-- Time marker line -->
-      <div class="time-marker" id="time-marker" *ngIf="isToday(storeAppointments.currentDay)" [ngStyle]="{ top: currentTimePosition, opacity: markerOpacity }"></div>
+      <div class="time-marker" id="time-marker" *ngIf="isToday(storeAppointments.currentDay)" [ngStyle]="{ top: currentTimePosition, opacity: markerOpacity, width: getMarkerWidth()}"></div>
 
       <thead>
         <tr>
