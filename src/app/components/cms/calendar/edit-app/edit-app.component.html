@@ -49,43 +49,18 @@
     <div>
       <p-floatLabel>
             <textarea
-              formControlName="notes"
-              id="float-input"
-              rows="8" cols="30"
-              pInputTextarea>
-            </textarea>
-        <label for="float-input">Note </label>
-      </p-floatLabel>
-    </div>
-
-    <p>Dati dell'appuntamento</p>
-
-    <div class="grid">
-      <div class="col-7">
-        <p-floatLabel >
-          <p-dropdown
-          [options]="this.servicesStore.services"
-          formControlName="service"
-          optionLabel="name"
-          id="service"/>
-          <label for="service">Servizio *</label>
+            formControlName="notes"
+            id="float-input"
+            rows="8" cols="30"
+            pInputTextarea>
+          </textarea>
+          <label for="float-input">Note </label>
         </p-floatLabel>
       </div>
 
-      <div class="col-5">
-        <p-floatLabel class="staff-label">
-          <p-dropdown
-          [options]="this.staffStore.staffList"
-          formControlName="staff"
-          optionLabel="name"
-          id="staffId"/>
-          <label for="staffId">Staff *</label>
-        </p-floatLabel>
-      </div>
-    </div>
+      <p>Dati dell'appuntamento</p>
 
-    <div class="grid">
-      <div class="col-5">
+      <div>
         <p-floatLabel>
           <p-calendar
           formControlName="day"
@@ -96,14 +71,55 @@
         </p-floatLabel>
       </div>
 
-      <div class="col-7">
+      <div class="grid">
+        <div class="col-7">
+          <p-floatLabel >
+            <p-dropdown
+            [options]="this.servicesStore.services"
+            formControlName="service"
+            (onChange)="getServiceDuration(form.value.service)"
+            optionLabel="name"
+            id="service"/>
+            <label for="service">Servizio *</label>
+          </p-floatLabel>
+        </div>
+
+        <div class="col-5">
+          <p-floatLabel class="staff-label">
+            <p-dropdown
+            [options]="this.staffStore.staffList"
+            formControlName="staff"
+            optionLabel="name"
+            id="staffId"/>
+            <label for="staffId">Staff *</label>
+          </p-floatLabel>
+        </div>
+      </div>
+
+
+    <div class="grid">
+      <div class="col-5">
         <p-floatLabel class="time-label">
           <p-dropdown
           [options]="this.shopStore.workingHours"
+          (onChange)="getEndtime(form.value.startTime, form.value.service, form.value.duration)"
           formControlName="startTime"
           id="startTime"/>
           <label for="startTime">Orario *</label>
         </p-floatLabel>
+      </div>
+
+      <div class="col-7">
+        <p-floatLabel class="duration-label">
+          <p-dropdown
+          [options]="servicesStore.durations"
+          formControlName="duration"
+          (onChange)="getEndtime(form.value.startTime, form.value.service, form.value.duration)"
+          optionLabel="name"
+          id="float-label"/>
+          <label for="float-label">Durata *</label>
+        </p-floatLabel>
+        <p *ngIf="endTime" class=" mt-2 mr-2 text-right text-xs">Termina alle {{ endTime }}</p>
       </div>
     </div>
 

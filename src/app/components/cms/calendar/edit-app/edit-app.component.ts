@@ -15,7 +15,7 @@ import {StoreAppointments} from "../../../../stores/appointment.store";
 import {ErrorService} from "../../../../services/error.service";
 import {Router, RouterLink} from "@angular/router";
 import {AppointmentService} from "../../../../services/appointment.service";
-import {map, Observable, switchMap} from "rxjs";
+import {map, Observable, of, switchMap} from "rxjs";
 import {CreateAppointmentDto} from "../../../../dtos/appointments.dto";
 import {capitalizeFirstLetter, toDateTime} from "../../../../services/utility.service";
 import {DeleteBtnComponent} from "../../../global/delete-btn/delete-btn.component";
@@ -69,7 +69,11 @@ export class EditAppComponent implements OnInit{
 
   editing: boolean = false
 
+  duration: number = 0
+
   loading: boolean = true
+
+  endTime?: string
 
   ngOnInit() {
     this.buildForm()
@@ -86,6 +90,7 @@ export class EditAppComponent implements OnInit{
       notes: [''],
       service: ['', Validators.required],
       staff: [this.appointmentStore.currentStaff, Validators.required],
+      duration: [this.findDuration(this.duration), Validators.required],
       startTime: [this.appointmentStore.currentHour, Validators.required],
       day: [this.appointmentStore.currentDay, Validators.required]
     });
@@ -100,7 +105,7 @@ export class EditAppComponent implements OnInit{
     this.servicesService.getDetail(app.serviceId).subscribe({
       next: (res) => {
       const service = res;
-      console.log()
+      console.log(app)
 
       this.form.patchValue({
         name: app.customerName,
@@ -109,11 +114,13 @@ export class EditAppComponent implements OnInit{
         email: app.customerEmail,
         notes: app.notes,
         service: service,
+        duration: this.findDuration(this.getDurationFromAppData(app.startTime, app.endTime)),
         staffId: this.appointmentStore.currentStaff,
         startTime: this.appointmentStore.currentHour,
         day: this.appointmentStore.currentDay
       });
 
+      this.getEndtime(this.form.value.startTime, this.form.value.service, this.form.value.duration)
       this.loading = false
     },
     error: (err) => {
@@ -123,23 +130,52 @@ export class EditAppComponent implements OnInit{
   });
   }
 
-  getEndtime(startTime: string, serviceId: number): Observable<string> {
-    const [hours, minutes] = startTime.split(':').map(Number);
-    const startMinutes = hours * 60 + minutes;
-
-    return this.servicesService.getDetail(serviceId).pipe(
-      map((res: any) => {
-        const duration = res.duration;
-        const endMinutes = startMinutes + duration;
-
-        const endHours = Math.floor(endMinutes / 60);
-        const endMins = endMinutes % 60;
-        const formattedEndTime = `${String(endHours).padStart(2, '0')}:${String(endMins).padStart(2, '0')}`;
-
-        return formattedEndTime;
-      })
-    );
+  findDuration(duration: number) {
+    return this.servicesStore.durations.find(d => d.minutes == duration)
   }
+
+  // Return duration froma startTime and endTime
+  getDurationFromAppData(startTime: any, endTime: any): number {
+    // Converti i valori in oggetti Date, se non lo sono già
+    const start = startTime instanceof Date ? startTime : new Date(startTime);
+    const end = endTime instanceof Date ? endTime : new Date(endTime);
+
+    // Controlla che i valori siano validi
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      throw new Error("Invalid Date: startTime and endTime must be valid Date objects or strings");
+    }
+
+    // Calcola la differenza in millisecondi
+    const durationMs = end.getTime() - start.getTime();
+
+    // Converti i millisecondi in minuti
+    const durationMinutes = durationMs / (1000 * 60);
+
+    return Math.max(0, durationMinutes); // Ritorna almeno 0 per evitare durate negative
+  }
+
+  getServiceDuration(service: any) {
+    this.form.patchValue({
+      duration: this.findDuration(service.duration),
+    })
+
+    this.getEndtime(this.form.value.startTime, this.form.value.service, this.form.value.duration)
+  }
+
+  getEndtime(startTime: string, service: any, duration: any): Observable<string> {
+      const [hours, minutes] = startTime.split(':').map(Number);
+      const startMinutes = hours * 60 + minutes;
+
+      const serviceDuration = service.duration;
+      const endMinutes = duration ? startMinutes + duration.minutes : startMinutes + serviceDuration;
+
+      const endHours = Math.floor(endMinutes / 60);
+      const endMins = endMinutes % 60;
+      const formattedEndTime = `${String(endHours).padStart(2, '0')}:${String(endMins).padStart(2, '0')}`;
+
+      this.endTime = formattedEndTime
+      return of(formattedEndTime);
+    }
 
   getServices() {
     this.servicesService.getServices().subscribe(res => {
@@ -170,7 +206,7 @@ export class EditAppComponent implements OnInit{
 
     const v = this.form.value;
 
-    this.getEndtime(v.startTime, v.service.id).pipe(
+    this.getEndtime(v.startTime, v.service, v.duration).pipe(
       switchMap(endTime => {
         const appointment: CreateAppointmentDto = {
           customerName: v.name,
@@ -194,6 +230,7 @@ export class EditAppComponent implements OnInit{
       () => {
         this.editing = false
         this.shopStore.transparentLoading = false
+        this.router.navigate([`/private/${this.shopStore.slug}/appointments`])
       },
       err => {
         this.errorService.showError({
