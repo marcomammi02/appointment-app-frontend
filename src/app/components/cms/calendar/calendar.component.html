@@ -40,7 +40,7 @@
       <tbody class="relative">
 
         <!-- Time marker line -->
-        <div class="time-marker" id="time-marker" *ngIf="isToday(storeAppointments.currentDay)" [ngStyle]="{ top: currentTimePosition, opacity: markerOpacity}"></div>
+        <div class="time-marker" id="time-marker" *ngIf="isToday(storeAppointments.currentDay)" [ngStyle]="{ top: 0, opacity: markerOpacity}"></div>
 
         <tr *ngFor="let hour of shopStore.workingHours">
           <th class="hour-tag fixed-column"><h4 class="{{getHourClass(hour)}}">{{ hour }}</h4></th>
