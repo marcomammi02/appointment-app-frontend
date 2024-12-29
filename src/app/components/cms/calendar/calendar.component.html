@@ -37,7 +37,7 @@
           <th class="name-tag fixed-header" *ngFor="let staff of storeStaff.staffList"><h4>{{ staff.name }}</h4></th>
         </tr>
       </thead>
-      <tbody class="relative">
+      <tbody>
 
         <!-- Time marker line -->
         <div class="time-marker" id="time-marker" *ngIf="isToday(storeAppointments.currentDay)" [ngStyle]="{ top: 0, opacity: markerOpacity}"></div>

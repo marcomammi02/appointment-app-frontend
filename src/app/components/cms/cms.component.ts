@@ -28,7 +28,6 @@ export class CmsComponent implements OnInit {
   // Metodo principale per inizializzare lo stato dello shop
   private initializeShop() {
     const storedShopId = this.loadShopIdFromStorage();
-    const storedShop = this.loadShopFromStorage();
     const storedSlug = this.loadSlugFromStorage();
 
     // Se abbiamo uno shopId o uno shop valido in memoria, li sincronizziamo
@@ -39,10 +38,6 @@ export class CmsComponent implements OnInit {
     // Se abbiamo uno slug in memoria lo sincronizziamo
     if (storedSlug) {
       this.shopStore.slug = storedSlug;
-    }
-
-    if (storedShop && storedShop.id) {
-      this.shopStore.currentShop = storedShop;
     }
 
     // Se manca lo shop, recuperiamo i dati dal backend
@@ -61,12 +56,6 @@ export class CmsComponent implements OnInit {
   private loadSlugFromStorage(): string | null {
     const storedSlug = localStorage.getItem('slug');
     return storedSlug ? storedSlug : null
-  }
-
-  // Recupera lo shop da localStorage
-  private loadShopFromStorage(): any | null {
-    const storedShop = localStorage.getItem('currentShop');
-    return storedShop ? JSON.parse(storedShop) : null;
   }
 
   // Recupera i dati dello shop dal servizio
