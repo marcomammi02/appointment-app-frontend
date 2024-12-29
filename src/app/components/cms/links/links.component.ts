@@ -6,6 +6,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { ShopStore } from '../../../stores/shop.store';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @Component({
   selector: 'app-links',
@@ -16,7 +17,8 @@ import { ShopStore } from '../../../stores/shop.store';
     NgIf,
     FloatLabelModule,
     InputTextModule,
-    FormsModule
+    FormsModule,
+    QRCodeModule
   ],
   templateUrl: './links.component.html',
   styleUrl: './links.component.scss'

@@ -10,7 +10,7 @@
   <div class="grid">
     <div class="col-10">
       <p-floatLabel>
-        <input pInputText id="link" [(ngModel)]="link"/>
+        <input pInputText id="link" readonly [(ngModel)]="link"/>
         <label for="link">Link</label>
       </p-floatLabel>
     </div>
@@ -21,5 +21,22 @@
       </a>
     </div>
   </div>
+
+  <qrcode
+    [qrdata]="link"
+    [allowEmptyString]="true"
+    [ariaLabel]="'QR Code image with the following content...'"
+    [cssClass]="'center'"
+    [colorDark]="'#000000ff'"
+    [colorLight]="'#ffffffff'"
+    [elementType]="'canvas'"
+    [errorCorrectionLevel]="'M'"
+    [imageSrc]="shopStore.currentShop.logo"
+    [imageHeight]="100"
+    [imageWidth]="100"
+    [margin]="4"
+    [scale]="1"
+    [width]="250"
+  ></qrcode>
 
 </div>
