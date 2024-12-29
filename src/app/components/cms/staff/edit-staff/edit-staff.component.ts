@@ -185,7 +185,7 @@ export class EditStaffComponent implements OnInit {
   update() {
     if (this.editing) return
 
-    
+
     if (this.form.invalid) {
       let error: MyError = {
         label: 'Attenzione',
@@ -194,9 +194,9 @@ export class EditStaffComponent implements OnInit {
       this.errorService.showError(error)
       return
     }
-    
+
     this.editing = true
-    
+
     let v = this.form.value
     const staff: UpdateStaffDto = {
       name: v.name,

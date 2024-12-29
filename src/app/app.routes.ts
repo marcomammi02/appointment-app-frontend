@@ -18,6 +18,7 @@ import { PublicComponent } from './components/public/public.component';
 import { BookingPageComponent } from './components/public/booking-page/booking-page.component';
 import { DataPageComponent } from './components/public/booking-page/data-page/data-page.component';
 import { ConfirmAppComponent } from './components/public/booking-page/data-page/confirm-app/confirm-app.component';
+import { LinksComponent } from './components/cms/links/links.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginPageComponent},
@@ -39,6 +40,7 @@ export const routes: Routes = [
       {path: 'services/create', component: CreateServiceComponent },
       {path: 'services/:serviceId', component: EditServiceComponent },
       {path: 'profile', component: ProfileComponent},
+      {path: 'links', component: LinksComponent},
       {path: '', redirectTo: 'appointments', pathMatch: 'full'}
     ]},
   {path: '**', redirectTo: 'login'},

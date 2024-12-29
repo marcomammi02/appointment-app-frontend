@@ -1,0 +1,25 @@
+<app-loading *ngIf="loading" />
+
+
+<div *ngIf="!loading">
+  <div class="flex justify-content-between mb-3">
+    <h1>Links</h1>
+  </div>
+  <p class="mb-5">Copia il tuo Link e scarica il Qr Code</p>
+
+  <div class="grid">
+    <div class="col-10">
+      <p-floatLabel>
+        <input pInputText id="link" [(ngModel)]="link"/>
+        <label for="link">Link</label>
+      </p-floatLabel>
+    </div>
+
+    <div class="col-2">
+      <a class="ml-5 cursor-pointer copy-btn flex align-items-center" (click)="copyLink()">
+        <i class="pi pi-copy" style="font-size: 1.5rem"></i>
+      </a>
+    </div>
+  </div>
+
+</div>

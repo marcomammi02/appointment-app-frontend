@@ -41,7 +41,6 @@ export class ProfileComponent implements OnInit {
     private formBuilder: FormBuilder,
     public shopStore: ShopStore,
     private shopService: ShopService,
-    private router: Router,
     private errorService: ErrorService,
   ) {}
 

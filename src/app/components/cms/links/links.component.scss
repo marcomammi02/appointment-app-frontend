@@ -1,0 +1,27 @@
+:host ::ng-deep {
+  input, textarea {
+    border-radius: 10px !important;
+    width: 100%;
+  }
+
+  &:hover {
+    border-color: #d1d5db;
+  }
+
+  label {
+    margin-top: -8px !important;
+  }
+}
+
+.copy-btn {
+  text-decoration: none;
+  color: #fff;
+  background-color: #adacac;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+
+  i {
+    margin-left: 10px;
+  }
+}
