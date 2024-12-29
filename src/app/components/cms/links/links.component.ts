@@ -7,6 +7,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { ShopStore } from '../../../stores/shop.store';
 import { QRCodeModule } from 'angularx-qrcode';
+import { SafeUrl } from '@angular/platform-browser';
+import { PrimaryBtnComponent } from "../../global/primary-btn/primary-btn.component";
 
 @Component({
   selector: 'app-links',
@@ -18,8 +20,9 @@ import { QRCodeModule } from 'angularx-qrcode';
     FloatLabelModule,
     InputTextModule,
     FormsModule,
-    QRCodeModule
-  ],
+    QRCodeModule,
+    PrimaryBtnComponent
+],
   templateUrl: './links.component.html',
   styleUrl: './links.component.scss'
 })
@@ -31,7 +34,7 @@ export class LinksComponent implements OnInit {
 
   // Link provvisorio .it
   link: string = 'https://bookami.it/'
-
+  public qrCodeDownloadLink: SafeUrl = "";
   loading: boolean = true
 
   ngOnInit() {
@@ -43,6 +46,10 @@ export class LinksComponent implements OnInit {
     this.loading = false
   }
 
+  onChangeURL(url: SafeUrl) {
+    this.qrCodeDownloadLink = url;
+  }
+
   copyLink() {
     if (this.link) {
       navigator.clipboard.writeText(this.link).then(() => {
@@ -52,6 +59,18 @@ export class LinksComponent implements OnInit {
       });
     } else {
       alert('Nessun link da copiare!');
+    }
+  }
+
+  downloadQrCode() {
+    const qrcodeCanvas = document.querySelector('qrcode canvas') as HTMLCanvasElement;
+    if (qrcodeCanvas) {
+      const link = document.createElement('a');
+      link.href = qrcodeCanvas.toDataURL('image/png');
+      link.download = 'qrcode.png';
+      link.click();
+    } else {
+      console.error('QR Code canvas non trovato.');
     }
   }
 }

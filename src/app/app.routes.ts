@@ -40,7 +40,7 @@ export const routes: Routes = [
       {path: 'services/create', component: CreateServiceComponent },
       {path: 'services/:serviceId', component: EditServiceComponent },
       {path: 'profile', component: ProfileComponent},
-      {path: 'links', component: LinksComponent},
+      {path: 'qr-code', component: LinksComponent},
       {path: '', redirectTo: 'appointments', pathMatch: 'full'}
     ]},
   {path: '**', redirectTo: 'login'},
