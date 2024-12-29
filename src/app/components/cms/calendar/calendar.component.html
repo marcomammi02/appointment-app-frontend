@@ -28,7 +28,7 @@
   <div class="table-wrapper" #scrollableContainer *ngIf="!loading">
 
     <!-- Table -->
-    <table *ngIf="storeAppointments.appointments">
+    <table *ngIf="storeAppointments.appointments" class="relative">
 
 
       <thead>
@@ -37,20 +37,19 @@
           <th class="name-tag fixed-header" *ngFor="let staff of storeStaff.staffList"><h4>{{ staff.name }}</h4></th>
         </tr>
       </thead>
-      <tbody class="relative">
-
-        <!-- Time marker line -->
-        <div class="time-marker" id="time-marker" *ngIf="isToday(storeAppointments.currentDay)" [ngStyle]="{ top: 0, opacity: markerOpacity}"></div>
-
-        <tr *ngFor="let hour of shopStore.workingHours">
-          <th class="hour-tag fixed-column"><h4 class="{{getHourClass(hour)}}">{{ hour }}</h4></th>
-          <td *ngFor="let staff of storeStaff.staffList" (click)="goToCreation(hour, staff)" class="cursor-pointer" [ngClass]="!checkStaffAvailability(hour, staff.id) ? 'not-available-icon' : ''">
-            <ng-container *ngIf="getAppointmentForTime(hour, staff) as apps">
-              <div *ngFor="let app of apps" class="appointment flex-column justify-content-center hidden" (click)="goToAppointment(app, hour, staff)"
-                   [ngStyle]="{
-                   'height': getAppHeight(app),
-                   'border': getAppWidth(app, staff),
-                   }" [ngClass]="alreadyCalled(app, hour) ? 'flex' : 'hidden'">
+      <tbody>
+          <!-- Time marker line -->
+          <div class="time-marker" id="time-marker" *ngIf="isToday(storeAppointments.currentDay)" [ngStyle]="{ top: 0, opacity: markerOpacity}"></div>
+          
+          <tr *ngFor="let hour of shopStore.workingHours">
+            <th class="hour-tag fixed-column"><h4 class="{{getHourClass(hour)}}">{{ hour }}</h4></th>
+            <td *ngFor="let staff of storeStaff.staffList" (click)="goToCreation(hour, staff)" class="cursor-pointer" [ngClass]="!checkStaffAvailability(hour, staff.id) ? 'not-available-icon' : ''">
+              <ng-container *ngIf="getAppointmentForTime(hour, staff) as apps">
+                <div *ngFor="let app of apps" class="appointment flex-column justify-content-center hidden" (click)="goToAppointment(app, hour, staff)"
+                [ngStyle]="{
+                  'height': getAppHeight(app),
+                  'border': getAppWidth(app, staff),
+                }" [ngClass]="alreadyCalled(app, hour) ? 'flex' : 'hidden'">
                 <div class="app-background" [ngStyle]="{'background': getBgColor(app)}"></div>
                 <h4 class="text-center app-text">{{capitalizeFirstLetter(app.customerLastName)}} {{capitalizeFirstLetter(app.customerName)}}</h4>
                 <p class="text-center app-text">{{capitalizeFirstLetter(app.serviceName)}}</p>
