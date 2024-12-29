@@ -145,7 +145,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
 
     // Calcola la posizione in pixel (considera ore e minuti dall'inizio della giornata lavorativa)
-    const position = (shortedHours * hourHeight + shortedMinutes * minuteHeight);
+    const position = (shortedHours * hourHeight + shortedMinutes * minuteHeight) + 40;
 
     this.currentTimePosition = `${position}px`;
   }
