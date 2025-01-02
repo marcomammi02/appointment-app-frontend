@@ -1,0 +1,54 @@
+.menu-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+
+  .burger {
+    width: 50px;
+    height: 6px;
+    background-color: #000000;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(255, 101, 47, 0.2);
+    transition: all 0.5s ease-in-out;
+
+    &::after,
+    &::before {
+      content: "";
+      position: absolute;
+      width: 50px;
+      height: 6px;
+      background-color: #000000;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(255, 101, 47, 0.2);
+      transition: all 0.5s ease-in-out;
+    }
+
+    &::before {
+      transform: translateY(-16px);
+    }
+
+    &::after {
+      transform: translateY(16px);
+    }
+  }
+}
+
+// Animation
+.menu-btn.open {
+  .burger {
+    background-color: transparent;
+    box-shadow: none;
+
+    &::before {
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      transform: rotate(-45deg);
+    }
+  }
+}
