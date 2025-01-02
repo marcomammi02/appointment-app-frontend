@@ -1,10 +1,10 @@
 <nav class="w-full">
   <ul
-    class="flex justify-content-between lg:justify-content-start list-none w-full p-0 m-0"
+    class="flex justify-content-between lg:justify-content-between list-none w-full p-0 m-0"
   >
     <li class="z-2 flex align-items-center justify-content-center">
       <img
-        class="w-5rem m-3 cursor-pointer"
+        class="w-5rem m-3 mr-2 cursor-pointer"
         src="app/assets/images/logo-app.png"
         alt="logo"
       />
@@ -15,14 +15,16 @@
     </li>
 
     <!-- Menu desktop -->
-    @for (link of landingStore.links; track link) {
-      <li class="hidden lg:flex w-20rem justify-content-center py-6">
-        <h3 (click)="goToSection(link)" class="cursor-pointer">{{ link }}</h3>
+     <li class="hidden lg:flex align-items-between justify-content-center">
+       @for (link of landingStore.links; track link) {
+        <div class="my-auto mx-5">
+          <h3 (click)="goToSection(link)" class="cursor-pointer">{{ link }}</h3>
+        </div>
+        }
       </li>
-    }
 
     <!-- Login btn -->
-    <li class="hidden lg:flex w-20rem justify-content-center py-6"><h3>Login</h3></li>
+    <li class="hidden lg:flex mr-5 justify-content-center py-6"><app-primary-btn icon="pi pi-sign-in" label="Login" routerLink="/login"/></li>
   </ul>
 
   <!-- Menu a tendina per mobile -->
@@ -36,6 +38,7 @@
       </li>
     }
     <!-- Login btn -->
-    <li class="p-3 flex justify-content-center"><h3>Login</h3></li>
+     <hr class="small-menu-hr">
+    <li class="p-3 flex justify-content-center"><app-primary-btn icon="pi pi-sign-in" label="Login" routerLink="/login" routerLinkActive="router-link-active" /></li>
   </ul>
 </nav>

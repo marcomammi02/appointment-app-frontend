@@ -1,13 +1,18 @@
 import { ViewportScroller } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HamburgerBtnComponent } from "../../global/hamburger-btn/hamburger-btn.component";
 import { LandingStore } from '../../../stores/landing.store';
+import { PrimaryBtnComponent } from "../../global/primary-btn/primary-btn.component";
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [HamburgerBtnComponent],
+  imports: [
+    HamburgerBtnComponent, 
+    PrimaryBtnComponent,
+    RouterModule
+  ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
