@@ -14,6 +14,7 @@ import { PrimaryBtnComponent } from "../../../global/primary-btn/primary-btn.com
 import { ErrorService } from '../../../../services/error.service';
 import { CreateAppointmentDto } from '../../../../dtos/appointments.dto';
 import { AppointmentService } from '../../../../services/appointment.service';
+import { EmailData, EmailService } from '../../../../services/email.service';
 
 
 
@@ -41,7 +42,8 @@ export class DataPageComponent implements OnInit{
     private formBuilder: FormBuilder,
     private errorService: ErrorService,
     private appointmentService: AppointmentService,
-    private router: Router
+    private router: Router,
+    private emailService: EmailService
   ) {}
 
   loading: boolean = false
@@ -107,15 +109,30 @@ export class DataPageComponent implements OnInit{
       serviceId: this.storeService.currentService.id,
       serviceColor: this.storeService.currentService.color,
       staffId: this.storeAppointments.currentStaffId,
-      shopId: this.shopStore.currentShop.id
+      shopId: this.shopStore.shopId
     };
     console.log(appointment)
 
-    return this.appointmentService.createPublic(appointment).subscribe(
+    const emailData: EmailData = {
+      customerEmail: v.email,
+      subject: 'Appuntamento confermato!',
+      variables: {
+        customerName: v.name,
+        businessName: this.shopStore.currentShop.name,
+        appointmentDate: formatDateToStringDayFirst(this.storeAppointments.currentDay),
+        appointmentTime: this.storeAppointments.currentHour,
+        serviceName: this.storeService.currentService.name,
+        businessEmail: this.shopStore.currentShop.email,
+        businessPhone: this.shopStore.currentShop.phoneNumber
+      }
+    }
+
+    return this.appointmentService.create(appointment).subscribe(
       res => {
         console.log('Appointment created')
         this.shopStore.transparentLoading = false
-        this.router.navigate(['/' + this.shopStore.slug + '/service/' + this.storeService.currentService.id + '/datas/confirm'])
+        this.emailService.sendEmail(emailData).subscribe()
+        this.router.navigate(['/' + this.shopStore.currentShop.id + '/service/' + this.storeService.currentService.id + '/datas/confirm'])
       },
       err => {
         this.errorService.showError({
