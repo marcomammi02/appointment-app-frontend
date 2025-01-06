@@ -3,8 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export type EmailType =
+  | 'CONFIRM_APP_FOR_CLIENT'
+  | 'CONFIRM_APP_FOR_SHOP'
+  | 'EDIT_APP_FOR_CLIENT'
+  | 'DELETE_APP_FOR_CLIENT';
+
 export interface EmailData {
-  customerEmail: string;
+  type: EmailType
+  recipientEmail: string;
   subject: string;
   variables: {};
 }

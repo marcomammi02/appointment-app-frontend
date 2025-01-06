@@ -114,8 +114,24 @@ export class DataPageComponent implements OnInit{
     console.log(appointment)
 
     const emailData: EmailData = {
-      customerEmail: v.email,
+      type: 'CONFIRM_APP_FOR_CLIENT',
+      recipientEmail: v.email,
       subject: 'Appuntamento confermato!',
+      variables: {
+        customerName: v.name,
+        businessName: this.shopStore.currentShop.name,
+        appointmentDate: formatDateToStringDayFirst(this.storeAppointments.currentDay),
+        appointmentTime: this.storeAppointments.currentHour,
+        serviceName: this.storeService.currentService.name,
+        businessEmail: this.shopStore.currentShop.email,
+        businessPhone: this.shopStore.currentShop.phoneNumber
+      }
+    }
+
+    const emailDataForShop: EmailData = {
+      type: 'CONFIRM_APP_FOR_SHOP',
+      recipientEmail: this.shopStore.currentShop.email,
+      subject: 'Nuovo appuntamento prenotato!',
       variables: {
         customerName: v.name,
         businessName: this.shopStore.currentShop.name,
@@ -132,6 +148,7 @@ export class DataPageComponent implements OnInit{
         console.log('Appointment created')
         this.shopStore.transparentLoading = false
         this.emailService.sendEmail(emailData).subscribe()
+        this.emailService.sendEmail(emailDataForShop).subscribe()
         this.router.navigate(['/' + this.shopStore.currentShop.id + '/service/' + this.storeService.currentService.id + '/datas/confirm'])
       },
       err => {

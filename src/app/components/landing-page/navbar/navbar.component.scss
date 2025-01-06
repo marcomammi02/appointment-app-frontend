@@ -1,7 +1,8 @@
 ._small_menu {
-  background-color: rgba($color: #eadab3, $alpha: 0.98);
+  background-color: rgba($color: #FAC67A, $alpha: 0.95);
   overflow: hidden;
   transition: all 0.8s ease-in-out;
+  border-bottom: 1px solid #000;
 
   li:first-child {
     margin-top: 150px;
