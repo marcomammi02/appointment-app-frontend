@@ -25,6 +25,12 @@ export class EmailService {
   private readonly apiUrl: string = environment.apiUrl + '/email/send'
 
   sendEmail(emailData: EmailData): Observable<any> {
+    if (!environment.sendEmail) {
+      console.log('Email sender disabled')
+      return new Observable((observer) => {
+        observer.complete();
+      });
+    }
     console.log('Sending email')
     console.log(emailData)
     return this.http.post(this.apiUrl, emailData);

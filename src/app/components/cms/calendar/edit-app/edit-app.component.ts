@@ -268,6 +268,7 @@ export class EditAppComponent implements OnInit {
               serviceName: v.service.name,
               businessEmail: this.shopStore.currentShop.email,
               businessPhone: this.shopStore.currentShop.phoneNumber,
+              staffName: v.staff.name
             },
           };
 
@@ -333,6 +334,7 @@ export class EditAppComponent implements OnInit {
             serviceName: v.service.name,
             businessEmail: this.shopStore.currentShop.email,
             businessPhone: this.shopStore.currentShop.phoneNumber,
+            staffName: v.staff.name
           },
         };
         this.emailService.sendEmail(emailData).subscribe();
