@@ -183,14 +183,6 @@ export class DataPageComponent implements OnInit {
       this.emailService.sendEmail(emailData).subscribe();
       this.emailService.sendEmail(emailDataForShop).subscribe();
 
-      // Pianifica l'email di promemoria passando l'ID dell'appuntamento
-      this.emailService.scheduleReminderEmail(
-        toDateTime(this.storeAppointments.currentDay, this.storeAppointments.currentHour),
-        v.email,
-        appointmentId,
-        variablesForCustomer,
-      ).subscribe();
-
       this.router.navigate([
         '/' +
           this.shopStore.currentShop.id +

@@ -206,6 +206,7 @@ export class CreateAppComponent implements OnInit {
               serviceName: v.service.name,
               businessEmail: this.shopStore.currentShop.email,
               businessPhone: this.shopStore.currentShop.phoneNumber,
+              staffName: this.appointmentStore.currentStaff.name,
             },
           };
 
