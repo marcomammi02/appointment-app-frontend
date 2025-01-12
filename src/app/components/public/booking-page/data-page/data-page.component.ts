@@ -134,22 +134,24 @@ export class DataPageComponent implements OnInit {
         shopId: this.shopStore.shopId,
       };
 
+      const variablesForCustomer = {
+        customerName: v.name,
+        businessName: this.shopStore.currentShop.name,
+        appointmentDate: formatDateToStringDayFirst(
+          this.storeAppointments.currentDay
+        ),
+        appointmentTime: this.storeAppointments.currentHour,
+        serviceName: this.storeService.currentService.name,
+        businessEmail: this.shopStore.currentShop.email,
+        businessPhone: this.shopStore.currentShop.phoneNumber,
+        staffName: staffName,
+      };
+
       const emailData: EmailData = {
         type: 'CONFIRM_APP_FOR_CLIENT',
         recipientEmail: v.email,
         subject: 'Appuntamento confermato!',
-        variables: {
-          customerName: v.name,
-          businessName: this.shopStore.currentShop.name,
-          appointmentDate: formatDateToStringDayFirst(
-            this.storeAppointments.currentDay
-          ),
-          appointmentTime: this.storeAppointments.currentHour,
-          serviceName: this.storeService.currentService.name,
-          businessEmail: this.shopStore.currentShop.email,
-          businessPhone: this.shopStore.currentShop.phoneNumber,
-          staffName: staffName,
-        },
+        variables: variablesForCustomer,
       };
 
       const emailDataForShop: EmailData = {
@@ -173,12 +175,21 @@ export class DataPageComponent implements OnInit {
       };
 
       // Creazione appuntamento
-      await this.appointmentService.create(appointment).toPromise();
+      const createdAppointment: any = await this.appointmentService.create(appointment).toPromise();
       console.log('Appointment created');
+      const appointmentId = createdAppointment!.id; // Assumendo che la risposta contenga l'ID
 
       // Invio email
       this.emailService.sendEmail(emailData).subscribe();
       this.emailService.sendEmail(emailDataForShop).subscribe();
+
+      // Pianifica l'email di promemoria passando l'ID dell'appuntamento
+      this.emailService.scheduleReminderEmail(
+        toDateTime(this.storeAppointments.currentDay, this.storeAppointments.currentHour),
+        v.email,
+        appointmentId,
+        variablesForCustomer,
+      ).subscribe();
 
       this.router.navigate([
         '/' +
@@ -199,6 +210,7 @@ export class DataPageComponent implements OnInit {
       this.shopStore.transparentLoading = false;
     }
   }
+
 
   async getStaffName(staffId: number): Promise<string> {
     const res: any = await this.staffService.getDetail(staffId).toPromise();
