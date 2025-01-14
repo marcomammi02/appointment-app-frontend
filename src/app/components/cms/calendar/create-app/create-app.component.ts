@@ -24,7 +24,7 @@ import { StoreAppointments } from '../../../../stores/appointment.store';
 import { ErrorService } from '../../../../services/error.service';
 import { CreateAppointmentDto } from '../../../../dtos/appointments.dto';
 import { AppointmentService } from '../../../../services/appointment.service';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { formatDateToStringDayFirst, toDateTime } from '../../../../services/utility.service';
 import { LoadingComponent } from '../../../global/loading/loading.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';

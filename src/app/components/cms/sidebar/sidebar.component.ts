@@ -48,6 +48,7 @@ export class SidebarComponent  {
 
       accept: () => {
         this.authService.logout()
+        this.shopStore.currentShop = {}
         this.shopService.resetLocalStorage()
         this.router.navigate([`login`])
       }
