@@ -2,6 +2,7 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 @import "../src/app/assets/styles/calendar";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
 // Breakpoints
 $sm: 576px;
@@ -14,24 +15,35 @@ $xxl: 1550px;
 $border-radius: 15px;
 
 // Color palette
-$palette4: #17181CFF;
+$sidebar-bg: #17181CFF;
 $dashboard-bg: rgba(239, 239, 239, 0.29);
 $bg-color: #f2ead8;
 
 // Global variable
-$global-light-gray: #8c8c8c;
 $color1: #FD9706;
 $palette1: #F8EDE3;
 $palette2: #DFD3C3;
 $palette3: #D0B8A8;
 $palette4: #8D493A;
 
+// Landing page width
+$landing-w: 1280px;
+
 body {
   margin: 0 !important;
+}
+
+.title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
 }
 
 *:not([class^="p-"]) {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }

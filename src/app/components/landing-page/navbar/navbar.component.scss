@@ -1,3 +1,9 @@
+@import '../../../../styles.scss';
+
+nav {
+  max-width: $landing-w;
+}
+
 ._small_menu {
   background-color: rgba($color: #FAC67A, $alpha: 0.95);
   overflow: hidden;

@@ -9,7 +9,7 @@ import { PrimaryBtnComponent } from "../../global/primary-btn/primary-btn.compon
   selector: 'app-navbar',
   standalone: true,
   imports: [
-    HamburgerBtnComponent, 
+    HamburgerBtnComponent,
     PrimaryBtnComponent,
     RouterModule
   ],
@@ -33,10 +33,10 @@ export class NavbarComponent {
 
   goToSection(label: string) {
     switch (label) {
-      case 'Chi Siamo':
-        this.router.navigate(['/']).then(() => {
+      case 'FAQ':
+        this.router.navigate(['/home']).then(() => { //TODO: Da questa rott andrà rimosso "home"
           setTimeout(() => {
-            this.scroller.scrollToAnchor("_chi_siamo");
+            this.scroller.scrollToAnchor("faqs");
           }, 200);
         });
         break;
