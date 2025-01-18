@@ -95,7 +95,7 @@ thead th, .fixed-header {
 .name-tag {
   min-width: 120px;
   height: 40px;
-  z-index: 99;
+  z-index: 3;
 
   h4 {
     width: 100%;
@@ -177,7 +177,7 @@ tr:last-child td {
   position: absolute;
   height: 2px;
   background-color: #ff6200; /* Colore della linea */
-  z-index: 10;
+  z-index: 2;
 
   /* Adatta la larghezza alla tabella interna */
   left: 0;
