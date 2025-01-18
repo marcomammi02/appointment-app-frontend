@@ -4,13 +4,13 @@
   >
     <li class="z-2 flex align-items-center justify-content-center">
       <img
-        class="w-5rem m-3 mr-2 cursor-pointer"
+        class="w-5rem m-2 cursor-pointer"
         src="app/assets/images/logo-app.png"
         alt="logo"
       />
       <h2>Bookami</h2>
     </li>
-    <li class="m-3 lg:hidden z-2">
+    <li class="m-2 lg:hidden z-4">
       <hamburger-btn (click)="smallMenuToggler()" [menuValue]="smallMenuOpen"></hamburger-btn>
     </li>
 
@@ -24,12 +24,12 @@
       </li>
 
     <!-- Login btn -->
-    <li class="hidden lg:flex mr-5 justify-content-center py-6"><app-primary-btn icon="pi pi-sign-in" label="Login" routerLink="/login"/></li>
+    <li class="hidden lg:flex mr-5 justify-content-center p-5"><app-primary-btn icon="pi pi-sign-in" label="Login" routerLink="/login"/></li>
   </ul>
 
   <!-- Menu a tendina per mobile -->
   <ul
-    class="absolute left-0 top-0 w-full p-0 m-0 _small_menu lg:hidden z-1"
+    class="absolute left-0 top-0 w-full p-0 m-0 _small_menu lg:hidden z-3"
     [class]="smallMenuOpen ? 'max-h-30rem' : 'max-h-0'"
   >
     @for (link of landingStore.links; track link) {
@@ -42,3 +42,4 @@
     <li class="p-3 flex justify-content-center"><app-primary-btn icon="pi pi-sign-in" label="Login" routerLink="/login" routerLinkActive="router-link-active" /></li>
   </ul>
 </nav>
+<hr class="bottom-bar">

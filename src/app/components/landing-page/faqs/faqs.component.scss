@@ -1,0 +1,24 @@
+@import '../../../../styles.scss';
+
+:host ::ng-deep {
+  .p-accordion .p-accordion-header .p-accordion-header-link {
+    background: $palette2;
+  }
+
+  .p-accordion .p-accordion-content {
+    background: $palette1;
+  }
+}
+
+section {
+  background: $palette1
+}
+
+.email-a {
+  text-decoration: none;
+  color: #000;
+
+  &:hover {
+    color: $color1;
+  }
+}

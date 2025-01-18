@@ -1,0 +1,61 @@
+<section class="text-800 px-4 py-6 md:px-6">
+  <div class="grid">
+    <div class="col-12 md:col-3">
+      <h2 class="text-center md:text-left mb-3">FAQs</h2>
+      <div class="text-center md:text-left text-700 line-height-3 mb-5">
+        Tutto ciò che devi sapere per sfruttare al meglio Bookami
+      </div>
+    </div>
+    <div class="col-12 md:col-9 md:px-5">
+      <p-accordion [activeIndex]="0">
+        <p-accordionTab header="Cos'è Bookami?">
+          <p>
+            Bookami è una piattaforma di gestione appuntamenti progettata per i
+            negozi e le piccole imprese che vogliono migliorare il rapporto con
+            i propri clienti. A differenza di altre app simili, Bookami non
+            addebita commissioni e offre una personalizzazione completa per il
+            profilo del tuo negozio.
+          </p>
+        </p-accordionTab>
+        <p-accordionTab
+          header="Come funziona la personalizzazione del profilo?"
+        >
+          <p>
+            Con Bookami, ogni negozio ha un profilo unico in cui può aggiungere:
+          </p>
+          <br />
+          <ul>
+            <li>Logo e immagini personalizzate</li>
+            <li>Informazioni</li>
+            <li>Descrizione dettagliata dei servizi offerti</li>
+            <li>Orari di apertura e contatti diretti</li>
+            <li>Link dei profili social</li>
+          </ul>
+          <br />
+          <p>
+            Questo aiuta a creare un rapporto più diretto e autentico con i tuoi
+            clienti
+          </p>
+        </p-accordionTab>
+        <p-accordionTab header="Posso inviare promemoria ai miei clienti?">
+          <p>
+            Sì! Bookami invia email di promemoria automatiche al cliente 24 ore
+            prima dell'appuntamento, è tutto preimpostato e configurato non
+            dovrai occuparti di niente.
+          </p>
+        </p-accordionTab>
+        <p-accordionTab header="Devo installare un’app per usare Bookami?">
+          <p>
+            No, Bookami è una piattaforma basata sul web. Puoi accedere
+            facilmente dal tuo computer, tablet o smartphone, senza bisogno di
+            scaricare nulla. Tutto ciò che ti serve è una connessione a
+            internet.
+          </p>
+        </p-accordionTab>
+        <p-accordionTab header="Ho un'altra domanda">
+          <p>Grande! Contattaci all'email: <a class="email-a" href="mailto:bookami.app@gmail.com">{{bookamiEmail}}</a></p>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+  </div>
+</section>
