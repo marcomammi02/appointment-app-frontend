@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingComponent } from "../../global/loading/loading.component";
+import { LoadingComponent } from '../../global/loading/loading.component';
 import { CommonModule, NgIf } from '@angular/common';
 import { ServicesService } from '../../../services/services.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ShopStore } from '../../../stores/shop.store';
-import { capitalizeFirstLetter, formatDateToString, getDayOfWeek } from '../../../services/utility.service';
+import {
+  capitalizeFirstLetter,
+  formatDateToString,
+  getDayOfWeek,
+} from '../../../services/utility.service';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DropdownModule } from 'primeng/dropdown';
 import { StaffStore } from '../../../stores/staff.store';
@@ -18,9 +22,9 @@ import { AppointmentService } from '../../../services/appointment.service';
 import { ServicesStore } from '../../../stores/services.store';
 
 class Slot {
-  start!: string
-  end!: string
-  staffId!: number[]
+  start!: string;
+  end!: string;
+  staffId!: number[];
 }
 
 @Component({
@@ -39,9 +43,7 @@ class Slot {
   templateUrl: './booking-page.component.html',
   styleUrl: './booking-page.component.scss',
 })
-
 export class BookingPageComponent implements OnInit {
-
   constructor(
     private servicesService: ServicesService,
     private storeService: ServicesStore,
@@ -56,68 +58,68 @@ export class BookingPageComponent implements OnInit {
     private router: Router
   ) {}
 
-  loading: boolean = true
+  loading: boolean = true;
 
-  avLoading: boolean = true
+  avLoading: boolean = true;
 
-  serviceId!: number
+  serviceId!: number;
 
-  service?: any
+  service?: any;
 
-  originalStaffList: any = []
+  originalStaffList: any = [];
 
-  selectedStaff: any = {}
+  selectedStaff: any = {};
 
-  availabilities: any[] = []
+  availabilities: any[] = [];
 
-  slots: Slot[] = []
+  slots: Slot[] = [];
 
-  appointments: any[] = []
+  appointments: any[] = [];
 
-  today!: Date
+  today!: Date;
 
   ngOnInit(): void {
-    this.today = new Date
-    this.extractServiceIdFromUrl()
-    this.getShop()
-    this.getService()
-    this.appointmentService.setCurretDayToToday()
+    this.today = new Date();
+    this.extractServiceIdFromUrl();
+    this.getShop();
+    this.getService();
+    this.appointmentService.setCurretDayToToday();
   }
 
   getShop() {
     if (!this.shopStore.currentShop.id) {
-      this.location.back()
+      this.location.back();
     }
   }
 
   getStaff() {
-    this.staffService.getStaff().subscribe(res => {
-      this.originalStaffList = res
-      let whoever = {name: 'Qualsiasi'}
-      this.staffStore.staffList = [whoever, ...this.originalStaffList]
-      this.selectedStaff = whoever
-    })
+    this.staffService.getStaff().subscribe((res) => {
+      this.originalStaffList = res;
+      let whoever = { name: 'Qualsiasi' };
+      this.staffStore.staffList = [whoever, ...this.originalStaffList];
+      this.selectedStaff = whoever;
+    });
   }
 
   extractServiceIdFromUrl(): void {
     // Estrapola il parametro `serviceId` dall'URL e lo converte in numero
     const serviceIdParam = this.route.snapshot.paramMap.get('serviceId');
-    this.serviceId = serviceIdParam ? +serviceIdParam : 0
+    this.serviceId = serviceIdParam ? +serviceIdParam : 0;
   }
 
   async getService() {
     return this.servicesService.getDetail(this.serviceId).subscribe(
       (res) => {
         this.service = res;
-        this.storeService.currentService = res
-        this.getStaff()
-        this.getAvailabilitiesByDay()
+        this.storeService.currentService = res;
+        this.getStaff();
+        this.getAvailabilitiesByDay();
       },
       (err) => {
         this.loading = false;
         console.error(err);
       }
-    )
+    );
   }
 
   async getAvailabilitiesByDay() {
@@ -137,14 +139,10 @@ export class BookingPageComponent implements OnInit {
         )
         .toPromise();
 
-      console.log('Availabilities:', this.availabilities);
-
       // Recupera gli appuntamenti
       this.appointments = await this.appointmentService
         .getAppointments(formatDateToString(this.storeAppointments.currentDay))
         .toPromise();
-
-      console.log('Appointments:', this.appointments);
 
       // Genera gli slot occupati dagli appuntamenti
       const occupiedSlots: Slot[] = [];
@@ -166,14 +164,15 @@ export class BookingPageComponent implements OnInit {
           );
           this.slots.push(...availableSlots);
         } else {
-          console.warn('Service duration is undefined. Skipping slot generation.');
+          console.warn(
+            'Service duration is undefined. Skipping slot generation.'
+          );
         }
       });
 
       // Rimuove duplicati dagli slot
       this.slots = this.removeDuplicateSlots(this.slots);
 
-      console.log('Available Slots:', this.slots);
       this.loading = false;
       this.avLoading = false;
     } catch (error) {
@@ -235,15 +234,18 @@ export class BookingPageComponent implements OnInit {
       addSlots(parseTime(endBreak), parseTime(endTime));
     }
 
-    // Ordinare gli slot in base all'orario di inizio
+    // Ordinare gli slot in base all'orario di inizio senza considerare lo staff
     slots.sort((a, b) => {
-      const timeA = new Date(`1970-01-01T${a.start}:00`).getTime();
-      const timeB = new Date(`1970-01-01T${b.start}:00`).getTime();
-      return timeA - timeB;
+      const timeA = new Date(`1970-01-01T${a.start}:00`).getTime(); // Converte l'orario in millisecondi
+      const timeB = new Date(`1970-01-01T${b.start}:00`).getTime(); // Converte l'orario in millisecondi
+      return timeA - timeB; // Ordinamento crescente
     });
+
+    console.log(slots)
 
     return slots;
   }
+
 
   // Controlla se il giorno corrente è oggi
   isToday(): boolean {
@@ -256,32 +258,30 @@ export class BookingPageComponent implements OnInit {
     );
   }
 
- // Metodo che verifica se uno slot è occupato, tenendo conto della presenza di più membri dello staff
+  // Metodo che verifica se uno slot è occupato, tenendo conto della presenza di più membri dello staff
   isSlotOccupied(slot: Slot, occupiedSlots: Slot[]): boolean {
-  const slotStart = new Date(`1970-01-01T${slot.start}:00`);
-  const slotEnd = new Date(`1970-01-01T${slot.end}:00`);
+    const slotStart = new Date(`1970-01-01T${slot.start}:00`);
+    const slotEnd = new Date(`1970-01-01T${slot.end}:00`);
 
-  // Verifica per ogni slot occupato
-  return occupiedSlots.some((occupied) => {
-    const occupiedStart = new Date(`1970-01-01T${occupied.start}:00`);
-    const occupiedEnd = new Date(`1970-01-01T${occupied.end}:00`);
+    // Verifica per ogni slot occupato
+    return occupiedSlots.some((occupied) => {
+      const occupiedStart = new Date(`1970-01-01T${occupied.start}:00`);
+      const occupiedEnd = new Date(`1970-01-01T${occupied.end}:00`);
 
-    // Controlla la sovrapposizione tra lo slot e gli slot occupati
-    const isOverlapping =
-      (slotStart < occupiedEnd && slotEnd > occupiedStart); // Se sovrappone in qualsiasi modo
+      // Controlla la sovrapposizione tra lo slot e gli slot occupati
+      const isOverlapping = slotStart < occupiedEnd && slotEnd > occupiedStart; // Se sovrappone in qualsiasi modo
 
-    // Se lo slot si sovrappone con uno degli slot occupati e contiene tutti gli stessi staffId
-    if (isOverlapping) {
-      // Verifica che tutti i membri dello staff nello slot siano già occupati
-      return slot.staffId.every((staffId) =>
-        occupied.staffId.includes(staffId)
-      );
-    }
+      // Se lo slot si sovrappone con uno degli slot occupati e contiene tutti gli stessi staffId
+      if (isOverlapping) {
+        // Verifica che tutti i membri dello staff nello slot siano già occupati
+        return slot.staffId.every((staffId) =>
+          occupied.staffId.includes(staffId)
+        );
+      }
 
-    return false;
-  });
+      return false;
+    });
   }
-
 
   generateSlotFromAppointment(appointment: any, step: number): Slot[] {
     const startTime = new Date(appointment.startTime);
@@ -305,21 +305,20 @@ export class BookingPageComponent implements OnInit {
     return occupiedSlots;
   }
 
-
   getHourTime(minutes: number): string {
     const hours = Math.floor(minutes / 60);
     const min = minutes % 60;
-    if (hours == 0 && min > 0) return `${minutes} min`
-    if (hours > 0 && min == 0) return `${hours} h`
+    if (hours == 0 && min > 0) return `${minutes} min`;
+    if (hours > 0 && min == 0) return `${hours} h`;
     return `${hours} h ${min} min`;
   }
 
   navigateDay(days: number) {
-    if (this.isToday() && days == -1) return
+    if (this.isToday() && days == -1) return;
     const newDate = new Date(this.storeAppointments.currentDay);
     newDate.setDate(newDate.getDate() + days);
     this.storeAppointments.currentDay = newDate;
-    this.changeDate()
+    this.changeDate();
   }
 
   openCalendar(calendar: any) {
@@ -330,7 +329,7 @@ export class BookingPageComponent implements OnInit {
   }
 
   changeDate() {
-    this.getAvailabilitiesByDay()
+    this.getAvailabilitiesByDay();
   }
 
   // Metodo per rimuovere duplicati dagli slot
@@ -360,16 +359,17 @@ export class BookingPageComponent implements OnInit {
     return Array.from(uniqueSlots.values()); // Ritorna gli slot unici come array
   }
 
-
   goToDataPage(slot: any) {
-    this.storeAppointments.currentHour = slot.start
-    this.storeAppointments.currentEndHour = slot.end
+    this.storeAppointments.currentHour = slot.start;
+    this.storeAppointments.currentEndHour = slot.end;
     if (!this.selectedStaff.id) {
-      this.storeAppointments.currentStaffId = this.getCasualStaff(slot.staffId)
+      this.storeAppointments.currentStaffId = this.getCasualStaff(slot.staffId);
     } else {
-      this.storeAppointments.currentStaffId = this.selectedStaff.id
+      this.storeAppointments.currentStaffId = this.selectedStaff.id;
     }
-    this.router.navigate(['/' + this.shopStore.slug + '/service/' + this.service.id + '/datas'])
+    this.router.navigate([
+      '/' + this.shopStore.slug + '/service/' + this.service.id + '/datas',
+    ]);
   }
 
   // Return casual staff member

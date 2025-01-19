@@ -1,0 +1,79 @@
+.pricing-section {
+  background-color: #f9f9f9;
+}
+
+.pricing-card {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex-grow: 1;
+}
+
+.pricing-header {
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.pricing-header.featured {
+  background-color: #1a73e8;
+  color: white;
+}
+
+.pricing-body {
+  background-color: #f3f4f6;
+  padding: 1.5rem;
+}
+
+.featured .pricing-body {
+  background-color: #e8f0fe;
+}
+
+.badge {
+  background-color: #ffa726;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-accent {
+  background-color: #ffa726;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-accent:hover {
+  background-color: #ff9800;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 2px solid #007bff;
+  color: #007bff;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: #007bff;
+  color: white;
+}

@@ -4,6 +4,7 @@ import { HeroComponent } from './hero/hero.component';
 import { AnnouncementBarComponent } from './announcement-bar/announcement-bar.component';
 import { ComparisionComponent } from './comparision/comparision.component';
 import { FaqsComponent } from "./faqs/faqs.component";
+import { PricingComponent } from "./pricing/pricing.component";
 
 @Component({
   selector: 'app-landing-page',
@@ -13,7 +14,8 @@ import { FaqsComponent } from "./faqs/faqs.component";
     HeroComponent,
     AnnouncementBarComponent,
     ComparisionComponent,
-    FaqsComponent
+    FaqsComponent,
+    PricingComponent
 ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss'
