@@ -35,6 +35,7 @@ import { LoadingComponent } from '../../../global/loading/loading.component';
 import { NgIf } from '@angular/common';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { EmailData, EmailService } from '../../../../services/email.service';
+import { ValidationService } from '../../../../services/validation.service';
 
 @Component({
   selector: 'app-edit-app',
@@ -97,8 +98,8 @@ export class EditAppComponent implements OnInit {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
       lastName: [''],
-      phone: [''],
-      email: [''],
+      phone: ['', ValidationService.phoneValidator],
+      email: ['', ValidationService.emailValidator],
       notes: [''],
       service: ['', Validators.required],
       staff: [this.appointmentStore.currentStaff, Validators.required],
@@ -225,11 +226,37 @@ export class EditAppComponent implements OnInit {
     if (this.editing) return;
 
     if (this.form.invalid) {
-      this.errorService.showError({
-        label: 'Attenzione',
-        message: 'Inserire tutti i campi',
-      });
-      return;
+      const emailControl = this.form.controls['email'];
+      const phoneControl = this.form.controls['phone'];
+
+      if (emailControl.errors?.['invalidEmail']) {
+        this.errorService.showError({
+          label: 'Attenzione',
+          message: 'Email non valida',
+        });
+        return;
+      }
+
+      if (phoneControl.errors?.['invalidPhone']) {
+        this.errorService.showError({
+          label: 'Attenzione',
+          message: 'Numero di telefono non valido',
+        });
+        return;
+      }
+
+      // Controllo se ci sono campi vuoti
+      const emptyFields = Object.keys(this.form.controls).some(
+        (key) => !this.form.controls[key].value
+      );
+
+      if (emptyFields) {
+        this.errorService.showError({
+          label: 'Attenzione',
+          message: 'Inserire tutti i campi',
+        });
+        return;
+      }
     }
 
     this.editing = true;

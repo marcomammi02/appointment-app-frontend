@@ -26,6 +26,7 @@ import { CreateAppointmentDto } from '../../../../dtos/appointments.dto';
 import { AppointmentService } from '../../../../services/appointment.service';
 import { EmailData, EmailService } from '../../../../services/email.service';
 import { StaffService } from '../../../../services/staff.service';
+import { ValidationService } from '../../../../services/validation.service';
 
 @Component({
   selector: 'app-data-page',
@@ -79,8 +80,8 @@ export class DataPageComponent implements OnInit {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
       lastName: ['', Validators.required],
-      phone: ['', Validators.required],
-      email: ['', Validators.required],
+      phone: ['', [Validators.required, ValidationService.phoneValidator]],
+      email: ['', [Validators.required, ValidationService.emailValidator]],
     });
   }
 
@@ -94,11 +95,37 @@ export class DataPageComponent implements OnInit {
     if (this.creating) return;
 
     if (this.form.invalid) {
-      this.errorService.showError({
-        label: 'Attenzione',
-        message: 'Inserire tutti i campi',
-      });
-      return;
+      const emailControl = this.form.controls['email'];
+      const phoneControl = this.form.controls['phone'];
+
+      if (emailControl.errors?.['invalidEmail']) {
+        this.errorService.showError({
+          label: 'Attenzione',
+          message: 'Email non valida',
+        });
+        return;
+      }
+
+      if (phoneControl.errors?.['invalidPhone']) {
+        this.errorService.showError({
+          label: 'Attenzione',
+          message: 'Numero di telefono non valido',
+        });
+        return;
+      }
+
+      // Controllo se ci sono campi vuoti
+      const emptyFields = Object.keys(this.form.controls).some(
+        (key) => !this.form.controls[key].value
+      );
+
+      if (emptyFields) {
+        this.errorService.showError({
+          label: 'Attenzione',
+          message: 'Inserire tutti i campi',
+        });
+        return;
+      }
     }
 
     this.creating = true;

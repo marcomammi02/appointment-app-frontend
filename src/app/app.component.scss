@@ -8,9 +8,9 @@
 }
 
 .error {
-  background: rgb(252, 192, 192);
+  background: rgba(254, 242, 242, 0.95);
   border-radius: $border-radius;
-  border: 1px solid red;
+  border: 2px solid #fecaca;
   width: 90%;
   position: fixed;
   top: 0;
@@ -21,8 +21,8 @@
     width: 300px;
   }
 
-  h4 {
-    color: red;
+  h4, i {
+    color: #dc2626;
   }
 
   p {

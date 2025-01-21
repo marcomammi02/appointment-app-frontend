@@ -2,7 +2,7 @@
 <div *ngFor="let err of errorService.errors" class="error p-3 m-3">
   <h4 class="mb-2">{{err.label}}</h4>
   <p>{{err.message}}</p>
-  <i class="pi pi-times absolute top-0 right-0 m-2 cursor-pointer" (click)="errorService.resetErrors()"></i>
+  <i class="pi pi-times absolute top-0 right-0 m-3 cursor-pointer" (click)="errorService.resetErrors()"></i>
 </div>
 <p-toast class="w-full h-full" />
 
