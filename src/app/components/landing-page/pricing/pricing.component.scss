@@ -1,79 +1,88 @@
-.pricing-section {
-  background-color: #f9f9f9;
+@import '../../../../styles.scss';
+
+section {
+  background: $bg-color;
+}
+
+section > p {
+  color: #ff7f50;
+  font-weight: 400;
 }
 
 .pricing-card {
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  flex-grow: 1;
-}
-
-.pricing-header {
-  border-bottom: 2px solid #e0e0e0;
-}
-
-.pricing-header.featured {
-  background-color: #1a73e8;
-  color: white;
-}
-
-.pricing-body {
-  background-color: #f3f4f6;
+  text-align: center;
   padding: 1.5rem;
+  border-radius: 20px;
+  background: #fcf3e4;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 350px;
 }
 
-.featured .pricing-body {
-  background-color: #e8f0fe;
-}
-
-.badge {
-  background-color: #ffa726;
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  color: white;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  color: white;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 6px;
+.pricing-title {
+  font-size: 1.5rem;
   font-weight: bold;
-  cursor: pointer;
+  margin-bottom: 0.5rem;
 }
 
-.btn-primary:hover {
-  background-color: #0056b3;
+.pricing-description {
+  color: #666;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
 }
 
-.btn-accent {
-  background-color: #ffa726;
-  color: white;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 6px;
+.pricing-price {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+
+.discounted-price {
+  font-size: 2rem;
   font-weight: bold;
-  cursor: pointer;
 }
 
-.btn-accent:hover {
-  background-color: #ff9800;
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 1.5rem;
+  max-width: 250px;
+  text-align: left;
 }
 
-.btn-secondary {
-  background-color: transparent;
-  border: 2px solid #007bff;
-  color: #007bff;
-  padding: 0.75rem;
-  border-radius: 6px;
+.features-list li {
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.features-list i {
+  color: #00b894;
   font-weight: bold;
-  cursor: pointer;
+  margin-right: 0.5rem;
 }
 
-.btn-secondary:hover {
-  background-color: #007bff;
-  color: white;
+.pricing-note {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.popular {
+  border: 1.5px solid #ff7f50;
+}
+
+.popular-tag {
+  background: #ff7f50;
+  width: min-content;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin: -36px auto 8px;
 }
