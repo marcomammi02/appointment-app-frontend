@@ -22,7 +22,7 @@ import { LinksComponent } from './components/cms/links/links.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 export const routes: Routes = [
-  {path: 'home', component: LandingPageComponent},
+  {path: '', component: LandingPageComponent},
   {path: 'login', component: LoginPageComponent},
   {path: ':slug', component: PublicComponent},
   {path: ':slug/service/:serviceId', component: BookingPageComponent},
@@ -46,7 +46,6 @@ export const routes: Routes = [
       {path: '', redirectTo: 'appointments', pathMatch: 'full'}
     ]},
   {path: '**', redirectTo: 'login'},
-  {path: '', redirectTo: 'login', pathMatch: "full"}
 ];
 
 export const appProviders = [

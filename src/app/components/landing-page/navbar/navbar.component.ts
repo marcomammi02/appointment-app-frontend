@@ -34,7 +34,7 @@ export class NavbarComponent {
   goToSection(label: string) {
     switch (label) {
       case 'FAQ':
-        this.router.navigate(['/home']).then(() => { //TODO: Da questa rott andrà rimosso "home"
+        this.router.navigate(['/']).then(() => {
           setTimeout(() => {
             this.scroller.scrollToAnchor("faqs");
           }, 200);
