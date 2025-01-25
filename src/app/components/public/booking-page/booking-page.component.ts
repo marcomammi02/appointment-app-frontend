@@ -151,8 +151,6 @@ export class BookingPageComponent implements OnInit {
         occupiedSlots.push(...slots);
       });
 
-      console.log('Occupied Slots:', occupiedSlots);
-
       // Calcola gli slot disponibili per ogni availability
       this.availabilities.forEach((availability) => {
         if (this.service?.duration) {
@@ -233,15 +231,6 @@ export class BookingPageComponent implements OnInit {
     if (startBreak && endBreak) {
       addSlots(parseTime(endBreak), parseTime(endTime));
     }
-
-    // Ordinare gli slot in base all'orario di inizio senza considerare lo staff
-    slots.sort((a, b) => {
-      const timeA = new Date(`1970-01-01T${a.start}:00`).getTime(); // Converte l'orario in millisecondi
-      const timeB = new Date(`1970-01-01T${b.start}:00`).getTime(); // Converte l'orario in millisecondi
-      return timeA - timeB; // Ordinamento crescente
-    });
-
-    console.log(slots)
 
     return slots;
   }
@@ -332,32 +321,37 @@ export class BookingPageComponent implements OnInit {
     this.getAvailabilitiesByDay();
   }
 
-  // Metodo per rimuovere duplicati dagli slot
-  removeDuplicateSlots(slots: Slot[]): Slot[] {
-    const uniqueSlots = new Map<string, Slot>(); // Mappa per tenere traccia degli slot unici
+  // Metodo per rimuovere duplicati dagli slot e riordinarli
+removeDuplicateSlots(slots: Slot[]): Slot[] {
+  const uniqueSlots = new Map<string, Slot>(); // Mappa per tenere traccia degli slot unici
 
-    slots.forEach((slot) => {
-      const key = `${slot.start}-${slot.end}`; // Crea una chiave unica basata su start e end
+  slots.forEach((slot) => {
+    const key = `${slot.start}-${slot.end}`; // Crea una chiave unica basata su start e end
 
-      if (uniqueSlots.has(key)) {
-        // Se la chiave esiste, aggiungi l'ID dello staff all'array esistente
-        const existingSlot = uniqueSlots.get(key);
-        if (existingSlot) {
-          // Aggiungi lo staffId solo se non è già presente nell'array
-          slot.staffId.forEach((id) => {
-            if (!existingSlot.staffId.includes(id)) {
-              existingSlot.staffId.push(id);
-            }
-          });
-        }
-      } else {
-        // Se la chiave non esiste, aggiungi il nuovo slot
-        uniqueSlots.set(key, { ...slot });
+    if (uniqueSlots.has(key)) {
+      // Se la chiave esiste, aggiungi l'ID dello staff all'array esistente
+      const existingSlot = uniqueSlots.get(key);
+      if (existingSlot) {
+        // Aggiungi lo staffId solo se non è già presente nell'array
+        slot.staffId.forEach((id) => {
+          if (!existingSlot.staffId.includes(id)) {
+            existingSlot.staffId.push(id);
+          }
+        });
       }
-    });
+    } else {
+      // Se la chiave non esiste, aggiungi il nuovo slot
+      uniqueSlots.set(key, { ...slot });
+    }
+  });
 
-    return Array.from(uniqueSlots.values()); // Ritorna gli slot unici come array
-  }
+  return Array.from(uniqueSlots.values()).sort((a, b) => {
+    // Aggiungi una data fittizia per interpretare le ore come date
+    const timeA: any = new Date("1970-01-01T" + a.start + ":00Z");
+    const timeB: any = new Date("1970-01-01T" + b.start + ":00Z");
+    return timeA - timeB;
+  });
+}
 
   goToDataPage(slot: any) {
     this.storeAppointments.currentHour = slot.start;
