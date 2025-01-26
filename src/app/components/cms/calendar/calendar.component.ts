@@ -243,17 +243,17 @@ export class CalendarComponent implements OnInit, OnDestroy {
     );
 
     if (overlapping) {
-      return '3px solid red';
+      return '5px solid red';
     }
 
     const startAvailable = this.checkStaffAvailability(toTime(app.startTime), staff.id);
     const endAvailable = this.checkStaffAvailability(minutesToTime(endTimeMinutes - 1), staff.id);
 
     if (!startAvailable || !endAvailable) {
-      return '3px solid red';
+      return '5px solid red';
     }
 
-    return `3px solid ${app.serviceColor}`;
+    return `5px solid ${app.serviceColor}`;
   }
 
   getHourClass(hour: string): string {

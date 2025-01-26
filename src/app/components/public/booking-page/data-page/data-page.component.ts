@@ -153,7 +153,7 @@ export class DataPageComponent implements OnInit {
           this.storeAppointments.currentDay,
           this.storeAppointments.currentEndHour
         ),
-        status: 'BOOKED',
+        status: 'BOOKED_FROM_PUBLIC',
         serviceName: this.storeService.currentService.name,
         serviceId: this.storeService.currentService.id,
         serviceColor: this.storeService.currentService.color,

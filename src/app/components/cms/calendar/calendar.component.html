@@ -48,11 +48,12 @@
                 <div *ngFor="let app of apps" class="appointment flex-column justify-content-center hidden" (click)="goToAppointment(app, hour, staff)"
                 [ngStyle]="{
                   'height': getAppHeight(app),
-                  'border': getAppWidth(app, staff),
+                  'border-left': getAppWidth(app, staff),
                 }" [ngClass]="alreadyCalled(app, hour) ? 'flex' : 'hidden'">
                 <div class="app-background" [ngStyle]="{'background': getBgColor(app)}"></div>
-                <h4 class="text-center app-text">{{capitalizeFirstLetter(app.customerLastName)}} {{capitalizeFirstLetter(app.customerName)}}</h4>
-                <p class="text-center app-text">{{capitalizeFirstLetter(app.serviceName)}}</p>
+                <i [ngClass]="app.status == 'BOOKED' ? 'pi pi-shop' : 'pi pi-user'" class="absolute top-0 right-0 m-2"></i>
+                <h4 class="app-text">{{capitalizeFirstLetter(app.customerLastName)}} {{capitalizeFirstLetter(app.customerName)}}</h4>
+                <p class="app-text">{{capitalizeFirstLetter(app.serviceName)}}</p>
               </div>
             </ng-container>
           </td>

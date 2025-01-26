@@ -63,7 +63,7 @@ thead th, .fixed-header {
 .appointment {
   width: calc(100% - 6px);
   margin: 3px;
-  border-radius: 8px;
+  border-radius: 4px;
   padding: 1rem;
   z-index: 1 !important;
   position: absolute;
@@ -79,7 +79,7 @@ thead th, .fixed-header {
   .app-background {
     position: absolute;
     inset: 0;
-    opacity: .85;
+    opacity: .7;
   }
 
   h4, p {
