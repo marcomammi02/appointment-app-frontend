@@ -6,6 +6,7 @@ import { ComparisionComponent } from './comparision/comparision.component';
 import { FaqsComponent } from "./faqs/faqs.component";
 import { PricingComponent } from "./pricing/pricing.component";
 import { FeaturesComponent } from "./features/features.component";
+import { ReviewsComponent } from "./reviews/reviews.component";
 
 @Component({
   selector: 'app-landing-page',
@@ -17,7 +18,8 @@ import { FeaturesComponent } from "./features/features.component";
     ComparisionComponent,
     FaqsComponent,
     PricingComponent,
-    FeaturesComponent
+    FeaturesComponent,
+    ReviewsComponent
 ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss'
