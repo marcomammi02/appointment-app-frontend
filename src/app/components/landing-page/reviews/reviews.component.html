@@ -1,6 +1,6 @@
-<section class="w-full min-h-screen flex flex-column align-items-center">
-  <p class="subtitle mt-8">Testimonials</p>
-  <h2 class="my-3 title">La vostra opinione</h2>
+<section class="w-full min-h-screen flex flex-column align-items-center" id="reviews">
+  <p class="subtitle mt-8 text-orange-500 text-lg font-normal">Testimonials</p>
+  <h2 class="my-3 title text-3xl lg:text-4xl">Il nostro valore attraverso i vostri occhi</h2>
 
   <p-carousel
     class="w-full"
@@ -10,14 +10,14 @@
     [responsiveOptions]="responsiveOptions">
     <ng-template let-review pTemplate="item">
       <div class="flex flex-grow-1 mb-4 md:mb-0 md:px-4 py-4 md:py-0">
-        <div class="shadow-2 surface-card card_bx mx-2 text-center relative">
-          <div class="image_bx absolute left-50" style="margin-left: -50px; top: -50px;">
+        <div class="shadow-4 surface-card card_bx mx-2 text-center relative">
+          <div class="image_bx shadow-4 absolute left-50" style="margin-left: -50px; top: -50px;">
             <img [src]="review.avatar">
           </div>
           <div class="px-4 pb-4 pt-8 relative card_bx">
             <p class="text-900 font-italic line-height-3 text-lg m-0 pb-4 border-bottom-1 surface-border">“{{review.text}}”</p>
             <div class="text-900 font-semibold line-height-3 mt-4">{{review.username}}</div>
-            <div class="text-600 line-height-3 text-sm">{{review.eventType}}</div>
+            <div class="text-600 line-height-3 text-sm">{{review.shopType}}</div>
           </div>
         </div>
       </div>

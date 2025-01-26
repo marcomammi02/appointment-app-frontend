@@ -7,7 +7,7 @@
   }
 
   .p-carousel-items-content {
-    padding-top: 4rem;
+    padding: 4rem 0 1rem;
     width: 100%;
     touch-action: pan-y;
   }
@@ -17,7 +17,7 @@
   }
 
   .p-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button {
-    background-color: $palette1;
+    background-color: $palette2;
   }
 
   .p-carousel .p-carousel-content .p-carousel-prev, .p-carousel .p-carousel-content .p-carousel-next {
@@ -29,7 +29,7 @@
 }
 
 section {
-  background: $palette3;
+  background: $palette1;
 
   .card_bx {
     border-radius: 15px;

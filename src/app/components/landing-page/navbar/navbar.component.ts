@@ -48,6 +48,13 @@ export class NavbarComponent {
           }, 200);
         });
         break;
+       case 'Recensioni':
+        this.router.navigate(['/']).then(() => {
+          setTimeout(() => {
+            this.scroller.scrollToAnchor('reviews');
+          }, 200);
+        });
+        break;
     }
   }
 }
