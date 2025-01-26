@@ -6,6 +6,7 @@ import {Injectable} from "@angular/core";
 export class LandingStore {
   links: string[] = [
     'Prezzi',
+    'Features',
     'FAQ',
     'Recensioni',
   ]

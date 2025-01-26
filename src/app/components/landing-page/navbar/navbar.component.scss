@@ -5,7 +5,7 @@ nav {
 }
 
 ._small_menu {
-  background-color: rgba($color: #FAC67A, $alpha: 0.95);
+  background-color: $palette1;
   overflow: hidden;
   transition: all 0.8s ease-in-out;
   border-bottom: 1px solid #000;

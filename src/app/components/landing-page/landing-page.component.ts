@@ -5,6 +5,7 @@ import { AnnouncementBarComponent } from './announcement-bar/announcement-bar.co
 import { ComparisionComponent } from './comparision/comparision.component';
 import { FaqsComponent } from "./faqs/faqs.component";
 import { PricingComponent } from "./pricing/pricing.component";
+import { FeaturesComponent } from "./features/features.component";
 
 @Component({
   selector: 'app-landing-page',
@@ -15,7 +16,8 @@ import { PricingComponent } from "./pricing/pricing.component";
     AnnouncementBarComponent,
     ComparisionComponent,
     FaqsComponent,
-    PricingComponent
+    PricingComponent,
+    FeaturesComponent
 ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss'
