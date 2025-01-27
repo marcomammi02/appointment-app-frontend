@@ -23,7 +23,7 @@ export class ReviewsComponent {
 
   reviews: Review[] = [
     {
-      text: "Bookami ha rivoluzionato il modo in cui gestisco il mio salone. Le notifiche automatiche e la gestione degli appuntamenti sono fantastiche!",
+      text: "Avere un profilo pubblico personalizzato che i miei clienti associano direttamente a me, e non a una generica piattaforma per centri benessere, è davvero un altro livello.",
       avatar: "app/assets/images/avatar/avatar4.jpg",
       username: "Clara M.",
       shopType: "Salone"
