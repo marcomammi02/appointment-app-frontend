@@ -7,6 +7,7 @@ import { FaqsComponent } from "./faqs/faqs.component";
 import { PricingComponent } from "./pricing/pricing.component";
 import { FeaturesComponent } from "./features/features.component";
 import { ReviewsComponent } from "./reviews/reviews.component";
+import { FooterComponent } from "./footer/footer.component";
 
 @Component({
   selector: 'app-landing-page',
@@ -19,7 +20,8 @@ import { ReviewsComponent } from "./reviews/reviews.component";
     FaqsComponent,
     PricingComponent,
     FeaturesComponent,
-    ReviewsComponent
+    ReviewsComponent,
+    FooterComponent
 ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss'

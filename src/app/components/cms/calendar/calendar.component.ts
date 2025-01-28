@@ -91,6 +91,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.availabilities = []
     try {
       this.availabilities = await this.availabilitiesService.findAll(this.shopStore.shopId, undefined, this.storeAppointments.currentDay.getDay()).toPromise();
+      console.log(this.availabilities)
     } catch (error) {
       console.log(error)
     }
@@ -179,7 +180,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   checkStaffAvailability(hour: string, staffId: number): boolean {
     const av = this.availabilities.find(av => av.staffId === staffId);
-    if (!av || !av.startTime) return false;
+    if (!av || !av.startTime || !av.endTime) return false;
 
     const hourMinutes = timeStringToMinutes(hour);
     const startTimeMinutes = timeStringToMinutes(av.startTime);
