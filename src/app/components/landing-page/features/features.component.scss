@@ -4,4 +4,9 @@ section {
   background: $palette1 !important;
 }
 
+.container {
+  max-width: $landing-w;
+  margin: 0 auto;
+}
+
 

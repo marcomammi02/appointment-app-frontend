@@ -4,6 +4,11 @@ section {
     background-color: $palette1;
 }
 
+.main-container {
+  max-width: $landing-w;
+  margin: 0 auto;
+}
+
 h2 > span {
     text-decoration: underline dashed 7px $color1;
 }

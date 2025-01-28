@@ -31,6 +31,11 @@
 section {
   background: $palette1;
 
+  .main-container {
+    max-width: $landing-w;
+    margin: 0 auto;
+  }
+
   .card_bx {
     border-radius: 15px;
     overflow: visible;
