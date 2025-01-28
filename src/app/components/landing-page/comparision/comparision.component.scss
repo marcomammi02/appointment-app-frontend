@@ -10,7 +10,9 @@ section {
 }
 
 h2 > span {
-    text-decoration: underline dashed 7px $color1;
+  border-bottom: 6px dashed $color1; /* Spessore, stile e colore */
+  text-decoration: none; /* Rimuove underline predefinito */
+  padding-bottom: 1px; /* Spazio tra il testo e il bordo */
 }
 
 .card {
