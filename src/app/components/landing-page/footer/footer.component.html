@@ -16,15 +16,13 @@
       <ul
         class="list-none p-0 mx-0 my-5 flex justify-content-center flex-column align-items-center lg:flex-row text-white"
       >
-        <li class="flex align-items-between justify-content-center">
           @for (link of landingStore.links; track link) {
-          <div class="mx-5">
+          <li class="my-2 mx-5">
             <p (click)="goToSection(link)" class="cursor-pointer link">
               {{ link }}
             </p>
-          </div>
+          </li>
           }
-        </li>
       </ul>
       <div
         class="flex align-items-center justify-content-center mb-5 social-box"
