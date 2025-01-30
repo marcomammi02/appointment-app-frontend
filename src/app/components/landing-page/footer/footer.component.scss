@@ -1,0 +1,28 @@
+@import "../../../../styles.scss";
+
+.background {
+  background: #1b1b1b !important;
+}
+
+.link {
+  transition: all .2s ease;
+  &:hover {
+    color: $color1 !important;
+  }
+}
+
+p > a {
+  color: #fff;
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 2px solid $color1;
+  transition: all .2s ease;
+
+  &:hover {
+    color: $color1 !important;
+  }
+}
+
+.social-box > a {
+  text-decoration: none;
+}
