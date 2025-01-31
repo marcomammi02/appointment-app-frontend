@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AbstractControl, ValidationErrors } from "@angular/forms";
+import { AbstractControl, FormGroup, ValidationErrors } from "@angular/forms";
 
 @Injectable ({
   providedIn: 'root'
@@ -29,5 +29,11 @@ export class ValidationService {
     }
 
     return null;
+  }
+
+  static checkPasswords(form: FormGroup) {
+    const pass = form.get('password')?.value;
+    const confirmPass = form.get('confirmPassword')?.value;
+    return pass === confirmPass ? null : { notSame: true };
   }
 }

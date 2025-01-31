@@ -20,9 +20,11 @@ import { DataPageComponent } from './components/public/booking-page/data-page/da
 import { ConfirmAppComponent } from './components/public/booking-page/data-page/confirm-app/confirm-app.component';
 import { LinksComponent } from './components/cms/links/links.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { ConfirmPaymentPageComponent } from './components/confirm-payment-page/confirm-payment-page.component';
 
 export const routes: Routes = [
   {path: '', component: LandingPageComponent},
+  {path: 'create-account', component: ConfirmPaymentPageComponent},
   {path: 'login', component: LoginPageComponent},
   {path: ':slug', component: PublicComponent},
   {path: ':slug/service/:serviceId', component: BookingPageComponent},

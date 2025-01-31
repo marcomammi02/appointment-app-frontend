@@ -1,0 +1,40 @@
+@import "../../../styles";
+
+:host ::ng-deep {
+  .p-float-label label {
+    margin-top: -.5rem !important;
+  }
+
+  .p-inputtext {
+    width: 100% !important;
+  }
+
+  .p-password {
+    width: 100% !important;
+  }
+}
+
+section {
+  width: 100vw;
+  height: 100dvh;
+  background: $bg-color;
+}
+
+.login-container {
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 40px;
+  width: 80%;
+  max-width: 400px;
+}
+
+.logo {
+  width: 130px;
+}
+
+.title {
+  font-size: 2.5rem;
+}
