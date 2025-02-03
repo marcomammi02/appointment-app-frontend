@@ -6,19 +6,7 @@ import {Staff} from "./staff.store";
 })
 export class StoreAppointments {
 
-  appointments: any[] = [
-    {
-      id: '1',
-      hour: '10:00',
-      staffId: '42'
-    },
-    {
-      id: '2',
-      hour: '11:00',
-      staffId: '43'
-    },
-
-  ]
+  appointments: any[] = []
 
   currentStaff: any = {}
   currentStaffId!: number
