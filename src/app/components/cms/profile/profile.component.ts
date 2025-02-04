@@ -57,8 +57,6 @@ export class ProfileComponent implements OnInit {
   logoPreview?: string
   coverPreview?: string
 
-
-
   editing: boolean = false
   ngOnInit(): void {
     this.buildForm()
@@ -183,7 +181,7 @@ export class ProfileComponent implements OnInit {
         description: v.description,
         address: v.address,
         phoneNumber: v.phone,
-        email: v.email,
+        email: this.shopStore.currentShop.email,
         logo: this.logoPreview,
         cover: this.coverPreview,
         facebookUrl: v.facebookUrl,

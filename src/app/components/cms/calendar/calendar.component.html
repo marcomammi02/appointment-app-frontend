@@ -25,7 +25,7 @@
 
   <app-loading *ngIf="loading" />
 
-  <p class="mt-8 text-center" *ngIf="storeStaff.staffList.length <= 0">Crea almeno uno <a class="staff-link" [href]="'/private/' + shopStore.slug + '/staff'">Staff</a> con orari di lavoro per continuare</p>
+  <p class="mt-8 text-center" *ngIf="storeStaff.staffList.length <= 0">Crea uno <a class="staff-link" [href]="'/private/' + shopStore.slug + '/staff'">Staff</a> con orari di lavoro per continuare</p>
 
   <div class="table-wrapper" #scrollableContainer *ngIf="!loading">
 
