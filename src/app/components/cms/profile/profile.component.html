@@ -1,29 +1,108 @@
 <app-loading *ngIf="loading" />
 
-
 <div *ngIf="!loading">
   <div class="flex justify-content-between mb-3">
     <h1>Profilo</h1>
-    <app-primary-btn class="absolute top-0 right-0 p-3" label="Pagina pubblica" [routerLink]="'/' + shopStore.slug"/>
+    <app-primary-btn
+      class="absolute top-0 right-0 p-3"
+      label="Pagina pubblica"
+      [routerLink]="'/' + shopStore.slug"
+    />
   </div>
 
+  <form [formGroup]="form">
+    <!-- Info section -->
+    <div class="section shadow-4 flex flex-column gap-5 mb-5">
+      <h4 class="mb-2">Info profilo:</h4>
+      <div>
+        <p-floatLabel>
+          <input pInputText id="name" formControlName="name" />
+          <label for="name">Nome</label>
+        </p-floatLabel>
+      </div>
 
-  <p class="mb-5">Qui puoi vedere o modificare i dati del tuo profilo</p>
-    <form class="flex flex-column gap-5" [formGroup]="form">
+      <div>
+        <p-floatLabel>
+          <textarea
+            formControlName="description"
+            id="float-input"
+            rows="8"
+            cols="30"
+            pInputTextarea
+          >
+          </textarea>
+          <label for="float-input">Descrizione</label>
+        </p-floatLabel>
+      </div>
 
+      <div>
+        <p-floatLabel>
+          <input pInputText id="phone" formControlName="phone" />
+          <label for="phone">Telefono</label>
+        </p-floatLabel>
+      </div>
+
+      <div>
+        <p-floatLabel>
+          <input pInputText readonly id="email" formControlName="email" />
+          <label for="email">Email</label>
+        </p-floatLabel>
+      </div>
+
+      <div>
+        <p-floatLabel>
+          <input pInputText id="address" formControlName="address" />
+          <label for="address">Indirizzo</label>
+        </p-floatLabel>
+      </div>
+    </div>
+
+    <!-- Link section -->
+    <div class="section shadow-4 flex flex-column gap-5 mb-5">
+      <h4 class="mb-2">Link social:</h4>
+      <div>
+        <p-floatLabel>
+          <input pInputText id="facebookUrl" formControlName="facebookUrl" />
+          <label for="facebookUrl">Facebook</label>
+        </p-floatLabel>
+      </div>
+
+      <div>
+        <p-floatLabel>
+          <input pInputText id="instagramUrl" formControlName="instagramUrl" />
+          <label for="instagramUrl">Instagram</label>
+        </p-floatLabel>
+      </div>
+
+      <div>
+        <p-floatLabel>
+          <input pInputText id="tiktokUrl" formControlName="tiktokUrl" />
+          <label for="tiktokUrl">Tik Tok</label>
+        </p-floatLabel>
+      </div>
+    </div>
+
+    <!-- Style section -->
+    <div class="section shadow-4 flex flex-column gap-5">
+      <h4>Stile profilo:</h4>
       <div class="flex file-box gap-3">
         <!-- Logo -->
         <div class="flex flex-column">
           <label for="logo-upload">Logo</label>
           <div class="preview-img-box mt-2" (click)="triggerFileInput('logo')">
-            <img [src]="logoPreview ? logoPreview : 'app/assets/images/default-logo.png'" alt="Logo attuale" />
+            <img
+              [src]="
+                logoPreview ? logoPreview : 'app/assets/images/default-logo.png'
+              "
+              alt="Logo attuale"
+            />
           </div>
           <input
             type="file"
             id="logo-upload"
             accept="image/*"
             (change)="onFileSelected($event, 'logo')"
-            style="display: none;"
+            style="display: none"
           />
         </div>
 
@@ -31,85 +110,44 @@
         <div class="flex flex-column">
           <label for="cover-upload">Copertina</label>
           <div class="preview-img-box mt-2" (click)="triggerFileInput('cover')">
-            <img [src]="coverPreview ? coverPreview : 'app/assets/images/default-cover.png'" alt="Copertina attuale" />
+            <img
+              [src]="
+                coverPreview
+                  ? coverPreview
+                  : 'app/assets/images/default-cover.png'
+              "
+              alt="Copertina attuale"
+            />
           </div>
           <input
             type="file"
             id="cover-upload"
             accept="image/*"
             (change)="onFileSelected($event, 'cover')"
-            style="display: none;"
+            style="display: none"
           />
         </div>
       </div>
 
-      <div>
-        <p-floatLabel>
-          <input pInputText id="name" formControlName="name"/>
-          <label for="name">Nome</label>
-        </p-floatLabel>
+      <div class="flex align-items-center">
+        <p class="mr-3 inline">Colore di sfondo:</p>
+        <input class="color-input" type="color" formControlName="publicBgColor">
       </div>
 
-      <div>
-        <p-floatLabel>
-              <textarea
-                formControlName="description"
-                id="float-input"
-                rows="8" cols="30"
-                pInputTextarea>
-              </textarea>
-          <label for="float-input">Descrizione</label>
-        </p-floatLabel>
+      <div class="flex align-items-center">
+        <p class="mr-3 inline">Colore card:</p>
+        <input class="color-input" type="color" formControlName="publicCardColor">
       </div>
-
-      <div>
-        <p-floatLabel>
-          <input pInputText id="phone" formControlName="phone"/>
-          <label for="phone">Telefono</label>
-        </p-floatLabel>
-      </div>
-
-      <div>
-        <p-floatLabel>
-          <input pInputText readonly id="email" formControlName="email"/>
-          <label for="email">Email</label>
-        </p-floatLabel>
-      </div>
-
-      <div>
-        <p-floatLabel>
-          <input pInputText id="address" formControlName="address"/>
-          <label for="address">Indirizzo</label>
-        </p-floatLabel>
-      </div>
-
-      <p class="mt-3">Inserisci i link dei tuoi profili social</p>
-
-      <div>
-        <p-floatLabel>
-          <input pInputText id="facebookUrl" formControlName="facebookUrl"/>
-          <label for="facebookUrl">Facebook</label>
-        </p-floatLabel>
-      </div>
-
-      <div>
-        <p-floatLabel>
-          <input pInputText id="instagramUrl" formControlName="instagramUrl"/>
-          <label for="instagramUrl">Instagram</label>
-        </p-floatLabel>
-      </div>
-
-      <div>
-        <p-floatLabel>
-          <input pInputText id="tiktokUrl" formControlName="tiktokUrl"/>
-          <label for="tiktokUrl">Tik Tok</label>
-        </p-floatLabel>
-      </div>
-    </form>
-
-    <div class="flex justify-content-end gap-3 mt-5">
-      <app-primary-btn icon="pi pi-check" label="Salva" class="block w-min" (click)="edit()"/>
     </div>
+  </form>
+
+  <div class="flex justify-content-end gap-3 mt-5">
+    <app-primary-btn
+      icon="pi pi-check"
+      label="Salva"
+      class="block w-min"
+      (click)="edit()"
+    />
+  </div>
 </div>
 <p-toast />
-
