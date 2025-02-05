@@ -8,6 +8,7 @@
   .p-calendar .p-inputtext {
     text-align: center;
     border: none;
+    background: transparent;
     &:hover {
       cursor: pointer;
       border-color: transparent;
@@ -25,8 +26,15 @@
 }
 
 .container {
-    max-width: 700px;
-    margin: 0 auto !important;
+  min-height: 100vh;
+  padding: 0 1rem;
+  margin: 0 auto !important;
+  @media screen and (min-width: $xl) {
+      padding: 0 15vw;
+  }
+  @media screen and (min-width: $xxl) {
+      padding: 0 25vw;
+  }
 }
 
 .img-container {

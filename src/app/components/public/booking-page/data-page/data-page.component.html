@@ -1,6 +1,6 @@
 <app-loading *ngIf="loading" />
 
-<div class="container text-center p-3" *ngIf="!loading && storeService.currentService && storeService.currentService.id">
+<div class="container text-center py-3" *ngIf="!loading && storeService.currentService && storeService.currentService.id" [ngStyle]="{ background: shopStore.currentShop.publicBgColor}">
 
   <!-- Header -->
   <div class="flex align-items-center gap-2 mb-5">
@@ -19,7 +19,7 @@
   </div>
 
   <!-- Service info -->
-  <div *ngIf="storeService.currentService.id" class="card p-3 mx-3 shadow-4 mb-5">
+  <div *ngIf="storeService.currentService.id" class="card p-3 mx-3 shadow-4 mb-5" [ngStyle]="{ background: shopStore.currentShop.publicCardColor}">
     <h3>{{capitalizeFirstLetter(storeService.currentService.name)}}</h3>
     <div class="flex justify-content-between mt-3">
       <p><i class="pi pi-clock mr-1"></i> {{getHourTime(storeService.currentService.duration)}}</p>

@@ -8,12 +8,12 @@ import {
 import { StoreAppointments } from '../../../../../stores/appointment.store';
 import { CancelBtnComponent } from '../../../../global/cancel-btn/cancel-btn.component';
 import { Router, RouterModule } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-confirm-app',
   standalone: true,
-  imports: [CancelBtnComponent, RouterModule],
+  imports: [CancelBtnComponent, RouterModule, NgStyle],
   templateUrl: './confirm-app.component.html',
   styleUrl: './confirm-app.component.scss',
 })

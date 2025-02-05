@@ -1,6 +1,6 @@
-<div class="page w-screen h-screen flex flex-column gap-8 justify-content-center align-items-center">
+<div class="page w-screen h-screen flex flex-column gap-8 justify-content-center align-items-center" [ngStyle]="{ background: shopStore.currentShop.publicBgColor}">
 
-    <div class="container p-3 shadow-4 h-min text-center">
+    <div class="container p-3 shadow-4 h-min text-center" [ngStyle]="{ background: shopStore.currentShop.publicCardColor}">
         <div class="logo-box">
             <img [src]="shopStore.currentShop.logo ? shopStore.currentShop.logo : 'app/assets/images/default-logo.png'" alt="Cover">
         </div>

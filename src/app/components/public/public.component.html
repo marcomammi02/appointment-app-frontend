@@ -1,6 +1,6 @@
 <app-loading *ngIf="!shopStore.currentShop.id" />
 
-<div class="container " *ngIf="!loading" [ngStyle]="{ background: shopStore.currentShop.publicBgColor }">
+<div class="container " *ngIf="!loading" [ngStyle]="{ background: shopStore.currentShop.publicBgColor}">
     <div class="cover-box">
         <img [src]="shopStore.currentShop.cover ? shopStore.currentShop.cover : 'app/assets/images/default-cover.png'" alt="Cover">
     </div>
@@ -37,7 +37,7 @@
 
     <div class="grid" *ngIf="servicesStore.services.length > 0">
         <div class="col-12 md:col-6 xl:col-4" *ngFor="let service of servicesStore.services">
-          <div class="card p-3 mx-3 my-2 text-center shadow-4" [routerLink]="'/' + shopStore.slug + '/service/' + service.id" [ngStyle]="{ background: shopStore.currentShop.publicCardColor }">
+          <div class="card p-3 mx-3 my-2 text-center shadow-4" [routerLink]="'/' + shopStore.slug + '/service/' + service.id" [ngStyle]="{ background: shopStore.currentShop.publicCardColor}">
             <h3>{{capitalizeFirstLetter(service.name)}}</h3>
             <div class="flex justify-content-evenly mt-3">
               <p><i class="pi pi-clock mr-1"></i> {{getHourTime(service.duration)}}</p>

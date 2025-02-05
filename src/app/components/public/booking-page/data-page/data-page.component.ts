@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingComponent } from '../../../global/loading/loading.component';
 import { ShopStore } from '../../../../stores/shop.store';
-import { NgIf } from '@angular/common';
+import { NgIf, NgStyle } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { ServicesStore } from '../../../../stores/services.store';
 import {
@@ -39,6 +39,7 @@ import { ValidationService } from '../../../../services/validation.service';
     FloatLabelModule,
     InputTextModule,
     PrimaryBtnComponent,
+    NgStyle
   ],
   templateUrl: './data-page.component.html',
   styleUrl: './data-page.component.scss',
