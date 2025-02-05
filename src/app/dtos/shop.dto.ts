@@ -1,6 +1,6 @@
 export interface editShop {
     name?: string
-    description: string
+    description?: string
     address?: string
     phoneNumber?: string
     email?: string
@@ -9,4 +9,6 @@ export interface editShop {
     facebookUrl?: string
     instagramUrl?: string
     tiktokUrl?: string
+    publicBgColor?: string
+    publicCardColor?: string
 }

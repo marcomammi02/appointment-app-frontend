@@ -1,8 +1,14 @@
 @import "../../../styles";
 
 .container {
-    max-width: 700px;
+    min-height: 100vh;
     margin: 0 auto !important;
+    @media screen and (min-width: $xl) {
+        padding: 0 15vw;
+    }
+    @media screen and (min-width: $xxl) {
+        padding: 0 25vw;
+    }
 }
 
 .cover-box {
@@ -40,7 +46,6 @@
 .card {
   border-radius: $border-radius;
   transition: all .2s ease;
-  background: #fcf8f7;
   position: relative;
 
   &:hover {
@@ -56,8 +61,9 @@
 
 .social-btn {
   color: #6b6b6b;
+  background-color: #fff;
   text-decoration: none;
-  padding: 5px; 
+  padding: 5px;
   transition: all .2s ease;
   border-radius: 8px;
 

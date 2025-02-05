@@ -3,7 +3,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ShopService } from '../../services/shop.service';
 import { ShopStore } from '../../stores/shop.store';
 import { LoadingComponent } from "../global/loading/loading.component";
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, NgStyle } from '@angular/common';
 import { ServicesService } from '../../services/services.service';
 import { ServicesStore } from '../../stores/services.store';
 import {capitalizeFirstLetter} from "../../services/utility.service";
@@ -17,6 +17,7 @@ import {capitalizeFirstLetter} from "../../services/utility.service";
     NgIf,
     NgFor,
     RouterModule,
+    NgStyle
   ],
   templateUrl: './public.component.html',
   styleUrl: './public.component.scss'
@@ -40,11 +41,11 @@ export class PublicComponent implements OnInit {
   async extractSlugFromUrl() {
     const slug = this.route.snapshot.paramMap.get('slug');
     this.shopStore.slug = slug ? slug : "";
-  
+
     try {
       // Aspetta che getShopPublic() sia completata
       await this.shopService.getShopPublic();
-  
+
       // Dopo che getShopPublic è completato, esegui getServices()
       this.getServices();
     } catch (error) {

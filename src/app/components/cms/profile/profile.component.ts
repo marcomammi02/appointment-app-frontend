@@ -92,7 +92,9 @@ export class ProfileComponent implements OnInit {
       address: [capitalizeFirstLetter(shop.address)],
       facebookUrl: [shop.facebookUrl],
       instagramUrl: [shop.instagramUrl],
-      tiktokUrl: [shop.tiktokUrl]
+      tiktokUrl: [shop.tiktokUrl],
+      publicBgColor: [shop.publicBgColor],
+      publicCardColor: [shop.publicCardColor],
     });
   }
 
@@ -186,7 +188,9 @@ export class ProfileComponent implements OnInit {
         cover: this.coverPreview,
         facebookUrl: v.facebookUrl,
         instagramUrl: v.instagramUrl,
-        tiktokUrl: v.tiktokUrl
+        tiktokUrl: v.tiktokUrl,
+        publicBgColor: v.publicBgColor,
+        publicCardColor: v.publicCardColor
       };
 
       // Effettua l'update
