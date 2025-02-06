@@ -1,6 +1,6 @@
 <app-loading *ngIf="!shopStore.currentShop.id" />
 
-<div class="container " *ngIf="!loading" [ngStyle]="{ background: shopStore.currentShop.publicBgColor}">
+<div class="container pb-5" *ngIf="!loading" [ngStyle]="{ background: shopStore.currentShop.publicBgColor}">
     <div class="cover-box">
         <img [src]="shopStore.currentShop.cover ? shopStore.currentShop.cover : 'app/assets/images/default-cover.png'" alt="Cover">
     </div>

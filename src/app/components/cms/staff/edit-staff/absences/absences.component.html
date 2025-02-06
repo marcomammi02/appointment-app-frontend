@@ -51,14 +51,14 @@
         <tr>
           <th>Giorno</th>
           <th>Motivo</th>
-          <th class="w-1rem">Elimina</th>
+          <th class="w-min">Elimina</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-abs>
         <tr>
           <td class="text-sm">{{ createAbsString(abs) }}</td>
           <td class="text-sm">{{ abs.reason }}</td>
-          <td>
+          <td class="w-1rem text-center">
             <p class="delete-btn" (click)="confirmDelete(abs)">
               <i class="pi pi-trash"></i>
             </p>
