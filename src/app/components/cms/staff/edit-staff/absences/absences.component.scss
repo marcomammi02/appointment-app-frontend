@@ -1,0 +1,25 @@
+@import "../../../../../../styles.scss";
+
+:host ::ng-deep {
+  .p-datatable .p-datatable-thead > tr > th {
+    padding: 1rem !important;
+  }
+
+  .p-datatable .p-datatable-tbody > tr > td {
+    padding: 1rem !important;
+  }
+}
+.delete-btn {
+  color: #fff;
+  background: linear-gradient(90deg, rgb(255, 105, 105) 0%, rgb(207, 0, 0) 100%);
+  padding: .5rem;
+  border-radius: 8px;
+  width: min-content;
+  text-align: center;
+  transition: all .2s ease;
+
+  &:hover {
+    transform: scale(1.03);
+    cursor: pointer;
+  }
+}

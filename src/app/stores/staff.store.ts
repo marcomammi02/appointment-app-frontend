@@ -5,6 +5,8 @@ import {Injectable} from "@angular/core";
 })
 export class StaffStore {
   staffList: any =  []
+
+  currentStaff: any = {}
 }
 
 export interface Staff {

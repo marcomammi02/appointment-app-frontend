@@ -24,6 +24,7 @@ import {AvailabilityDayDto, CreateAvailabilityDto, UpdateAvailabilityDto} from "
 import {ShopStore} from "../../../../stores/shop.store";
 import { LoadingComponent } from "../../../global/loading/loading.component";
 import { ShopService } from '../../../../services/shop.service';
+import { StaffStore } from '../../../../stores/staff.store';
 
 
 @Component({
@@ -57,14 +58,14 @@ export class EditStaffComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private staffService: StaffService,
+    private staffStore: StaffStore,
     public availabilityStore: AvailabilityStore,
     private availabilityService: AvailabilityService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
     private confirmationService: ConfirmationService,
-    public shopStore: ShopStore,
-    private shopService: ShopService
+    public shopStore: ShopStore
   ) {
   }
 
@@ -92,7 +93,7 @@ export class EditStaffComponent implements OnInit {
 
       if (id) {
         this.getDetail(+id);
-        this.availabilityService.findAll(this.shopStore.currentShop.id, this.staffId).subscribe((res: AvailabilityDayDto[]) => {
+        this.availabilityService.findAll(this.shopStore.shopId, this.staffId).subscribe((res: AvailabilityDayDto[]) => {
           res.forEach(av => {
             this.week[av.dayOfWeek] = {
               id: av.id,
@@ -117,6 +118,7 @@ export class EditStaffComponent implements OnInit {
     return this.staffService.getDetail(id).subscribe({
       next: (res) => {
         this.currentStaff = res;
+        this.staffStore.currentStaff = res;
         this.buildForm();
         this.loading = false
       },

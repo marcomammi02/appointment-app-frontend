@@ -1,0 +1,78 @@
+<app-loading *ngIf="loading" />
+
+<div *ngIf="!loading">
+  <div *ngIf="staffStore.currentStaff">
+    <div class="flex justify-content-between mb-3">
+      <div class="flex align-items-center gap-2 mb-5">
+        <h1
+          class="cursor-pointer"
+          [routerLink]="'/private/' + shopStore.slug + '/staff'"
+        >
+          Staff
+        </h1>
+        <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
+        <h2
+          class="cursor-pointer"
+          [routerLink]="
+            '/private/' +
+            shopStore.slug +
+            '/staff/' +
+            staffStore.currentStaff.id
+          "
+        >
+          {{ capitalizeFirstLetter(staffStore.currentStaff.name) }}
+        </h2>
+        <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
+        <h2>Assenze</h2>
+      </div>
+      <div class="absolute top-0 right-0 m-3">
+        <app-cancel-btn
+          icon="pi pi-arrow-left"
+          label="Indietro"
+          [routerLink]="
+            '/private/' +
+            shopStore.slug +
+            '/staff/' +
+            staffStore.currentStaff.id
+          "
+        />
+      </div>
+    </div>
+
+    <p class="mb-5">
+      Qui puoi pianificare le assenze di {{ capitalizeFirstLetter(staffStore.currentStaff.name) }}
+    </p>
+
+    <p *ngIf="absences.length <= 0" class="text-center my-8">Non ci sono assenze pianificate</p>
+
+    <!-- Absences table -->
+    <p-table *ngIf="absences.length > 0" [value]="absences">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Giorno</th>
+          <th>Motivo</th>
+          <th class="w-1rem">Elimina</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-abs>
+        <tr>
+          <td class="text-sm">{{ createAbsString(abs) }}</td>
+          <td class="text-sm">{{ abs.reason }}</td>
+          <td><p class="delete-btn"><i class="pi pi-trash"></i></p></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<div
+  *ngIf="!staffStore.currentStaff"
+  class="w-full h-30rem flex flex-column gap-5 align-items-center justify-content-center"
+>
+  Il membro dello staff non è stato trovato!
+  <app-cancel-btn
+    icon="pi pi-arrow-left"
+    label="Indietro"
+    [routerLink]="'/private/' + shopStore.slug + '/staff'"
+  />
+</div>
+<p-confirmDialog />

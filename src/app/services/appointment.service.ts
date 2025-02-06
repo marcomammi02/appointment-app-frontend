@@ -2,7 +2,6 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {ShopStore} from "../stores/shop.store";
 import {CreateAppointmentDto, UpdateAppointmentDto} from "../dtos/appointments.dto";
-import {UpdateAvailabilityDto} from "../dtos/availability.dto";
 import {environment} from "../../environments/environment";
 import { StoreAppointments } from "../stores/appointment.store";
 import { Observable } from "rxjs";

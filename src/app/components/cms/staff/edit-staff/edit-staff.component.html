@@ -13,13 +13,13 @@
         <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
         <h2>{{ capitalizeFirstLetter(currentStaff.name) }}</h2>
       </div>
-      <div class="flex gap-5 absolute top-0 right-0 m-3">
+      <div class="flex gap-3 absolute top-0 right-0 m-3">
 
         <app-delete-btn
         (click)="confirm2($event)"
         class=""
         />
-        <app-primary-btn icon="pi pi-calendar" label="Assenze"/>
+        <app-primary-btn icon="pi pi-calendar" label="Assenze" [routerLink]="'/private/' + shopStore.slug + '/staff/' + currentStaff.id + '/absences' "/>
       </div>
     </div>
     <p class="mb-5">

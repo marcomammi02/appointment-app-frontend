@@ -21,6 +21,7 @@ import { ConfirmAppComponent } from './components/public/booking-page/data-page/
 import { LinksComponent } from './components/cms/links/links.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { ConfirmPaymentPageComponent } from './components/confirm-payment-page/confirm-payment-page.component';
+import { AbsencesComponent } from './components/cms/staff/edit-staff/absences/absences.component';
 
 export const routes: Routes = [
   {path: '', component: LandingPageComponent},
@@ -40,6 +41,7 @@ export const routes: Routes = [
       {path: 'staff', component: StaffComponent },
       {path: 'staff/create', component: CreateStaffComponent },
       {path: 'staff/:staffId', component: EditStaffComponent },
+      {path: 'staff/:staffId/absences', component: AbsencesComponent },
       {path: 'services', component: ServicesComponent },
       {path: 'services/create', component: CreateServiceComponent },
       {path: 'services/:serviceId', component: EditServiceComponent },
