@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { LoadingComponent } from '../../../../global/loading/loading.component';
 import { ShopStore } from '../../../../../stores/shop.store';
-import { capitalizeFirstLetter, formatDateToStringDayFirst } from '../../../../../services/utility.service';
+import {
+  capitalizeFirstLetter,
+  formatDateToStringDayFirst,
+} from '../../../../../services/utility.service';
 import { StaffStore } from '../../../../../stores/staff.store';
 import { PrimaryBtnComponent } from '../../../../global/primary-btn/primary-btn.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -35,7 +38,8 @@ export class AbsencesComponent {
     public staffStore: StaffStore,
     private route: ActivatedRoute,
     private staffService: StaffService,
-    private absenceService: AbsenceService
+    private absenceService: AbsenceService,
+    private confirmationService: ConfirmationService
   ) {}
 
   loading: boolean = true;
@@ -68,20 +72,52 @@ export class AbsencesComponent {
       },
     });
   }
+
   async getAbsences(id: number) {
+    this.loading = true;
+    this.absences = [];
     this.absenceService.getAbsencesByStaffId(id).subscribe((res) => {
       this.absences = res;
       console.log(this.absences);
+      this.loading = false;
     });
   }
 
   createAbsString(absence: any) {
-    const day = formatDateToStringDayFirst(absence.date)
+    const day = formatDateToStringDayFirst(absence.date);
 
     if (absence.startTime && absence.endTime) {
       return `${day} | ${absence.startTime} - ${absence.endTime}`;
     }
     return `${day} | Tutto il giorno`;
+  }
+
+  confirmDelete(absence: any) {
+    this.confirmationService.confirm({
+      target: absence.target as EventTarget,
+      message: `Sei sicuro di voler eliminare l'assenza pianificata per il "${formatDateToStringDayFirst(
+        absence.date
+      )}"?`,
+      header: 'Attenzione',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      acceptLabel: 'Si',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+      rejectLabel: 'No',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+
+      accept: () => {
+        this.delete(+absence.id);
+      },
+    });
+  }
+
+  delete(id: number) {
+    this.absenceService.deleteAbsence(id).subscribe(() => {
+      this.absences = this.absences.filter(absence => absence.id !== id);
+    });
+
   }
 
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
