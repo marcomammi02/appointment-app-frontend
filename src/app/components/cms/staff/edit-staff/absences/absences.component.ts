@@ -77,7 +77,7 @@ export class AbsencesComponent {
     this.loading = true;
     this.absences = [];
     this.absenceService.getAbsencesByStaffId(id).subscribe((res) => {
-      this.absences = res;
+      this.absences = res.sort((a: any, b: any) => b.id - a.id); // Ordina per ID decrescente
       console.log(this.absences);
       this.loading = false;
     });
@@ -114,8 +114,10 @@ export class AbsencesComponent {
   }
 
   delete(id: number) {
+    this.shopStore.transparentLoading = true;
     this.absenceService.deleteAbsence(id).subscribe(() => {
       this.absences = this.absences.filter(absence => absence.id !== id);
+      this.shopStore.transparentLoading = false;
     });
 
   }
