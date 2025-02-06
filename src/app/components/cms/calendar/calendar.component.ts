@@ -6,7 +6,7 @@ import {StaffService} from "../../../services/staff.service";
 import {ShopStore} from "../../../stores/shop.store";
 import {AvailabilityService} from "../../../services/availability.service";
 import {PrimaryBtnComponent} from "../../global/primary-btn/primary-btn.component";
-import {Router, RouterLink} from "@angular/router";
+import {Router, RouterLink, RouterModule} from "@angular/router";
 import {CalendarModule} from "primeng/calendar";
 import {FormsModule} from "@angular/forms";
 import {AppointmentService} from "../../../services/appointment.service";
@@ -33,7 +33,8 @@ import { LoadingComponent } from "../../global/loading/loading.component";
     FormsModule,
     NgClass,
     NgStyle,
-    LoadingComponent
+    LoadingComponent,
+    RouterModule
 ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'

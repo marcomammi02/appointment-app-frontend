@@ -37,7 +37,7 @@
       <thead>
         <tr>
           <th class="fixed-column"></th>
-          <th class="name-tag fixed-header" *ngFor="let staff of storeStaff.staffList"><h4>{{ staff.name }}</h4></th>
+          <th class="name-tag fixed-header cursor-pointer" *ngFor="let staff of storeStaff.staffList" [routerLink]="'/private/' + shopStore.slug + '/staff/' + staff.id"><h4>{{ staff.name }}</h4></th>
         </tr>
       </thead>
       <tbody>
