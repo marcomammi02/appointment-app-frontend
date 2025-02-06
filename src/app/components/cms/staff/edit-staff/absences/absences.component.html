@@ -36,15 +36,14 @@
             staffStore.currentStaff.id
           "
         />
-        <app-primary-btn icon="pi pi-plus" label="Crea"/>
+        <app-primary-btn icon="pi pi-plus" label="Crea" />
       </div>
     </div>
 
     <p class="mb-5">
-      Qui puoi pianificare le assenze di {{ capitalizeFirstLetter(staffStore.currentStaff.name) }}
+      Qui puoi pianificare le assenze di
+      {{ capitalizeFirstLetter(staffStore.currentStaff.name) }}
     </p>
-
-    <p *ngIf="absences.length <= 0" class="text-center my-8">Non ci sono assenze pianificate</p>
 
     <!-- Absences table -->
     <p-table *ngIf="absences.length > 0" [value]="absences">
@@ -59,10 +58,18 @@
         <tr>
           <td class="text-sm">{{ createAbsString(abs) }}</td>
           <td class="text-sm">{{ abs.reason }}</td>
-          <td><p class="delete-btn" (click)="confirmDelete(abs)"><i class="pi pi-trash"></i></p></td>
+          <td>
+            <p class="delete-btn" (click)="confirmDelete(abs)">
+              <i class="pi pi-trash"></i>
+            </p>
+          </td>
         </tr>
       </ng-template>
     </p-table>
+
+    <p *ngIf="absences.length <= 0" class="text-center my-8">
+      Non ci sono assenze pianificate
+    </p>
   </div>
 </div>
 <div
