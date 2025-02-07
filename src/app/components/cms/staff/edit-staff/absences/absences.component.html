@@ -36,7 +36,7 @@
             staffStore.currentStaff.id
           "
         />
-        <app-primary-btn icon="pi pi-plus" label="Crea" />
+        <app-primary-btn icon="pi pi-plus" label="Crea" [routerLink]="'/private/' + shopStore.slug + '/staff/' + staffStore.currentStaff.id + '/absences/create'"/>
       </div>
     </div>
 

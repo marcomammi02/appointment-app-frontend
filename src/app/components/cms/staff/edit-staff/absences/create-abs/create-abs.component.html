@@ -1,0 +1,54 @@
+<app-loading *ngIf="loading" />
+
+<div *ngIf="!loading">
+  <div *ngIf="staffStore.currentStaff">
+    <div class="flex justify-content-between mb-3">
+      <div class="flex align-items-center flex-wrap gap-2 mb-5">
+        <h1
+          class="cursor-pointer w-full lg:w-min"
+          [routerLink]="'/private/' + shopStore.slug + '/staff'"
+        >
+          Staff
+        </h1>
+        <i class="pi pi-angle-right hidden lg:inline" style="font-size: 1.5rem"></i>
+        <h2
+          class="cursor-pointer"
+          [routerLink]="
+            '/private/' +
+            shopStore.slug +
+            '/staff/' +
+            staffStore.currentStaff.id
+          "
+        >
+          {{ capitalizeFirstLetter(staffStore.currentStaff.name) }}
+        </h2>
+        <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
+        <h2>Assenze</h2>
+        <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
+        <h2>Crea</h2>
+      </div>
+      <div class="absolute top-0 right-0 m-3">
+        <app-cancel-btn
+          icon="pi pi-arrow-left"
+          label="Indietro"
+          [routerLink]="
+            '/private/' +
+            shopStore.slug +
+            '/staff/' +
+            staffStore.currentStaff.id +
+            '/absences'
+          "
+        />
+      </div>
+    </div>
+
+    <p class="mb-5">
+      Pianifica una nuova assenza
+    </p>
+
+    <form [formGroup]="form">
+
+
+    </form>
+  </div>
+</div>

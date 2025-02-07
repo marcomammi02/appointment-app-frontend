@@ -22,6 +22,7 @@ import { LinksComponent } from './components/cms/links/links.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { ConfirmPaymentPageComponent } from './components/confirm-payment-page/confirm-payment-page.component';
 import { AbsencesComponent } from './components/cms/staff/edit-staff/absences/absences.component';
+import { CreateAbsComponent } from './components/cms/staff/edit-staff/absences/create-abs/create-abs.component';
 
 export const routes: Routes = [
   {path: '', component: LandingPageComponent},
@@ -41,7 +42,8 @@ export const routes: Routes = [
       {path: 'staff', component: StaffComponent },
       {path: 'staff/create', component: CreateStaffComponent },
       {path: 'staff/:staffId', component: EditStaffComponent },
-      {path: 'staff/:staffId/absences', component: AbsencesComponent },
+      {path: 'staff/:staffId/absences', component: AbsencesComponent},
+      {path: 'staff/:staffId/absences/create', component: CreateAbsComponent},
       {path: 'services', component: ServicesComponent },
       {path: 'services/create', component: CreateServiceComponent },
       {path: 'services/:serviceId', component: EditServiceComponent },

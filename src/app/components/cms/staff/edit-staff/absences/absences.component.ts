@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { LoadingComponent } from '../../../../global/loading/loading.component';
 import { ShopStore } from '../../../../../stores/shop.store';
 import {
   capitalizeFirstLetter,
   formatDateToStringDayFirst,
 } from '../../../../../services/utility.service';
+import { DialogModule } from 'primeng/dialog';
 import { StaffStore } from '../../../../../stores/staff.store';
 import { PrimaryBtnComponent } from '../../../../global/primary-btn/primary-btn.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -15,6 +16,7 @@ import { CancelBtnComponent } from '../../../../global/cancel-btn/cancel-btn.com
 import { StaffService } from '../../../../../services/staff.service';
 import { AbsenceService } from '../../../../../services/absence.service';
 import { TableModule } from 'primeng/table';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-absences',
@@ -27,6 +29,7 @@ import { TableModule } from 'primeng/table';
     CancelBtnComponent,
     NgIf,
     TableModule,
+    DialogModule
   ],
   templateUrl: './absences.component.html',
   styleUrl: './absences.component.scss',
@@ -116,10 +119,9 @@ export class AbsencesComponent {
   delete(id: number) {
     this.shopStore.transparentLoading = true;
     this.absenceService.deleteAbsence(id).subscribe(() => {
-      this.absences = this.absences.filter(absence => absence.id !== id);
+      this.absences = this.absences.filter((absence) => absence.id !== id);
       this.shopStore.transparentLoading = false;
     });
-
   }
 
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
