@@ -4,22 +4,16 @@
   <div *ngIf="staffStore.currentStaff">
     <div class="flex justify-content-between mb-3">
       <div class="flex align-items-center flex-wrap gap-2 mb-5">
-        <h1
-          class="cursor-pointer w-full lg:w-min"
-          [routerLink]="'/private/' + shopStore.slug + '/staff'"
-        >
+        <h1 class="cursor-pointer w-full lg:w-min" [routerLink]="'/private/' + shopStore.slug + '/staff'">
           Staff
         </h1>
         <i class="pi pi-angle-right hidden lg:inline" style="font-size: 1.5rem"></i>
-        <h2
-          class="cursor-pointer"
-          [routerLink]="
+        <h2 class="cursor-pointer" [routerLink]="
             '/private/' +
             shopStore.slug +
             '/staff/' +
             staffStore.currentStaff.id
-          "
-        >
+          ">
           {{ capitalizeFirstLetter(staffStore.currentStaff.name) }}
         </h2>
         <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
@@ -28,27 +22,78 @@
         <h2>Crea</h2>
       </div>
       <div class="absolute top-0 right-0 m-3">
-        <app-cancel-btn
-          icon="pi pi-arrow-left"
-          label="Indietro"
-          [routerLink]="
+        <app-cancel-btn icon="pi pi-arrow-left" label="Indietro" [routerLink]="
             '/private/' +
             shopStore.slug +
             '/staff/' +
             staffStore.currentStaff.id +
             '/absences'
-          "
-        />
+          " />
       </div>
     </div>
 
     <p class="mb-5">
       Pianifica una nuova assenza
     </p>
+    
+    <form [formGroup]="form" class="form-container">
 
-    <form [formGroup]="form">
+      <!-- Reason -->
+      <div class="input-wrapper">
+        <p-floatLabel>
+          <input pInputText id="reason" formControlName="reason" />
+          <label for="reason">Motivo</label>
+        </p-floatLabel>
+      </div>
 
+      <!-- Day selector -->
+      <div class="input-wrapper">
+        <p-floatLabel>
+          <p-calendar formControlName="date" readonlyInput dateFormat="dd/mm/yy" [minDate]="today" id="day" />
+          <label for="day">Giorno *</label>
+        </p-floatLabel>
+      </div>
+
+      <!-- Lock all day checkbox -->
+      <div>
+        <p-checkbox class="ml-1 mr-3" id="allDay" formControlName="allDay" (onChange)="toggleAllDay()" binary="true"></p-checkbox>
+        <label for="allDay">Tutto il giorno</label>
+      </div>
+
+      <div class="input-group">
+        <!-- Start time -->
+        <p-floatLabel class="input-item">
+          <p-calendar #calendar1 id="startTime" [defaultDate]="minDate" [timeOnly]="true" [stepMinute]="15" formControlName="startTime"
+            placeholder="- - -" [readonlyInput]="true">
+            <ng-template pTemplate="footer">
+              <div class="w-full flex justify-content-end">
+                <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella"
+                  (click)="clearCalendar(calendar1)"></span>
+              </div>
+            </ng-template>
+          </p-calendar>
+          <label for="startTime">Ora di inizio</label>
+        </p-floatLabel>
+
+        <!-- End time -->
+        <p-floatLabel class="input-item">
+          <p-calendar #calendar2 id="endTime" [timeOnly]="true" [defaultDate]="minDate" [stepMinute]="15" formControlName="endTime"
+            placeholder="- - -" [readonlyInput]="true">
+            <ng-template pTemplate="footer">
+              <div class="w-full flex justify-content-end">
+                <span type="button" class="p-button-text" pButton icon="pi pi-times" label="Cancella"
+                  (click)="clearCalendar(calendar2)"></span>
+              </div>
+            </ng-template>
+          </p-calendar>
+          <label for="endTime">Ora di fine</label>
+        </p-floatLabel>
+      </div>
 
     </form>
+
+    <div class="ml-auto mt-5 w-10rem">
+      <app-primary-btn label="Crea" (click)="create()"/>
+    </div>
   </div>
 </div>

@@ -1,0 +1,47 @@
+@import "../../../../../../../styles.scss";
+
+:host ::ng-deep {
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  .input-wrapper {
+    width: 100%;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+
+    @media screen and (min-width: $lg) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  .input-item {
+    width: 100%;
+
+    @media screen and (min-width: $lg) {
+      width: 48%;
+    }
+  }
+
+  .p-calendar, .p-inputtext {
+    width: 100%;
+    border-radius: 10px !important;
+
+    @media screen and (min-width: $lg) {
+      width: 100%;
+    }
+  }
+
+  label {
+    margin-top: -8px !important;
+  }
+}

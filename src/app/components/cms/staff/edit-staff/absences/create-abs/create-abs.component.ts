@@ -8,6 +8,17 @@ import { NgIf } from '@angular/common';
 import { StaffService } from '../../../../../../services/staff.service';
 import { CancelBtnComponent } from '../../../../../global/cancel-btn/cancel-btn.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { Calendar, CalendarModule } from 'primeng/calendar';
+import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
+import { PrimaryBtnComponent } from '../../../../../global/primary-btn/primary-btn.component';
+import {
+  ErrorService,
+  MyError,
+} from '../../../../../../services/error.service';
+import { CreateAbsenceDto } from '../../../../../../dtos/absences.dto';
+import { AbsenceService } from '../../../../../../services/absence.service';
 
 @Component({
   selector: 'app-create-abs',
@@ -17,7 +28,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
     RouterModule,
     NgIf,
     CancelBtnComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FloatLabelModule,
+    CalendarModule,
+    InputTextModule,
+    CheckboxModule,
+    PrimaryBtnComponent,
   ],
   templateUrl: './create-abs.component.html',
   styleUrl: './create-abs.component.scss',
@@ -28,14 +44,22 @@ export class CreateAbsComponent {
     public shopStore: ShopStore,
     private route: ActivatedRoute,
     private staffService: StaffService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private errorService: ErrorService,
+    private absenceService: AbsenceService
   ) {}
 
   loading: boolean = true;
 
   staffId!: number;
 
-  form!: FormGroup
+  form!: FormGroup;
+
+  today!: Date;
+
+  minDate!: Date;
+
+  creating: boolean = false;
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -44,7 +68,10 @@ export class CreateAbsComponent {
 
       if (id) {
         this.getDetail(+id);
-        this.buildForm()
+        this.today = new Date();
+        this.minDate = new Date();
+        this.minDate.setHours(12, 0, 0);
+        this.buildForm();
       }
     });
   }
@@ -64,11 +91,57 @@ export class CreateAbsComponent {
 
   buildForm() {
     this.form = this.formBuilder.group({
-      date: [''],
+      date: [null],
+      allDay: [false],
       startTime: [''],
       endTime: [''],
-      reason: ['']
+      reason: [''],
     });
+  }
+
+  clearCalendar(calendar: Calendar) {
+    calendar.inputFieldValue = null;
+    calendar.updateModel(null);
+  }
+
+  toggleAllDay() {
+    if (this.form.get('allDay')?.value) {
+      this.form.get('startTime')?.disable();
+      this.form.get('endTime')?.disable();
+    } else {
+      this.form.get('startTime')?.enable();
+      this.form.get('endTime')?.enable();
+    }
+  }
+
+  create() {
+    if (this.creating) return;
+
+    if (this.form.invalid) {
+      let error: MyError = {
+        label: 'Attenzione',
+        message: 'Form non valido',
+      };
+      this.errorService.showError(error);
+      return;
+    }
+
+    this.creating = true;
+
+    let v = this.form.value;
+    const absence: CreateAbsenceDto = {
+      date: v.date,
+      startTime: v.allDay ? '' : v.startTime,
+      endTime: v.allDay ? '' : v.endTime,
+      reason: v.reason,
+      staffId: this.staffId,
+    };
+    
+    this.absenceService.createAbsence(absence).subscribe(
+      (res: any) => {
+        console.log(res)
+      }
+    )
   }
 
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
