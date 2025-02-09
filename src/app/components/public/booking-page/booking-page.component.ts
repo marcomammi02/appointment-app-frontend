@@ -151,12 +151,13 @@ export class BookingPageComponent implements OnInit {
         .getAppointments(formatDateToString(this.storeAppointments.currentDay))
         .toPromise();
         console.log(formatDateToString(this.storeAppointments.currentDay))
+
         // Recupera le assenze
         if (this.selectedStaff.id) {
           const absences = await this.absenceService
           .getAbsencesByStaffAndDay(
             +this.selectedStaff.id,
-            formatDateToString((this.storeAppointments.currentDay))
+            formatDateToString(convertUTCToLocal(this.storeAppointments.currentDay))
           )
           .toPromise();
           this.absences = absences.map((abs: any) => {
@@ -171,7 +172,7 @@ export class BookingPageComponent implements OnInit {
         } else {
           const absences = await this.absenceService
           .getAbsencesByDay(
-            formatDateToString((this.storeAppointments.currentDay))
+            formatDateToString(convertUTCToLocal(this.storeAppointments.currentDay))
           )
           .toPromise();
           
