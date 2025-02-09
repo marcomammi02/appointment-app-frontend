@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ShopStore } from '../../../stores/shop.store';
 import {
   capitalizeFirstLetter,
+  convertLocalToUTC,
   convertUTCToLocal,
   formatDateToString,
   getDayOfWeek,
@@ -155,7 +156,7 @@ export class BookingPageComponent implements OnInit {
         const absences = await this.absenceService
           .getAbsencesByStaffAndDay(
             +this.selectedStaff.id,
-            formatDateToString(this.storeAppointments.currentDay)
+            formatDateToString(convertLocalToUTC(this.storeAppointments.currentDay))
           )
           .toPromise();
         this.absences = absences.map((abs: any) => {
@@ -170,7 +171,7 @@ export class BookingPageComponent implements OnInit {
       } else {
         const absences = await this.absenceService
           .getAbsencesByDay(
-            formatDateToString(this.storeAppointments.currentDay)
+            formatDateToString(convertLocalToUTC(this.storeAppointments.currentDay))
           )
           .toPromise();
 
@@ -184,7 +185,7 @@ export class BookingPageComponent implements OnInit {
             };
           });
       }
-      
+
       // Genera gli slot occupati dagli appuntamenti
       const occupiedSlots: Slot[] = [];
       this.appointments.forEach((appointment) => {
