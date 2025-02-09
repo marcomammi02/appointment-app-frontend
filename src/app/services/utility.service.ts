@@ -96,3 +96,23 @@ export function getTime(date: Date) {
   }
   return `${hours}:${minutes}`;
 }
+
+export function convertLocalToUTC(localDate: Date): Date {
+  // Ottieni l'offset del fuso orario locale in minuti (positivo se il fuso orario locale è indietro rispetto a UTC)
+  const timezoneOffset = localDate.getTimezoneOffset();
+
+  // Aggiungi l'offset per ottenere la data in UTC
+  const utcDate = new Date(localDate.getTime() + timezoneOffset * 60000);
+
+  return utcDate;
+}
+
+export function convertUTCToLocal(utcDate: Date): Date {
+  // Ottieni l'offset del fuso orario locale in minuti (positivo se il fuso orario locale è avanti rispetto a UTC)
+  const timezoneOffset = utcDate.getTimezoneOffset();
+
+  // Sottrarre l'offset per ottenere la data locale
+  const localDate = new Date(utcDate.getTime() - timezoneOffset * 60000);
+
+  return localDate;
+}

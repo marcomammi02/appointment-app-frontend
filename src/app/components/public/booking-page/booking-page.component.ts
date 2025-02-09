@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ShopStore } from '../../../stores/shop.store';
 import {
   capitalizeFirstLetter,
+  convertUTCToLocal,
   formatDateToString,
   getDayOfWeek,
 } from '../../../services/utility.service';
@@ -151,17 +152,39 @@ export class BookingPageComponent implements OnInit {
 
       // Recupera le assenze
       if (this.selectedStaff.id) {
-        this.absences = await this.absenceService
-        .getAbsencesByStaffAndDay(+this.selectedStaff.id, formatDateToString(this.storeAppointments.currentDay))
-        .toPromise();
-      }
-      else {
-        this.absences = await this.absenceService
-        .getAbsencesByDay(formatDateToString(this.storeAppointments.currentDay))
-        .toPromise();
-      }
-      console.log(this.absences);
+        const absences = await this.absenceService
+          .getAbsencesByStaffAndDay(
+            +this.selectedStaff.id,
+            formatDateToString(this.storeAppointments.currentDay)
+          )
+          .toPromise();
+        this.absences = absences.map((abs: any) => {
+          // Converte abs.date da UTC a locale
+          const localDate = convertUTCToLocal(new Date(abs.date));
 
+          return {
+            ...abs,
+            date: localDate,
+          };
+        });
+      } else {
+        const absences = await this.absenceService
+          .getAbsencesByDay(
+            formatDateToString(this.storeAppointments.currentDay)
+          )
+          .toPromise();
+
+          this.absences = absences.map((abs: any) => {
+            // Converte abs.date da UTC a locale
+            const localDate = convertUTCToLocal(new Date(abs.date));
+  
+            return {
+              ...abs,
+              date: localDate,
+            };
+          });
+      }
+      
       // Genera gli slot occupati dagli appuntamenti
       const occupiedSlots: Slot[] = [];
       this.appointments.forEach((appointment) => {
@@ -169,6 +192,7 @@ export class BookingPageComponent implements OnInit {
         occupiedSlots.push(...slots);
       });
 
+      console.log(this.absences);
       this.absences.forEach((abs) => {
         const slots = this.generateSlotFromAbsence(abs, step);
         occupiedSlots.push(...slots);
@@ -260,7 +284,6 @@ export class BookingPageComponent implements OnInit {
     return slots;
   }
 
-
   // Controlla se il giorno corrente è oggi
   isToday(): boolean {
     const today = new Date();
@@ -322,31 +345,31 @@ export class BookingPageComponent implements OnInit {
   generateSlotFromAbsence(absence: any, step: number): Slot[] {
     let startTime: Date;
     let endTime: Date;
-  
+
     // Se startTime o endTime sono stringhe vuote, considera l'intera giornata
-    if (!absence.startTime || absence.startTime === "") {
+    if (!absence.startTime || absence.startTime === '') {
       startTime = new Date();
       startTime.setUTCHours(0, 0, 0, 0); // Imposta l'orario di inizio alla mezzanotte (00:00) in UTC
     } else {
       // Altrimenti, crea un oggetto Date utilizzando la stringa startTime
-      const [startHour, startMinute] = absence.startTime.split(":").map(Number);
+      const [startHour, startMinute] = absence.startTime.split(':').map(Number);
       startTime = new Date();
       startTime.setUTCHours(startHour, startMinute, 0, 0); // Usa setUTCHours per evitare il fuso orario locale
     }
-  
-    if (!absence.endTime || absence.endTime === "") {
+
+    if (!absence.endTime || absence.endTime === '') {
       endTime = new Date();
       endTime.setUTCHours(23, 59, 59, 999); // Imposta l'orario di fine alla fine della giornata (23:59) in UTC
     } else {
       // Altrimenti, crea un oggetto Date utilizzando la stringa endTime
-      const [endHour, endMinute] = absence.endTime.split(":").map(Number);
+      const [endHour, endMinute] = absence.endTime.split(':').map(Number);
       endTime = new Date();
       endTime.setUTCHours(endHour, endMinute, 0, 0); // Usa setUTCHours per evitare il fuso orario locale
     }
-  
+
     const durationMs = step * 60 * 1000; // Durata del passo in millisecondi
     const occupiedSlots: Slot[] = [];
-  
+
     let current = startTime;
     while (current < endTime) {
       const slotEnd = new Date(current.getTime() + durationMs);
@@ -359,12 +382,9 @@ export class BookingPageComponent implements OnInit {
       }
       current = new Date(current.getTime() + durationMs);
     }
-  
+
     return occupiedSlots;
   }
-  
-
-  
 
   getHourTime(minutes: number): string {
     const hours = Math.floor(minutes / 60);
@@ -391,40 +411,40 @@ export class BookingPageComponent implements OnInit {
 
   changeDate() {
     this.getAvailabilitiesByDay();
-    this.getStaff()
+    this.getStaff();
   }
 
   // Metodo per rimuovere duplicati dagli slot e riordinarli
-removeDuplicateSlots(slots: Slot[]): Slot[] {
-  const uniqueSlots = new Map<string, Slot>(); // Mappa per tenere traccia degli slot unici
+  removeDuplicateSlots(slots: Slot[]): Slot[] {
+    const uniqueSlots = new Map<string, Slot>(); // Mappa per tenere traccia degli slot unici
 
-  slots.forEach((slot) => {
-    const key = `${slot.start}-${slot.end}`; // Crea una chiave unica basata su start e end
+    slots.forEach((slot) => {
+      const key = `${slot.start}-${slot.end}`; // Crea una chiave unica basata su start e end
 
-    if (uniqueSlots.has(key)) {
-      // Se la chiave esiste, aggiungi l'ID dello staff all'array esistente
-      const existingSlot = uniqueSlots.get(key);
-      if (existingSlot) {
-        // Aggiungi lo staffId solo se non è già presente nell'array
-        slot.staffId.forEach((id) => {
-          if (!existingSlot.staffId.includes(id)) {
-            existingSlot.staffId.push(id);
-          }
-        });
+      if (uniqueSlots.has(key)) {
+        // Se la chiave esiste, aggiungi l'ID dello staff all'array esistente
+        const existingSlot = uniqueSlots.get(key);
+        if (existingSlot) {
+          // Aggiungi lo staffId solo se non è già presente nell'array
+          slot.staffId.forEach((id) => {
+            if (!existingSlot.staffId.includes(id)) {
+              existingSlot.staffId.push(id);
+            }
+          });
+        }
+      } else {
+        // Se la chiave non esiste, aggiungi il nuovo slot
+        uniqueSlots.set(key, { ...slot });
       }
-    } else {
-      // Se la chiave non esiste, aggiungi il nuovo slot
-      uniqueSlots.set(key, { ...slot });
-    }
-  });
+    });
 
-  return Array.from(uniqueSlots.values()).sort((a, b) => {
-    // Aggiungi una data fittizia per interpretare le ore come date
-    const timeA: any = new Date("1970-01-01T" + a.start + ":00Z");
-    const timeB: any = new Date("1970-01-01T" + b.start + ":00Z");
-    return timeA - timeB;
-  });
-}
+    return Array.from(uniqueSlots.values()).sort((a, b) => {
+      // Aggiungi una data fittizia per interpretare le ore come date
+      const timeA: any = new Date('1970-01-01T' + a.start + ':00Z');
+      const timeB: any = new Date('1970-01-01T' + b.start + ':00Z');
+      return timeA - timeB;
+    });
+  }
 
   goToDataPage(slot: any) {
     this.storeAppointments.currentHour = slot.start;
