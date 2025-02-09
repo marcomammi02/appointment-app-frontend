@@ -83,6 +83,8 @@ export class BookingPageComponent implements OnInit {
 
   absences: any[] = [];
 
+  now: Date = new Date();
+
   ngOnInit(): void {
     this.today = new Date();
     this.today.setHours(0, 0, 0, 0);
