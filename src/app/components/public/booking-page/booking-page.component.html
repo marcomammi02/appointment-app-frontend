@@ -48,6 +48,8 @@
     </button>
   </div>
 
+<p>{{formatDateToString(convertUTCToLocal(storeAppointments.currentDay))}}</p>
+
   <!-- Slots container -->
    <app-loading *ngIf="avLoading" [small]="true"/>
   <div *ngIf="slots.length > 0 && !avLoading">

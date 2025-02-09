@@ -6,7 +6,6 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ShopStore } from '../../../stores/shop.store';
 import {
   capitalizeFirstLetter,
-  convertLocalToUTC,
   convertUTCToLocal,
   formatDateToString,
   getDayOfWeek,
@@ -86,7 +85,7 @@ export class BookingPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.today = new Date();
-    this.today.setHours(23, 59, 59, 999);
+    this.today.setHours(0, 0, 0, 0);
     this.extractServiceIdFromUrl();
     this.getShop();
     this.getService();
@@ -151,13 +150,13 @@ export class BookingPageComponent implements OnInit {
         this.appointments = await this.appointmentService
         .getAppointments(formatDateToString(this.storeAppointments.currentDay))
         .toPromise();
-        
+        console.log(formatDateToString(this.storeAppointments.currentDay))
         // Recupera le assenze
         if (this.selectedStaff.id) {
           const absences = await this.absenceService
           .getAbsencesByStaffAndDay(
             +this.selectedStaff.id,
-            formatDateToString(convertLocalToUTC(this.storeAppointments.currentDay))
+            formatDateToString((this.storeAppointments.currentDay))
           )
           .toPromise();
           this.absences = absences.map((abs: any) => {
@@ -172,7 +171,7 @@ export class BookingPageComponent implements OnInit {
         } else {
           const absences = await this.absenceService
           .getAbsencesByDay(
-            formatDateToString(convertLocalToUTC(this.storeAppointments.currentDay))
+            formatDateToString((this.storeAppointments.currentDay))
           )
           .toPromise();
           
@@ -401,7 +400,7 @@ export class BookingPageComponent implements OnInit {
     if (this.isToday() && days == -1) return;
     const newDate = new Date(this.storeAppointments.currentDay);
     newDate.setDate(newDate.getDate() + days);
-    newDate.setHours(23, 59, 59, 999);
+    newDate.setHours(0, 0, 0, 0);
     this.storeAppointments.currentDay = newDate;
     this.changeDate();
   }
@@ -473,5 +472,7 @@ export class BookingPageComponent implements OnInit {
   }
 
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
+  protected readonly formatDateToString = formatDateToString;
+  protected readonly convertUTCToLocal = convertUTCToLocal;
   protected readonly getDayOfWeek = getDayOfWeek;
 }
