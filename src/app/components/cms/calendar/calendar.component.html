@@ -9,9 +9,11 @@
         <button (click)="navigateDay(-1)" class="nav-arrow">
           <i class="pi pi-chevron-left"></i>
         </button>
-        <div class="flex align-items-center justify-content-center cursor-pointer w-13rem" (click)="openCalendar(calendar)">
+        <div class="flex align-items-center justify-content-center cursor-pointer w-13rem"
+          (click)="openCalendar(calendar)">
           <p class="ml-3 font-medium">{{ getDayOfWeek(storeAppointments.currentDay) }}</p>
-          <p-calendar #calendar [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy" class="w-7rem" (onSelect)="changeDate()"></p-calendar>
+          <p-calendar #calendar [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy"
+            class="w-7rem" (onSelect)="changeDate()"></p-calendar>
         </div>
         <button (click)="navigateDay(1)" class="nav-arrow">
           <i class="pi pi-chevron-right"></i>
@@ -19,13 +21,14 @@
       </div>
 
       <!-- Go to today btn -->
-      <app-primary-btn class="" (click)="goToToday()" label="Oggi"/>
+      <app-primary-btn class="" (click)="goToToday()" label="Oggi" />
     </div>
   </div>
 
   <app-loading *ngIf="loading" />
 
-  <p class="mt-8 text-center" *ngIf="storeStaff.staffList.length <= 0">Crea uno <a class="staff-link" [href]="'/private/' + shopStore.slug + '/staff'">Staff</a> con orari di lavoro per continuare</p>
+  <p class="mt-8 text-center" *ngIf="storeStaff.staffList.length <= 0">Crea uno <a class="staff-link"
+      [href]="'/private/' + shopStore.slug + '/staff'">Staff</a> con orari di lavoro per continuare</p>
 
   <div class="table-wrapper" #scrollableContainer *ngIf="!loading">
 
@@ -33,29 +36,42 @@
     <!-- Table -->
     <table *ngIf="storeAppointments.appointments" class="relative">
 
-
       <thead>
         <tr>
           <th class="fixed-column"></th>
-          <th class="name-tag fixed-header cursor-pointer" *ngFor="let staff of storeStaff.staffList" [routerLink]="'/private/' + shopStore.slug + '/staff/' + staff.id"><h4>{{ staff.name }}</h4></th>
+          <th class="name-tag fixed-header cursor-pointer" *ngFor="let staff of storeStaff.staffList"
+            [routerLink]="'/private/' + shopStore.slug + '/staff/' + staff.id">
+            <h4>{{ staff.name }}</h4>
+          </th>
         </tr>
       </thead>
-      <tbody>
-          <!-- Time marker line -->
-          <div class="time-marker" id="time-marker" *ngIf="isToday(storeAppointments.currentDay)" [ngStyle]="{ top: currentTimePosition, opacity: markerOpacity}"></div>
 
-          <tr *ngFor="let hour of shopStore.workingHours">
-            <th class="hour-tag fixed-column"><h4 class="{{getHourClass(hour)}}">{{ hour }}</h4></th>
-            <td *ngFor="let staff of storeStaff.staffList" (click)="goToCreation(hour, staff)" class="cursor-pointer" [ngClass]="!checkStaffAvailability(hour, staff.id) ? 'not-available-icon' : ''">
-              <ng-container *ngIf="getAppointmentForTime(hour, staff) as apps">
-                <div *ngFor="let app of apps" class="appointment flex-column justify-content-center hidden" (click)="goToAppointment(app, hour, staff)"
-                [ngStyle]="{
+      <tbody>
+
+        <!-- Time marker line -->
+        <div class="time-marker" id="time-marker" *ngIf="isToday(storeAppointments.currentDay)"
+          [ngStyle]="{ top: currentTimePosition, opacity: markerOpacity}"></div>
+
+        <tr *ngFor="let hour of shopStore.workingHours">
+          <th class="hour-tag fixed-column">
+            <h4 class="{{getHourClass(hour)}}">{{ hour }}</h4>
+          </th>
+          <td *ngFor="let staff of storeStaff.staffList" (click)="goToCreation(hour, staff)" class="cursor-pointer"
+            [ngClass]="{
+            'not-available-icon': !checkStaffAvailability(hour, staff.id) && !checkAbsenceForTime(hour, staff.id),
+            'absence-icon': checkAbsenceForTime(hour, staff.id)}">
+            
+            <ng-container *ngIf="getAppointmentForTime(hour, staff) as apps">
+              <div *ngFor="let app of apps" class="appointment flex-column justify-content-center hidden"
+                (click)="goToAppointment(app, hour, staff)" [ngStyle]="{
                   'height': getAppHeight(app),
                   'border-left': getAppWidth(app, staff),
                 }" [ngClass]="alreadyCalled(app, hour) ? 'flex' : 'hidden'">
                 <div class="app-background" [ngStyle]="{'background': getBgColor(app)}"></div>
-                <i [ngClass]="app.status == 'BOOKED' ? 'pi pi-shop' : 'pi pi-user'" class="absolute top-0 right-0 m-2"></i>
-                <h4 class="app-text">{{capitalizeFirstLetter(app.customerLastName)}} {{capitalizeFirstLetter(app.customerName)}}</h4>
+                <i [ngClass]="app.status == 'BOOKED' ? 'pi pi-shop' : 'pi pi-user'"
+                  class="absolute top-0 right-0 m-2"></i>
+                <h4 class="app-text">{{capitalizeFirstLetter(app.customerLastName)}}
+                  {{capitalizeFirstLetter(app.customerName)}}</h4>
                 <p class="app-text">{{capitalizeFirstLetter(app.serviceName)}}</p>
               </div>
             </ng-container>

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { LoadingComponent } from '../../../../../global/loading/loading.component';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { StaffStore } from '../../../../../../stores/staff.store';
 import { ShopStore } from '../../../../../../stores/shop.store';
-import { capitalizeFirstLetter } from '../../../../../../services/utility.service';
+import { capitalizeFirstLetter, getTime } from '../../../../../../services/utility.service';
 import { NgIf } from '@angular/common';
 import { StaffService } from '../../../../../../services/staff.service';
 import { CancelBtnComponent } from '../../../../../global/cancel-btn/cancel-btn.component';
@@ -46,7 +46,8 @@ export class CreateAbsComponent {
     private staffService: StaffService,
     private formBuilder: FormBuilder,
     private errorService: ErrorService,
-    private absenceService: AbsenceService
+    private absenceService: AbsenceService,
+    private router: Router
   ) {}
 
   loading: boolean = true;
@@ -131,17 +132,22 @@ export class CreateAbsComponent {
     let v = this.form.value;
     const absence: CreateAbsenceDto = {
       date: v.date,
-      startTime: v.allDay ? '' : v.startTime,
-      endTime: v.allDay ? '' : v.endTime,
+      startTime: v.allDay ? '' : getTime(v.startTime),
+      endTime: v.allDay ? '' : getTime(v.endTime),
       reason: v.reason,
       staffId: this.staffId,
     };
-    
-    this.absenceService.createAbsence(absence).subscribe(
-      (res: any) => {
-        console.log(res)
-      }
-    )
+
+    this.absenceService.createAbsence(absence).subscribe((res: any) => {
+      console.log(res);
+      this.router.navigate([
+        '/private/' +
+          this.shopStore.slug +
+          '/staff/' +
+          this.staffStore.currentStaff.id +
+          '/absences',
+      ]);
+    });
   }
 
   protected readonly capitalizeFirstLetter = capitalizeFirstLetter;

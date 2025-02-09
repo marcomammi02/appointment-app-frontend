@@ -165,6 +165,18 @@ tr:last-child td {
   cursor: default !important;
 }
 
+.absence-icon {
+  background: repeating-linear-gradient(
+    45deg,
+    #f7f6f6,
+    #f7f6f6 10px,
+    #f5cb87fc 10px,
+    #f5cb87fc 20px
+  );
+  cursor: default !important;
+}
+
+
 .quarter-hour {
   opacity: 0;
 }

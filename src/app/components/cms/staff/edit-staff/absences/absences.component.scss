@@ -9,7 +9,7 @@
     padding: 1rem !important;
   }
 
-  .p-button.p-button-text {
+  .p-button.p-button-text:first-child {
     color: #000000;
   }
 }
@@ -30,4 +30,12 @@
     transform: scale(1.03);
     cursor: pointer;
   }
+
+  .p-button.p-button-danger.p-button-text, .p-button-group.p-button-danger > .p-button.p-button-text, .p-splitbutton.p-button-danger > .p-button.p-button-text {
+    background-color: transparent;
+    color: #ef4444;
+    border-color: transparent;
+    border-radius: 15px;
+    padding: 10px 25px !important;
+}
 }

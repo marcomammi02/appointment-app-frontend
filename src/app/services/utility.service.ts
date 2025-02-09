@@ -22,8 +22,8 @@ export function formatDateToStringDayFirst(dateInput: Date): string {
 }
 
 export function toDateTime(inputDay: Date, inputTime: string) {
-  const day = formatDateToString(inputDay)
-  return `${day}T${inputTime}:00Z`
+  const day = formatDateToString(inputDay);
+  return `${day}T${inputTime}:00Z`;
 }
 
 export function toTime(dateTime: string): string {
@@ -45,8 +45,8 @@ export function minutesToTime(minutes: number): string {
 
 // This function tranform from format "2024-10-19T08:00:00.000Z" to minutes
 export function timeToMinutes(time: string): number {
-  const formattedTime = toTime(time)
-  const [hours, minutes] = formattedTime.split(':').map(Number)
+  const formattedTime = toTime(time);
+  const [hours, minutes] = formattedTime.split(':').map(Number);
   return hours * 60 + minutes;
 }
 
@@ -58,7 +58,7 @@ export function timeStringToMinutes(time: string): number {
 
 // This function transforms a time string "12:30" to an hour value as a number
 export function timeStringToHour(time: string): number {
-  if (!time) return 0
+  if (!time) return 0;
   const [hours] = time.split(':').map(Number);
   return hours;
 }
@@ -70,10 +70,28 @@ export function firstLetter(str: string): string {
 
 export function getDayOfWeek(date: Date): string {
   const weekDays = [
-    'Domenica', 'Lunedì', 'Martedì', 'Mercoledì',
-    'Giovedì', 'Venerdì', 'Sabato'
-  ]
-  const day = date.getDay()
+    'Domenica',
+    'Lunedì',
+    'Martedì',
+    'Mercoledì',
+    'Giovedì',
+    'Venerdì',
+    'Sabato',
+  ];
+  const day = date.getDay();
 
-  return weekDays[day]
+  return weekDays[day];
+}
+
+// This function extract time like "12:00" from a date string like "2024-10-19T08:00:00.000Z"
+export function getTime(date: Date) {
+  let hours: number | string = date.getHours();
+  let minutes: number | string = date.getMinutes();
+  if (hours < 10) {
+    hours = '0' + hours;
+  }
+  if (minutes == 0) {
+    minutes = '00';
+  }
+  return `${hours}:${minutes}`;
 }

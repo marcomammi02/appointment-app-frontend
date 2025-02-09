@@ -20,6 +20,10 @@ export class AbsenceService {
     return this.http.get<any>(`${this.apiUrl}/staff/${id}`);
   }
 
+  getAbsencesByStaffAndDay(staffId: number, day: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/staff/${staffId}/day/${day}`);
+  }
+
   createAbsence(absence: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, absence);
   }
