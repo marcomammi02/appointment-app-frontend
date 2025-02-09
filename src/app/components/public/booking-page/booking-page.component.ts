@@ -145,55 +145,61 @@ export class BookingPageComponent implements OnInit {
           this.storeAppointments.currentDay.getDay()
         )
         .toPromise();
-
-      // Recupera gli appuntamenti
-      this.appointments = await this.appointmentService
+        
+        // Recupera gli appuntamenti
+        this.appointments = await this.appointmentService
         .getAppointments(formatDateToString(this.storeAppointments.currentDay))
         .toPromise();
-
-      // Recupera le assenze
-      if (this.selectedStaff.id) {
-        const absences = await this.absenceService
+        
+        // Recupera le assenze
+        if (this.selectedStaff.id) {
+          const absences = await this.absenceService
           .getAbsencesByStaffAndDay(
             +this.selectedStaff.id,
             formatDateToString(convertLocalToUTC(this.storeAppointments.currentDay))
           )
           .toPromise();
-        this.absences = absences.map((abs: any) => {
-          // Converte abs.date da UTC a locale
-          const localDate = convertUTCToLocal(new Date(abs.date));
-
-          return {
-            ...abs,
-            date: localDate,
-          };
-        });
-      } else {
-        const absences = await this.absenceService
-          .getAbsencesByDay(
-            formatDateToString(convertLocalToUTC(this.storeAppointments.currentDay))
-          )
-          .toPromise();
-
           this.absences = absences.map((abs: any) => {
             // Converte abs.date da UTC a locale
             const localDate = convertUTCToLocal(new Date(abs.date));
-  
+            
             return {
               ...abs,
               date: localDate,
             };
           });
-      }
+        } else {
+          const absences = await this.absenceService
+          .getAbsencesByDay(
+            formatDateToString(convertLocalToUTC(this.storeAppointments.currentDay))
+          )
+          .toPromise();
+          
+          this.absences = absences.map((abs: any) => {
+            // Converte abs.date da UTC a locale
+            const localDate = convertUTCToLocal(new Date(abs.date));
+            
+            return {
+              ...abs,
+              date: localDate,
+            };
+          });
 
-      // Genera gli slot occupati dagli appuntamenti
-      const occupiedSlots: Slot[] = [];
-      this.appointments.forEach((appointment) => {
-        const slots = this.generateSlotFromAppointment(appointment, step);
-        occupiedSlots.push(...slots);
-      });
+          console.log(this.absences);
+          console.log(absences);
+        }
 
-      console.log(this.absences);
+        console.log(formatDateToString(this.storeAppointments.currentDay))
+        console.log(formatDateToString(convertLocalToUTC(this.storeAppointments.currentDay)))
+        
+        // Genera gli slot occupati dagli appuntamenti
+        const occupiedSlots: Slot[] = [];
+        this.appointments.forEach((appointment) => {
+          const slots = this.generateSlotFromAppointment(appointment, step);
+          occupiedSlots.push(...slots);
+        });
+        
+        console.log(this.absences);
       this.absences.forEach((abs) => {
         const slots = this.generateSlotFromAbsence(abs, step);
         occupiedSlots.push(...slots);
