@@ -5,7 +5,8 @@ export function capitalizeFirstLetter(value: any): string {
   return value;
 }
 
-export function formatDateToString(date: Date): string {
+export function formatDateToString(inputDate: Date): string {
+  const date: Date = new Date(inputDate);
   const year = date.getFullYear();
   const month = ('0' + (date.getMonth() + 1)).slice(-2);
   const day = ('0' + date.getDate()).slice(-2);

@@ -137,6 +137,7 @@ export class CreateAbsComponent {
       reason: v.reason,
       staffId: this.staffId,
     };
+    console.log(v.date)
 
     this.absenceService.createAbsence(absence).subscribe((res: any) => {
       console.log(res);

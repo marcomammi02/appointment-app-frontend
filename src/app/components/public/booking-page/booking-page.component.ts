@@ -11,7 +11,7 @@ import {
 } from '../../../services/utility.service';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DropdownModule } from 'primeng/dropdown';
-import { StaffStore } from '../../../stores/staff.store';
+import { Staff, StaffStore } from '../../../stores/staff.store';
 import { StaffService } from '../../../services/staff.service';
 import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -20,6 +20,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { AvailabilityService } from '../../../services/availability.service';
 import { AppointmentService } from '../../../services/appointment.service';
 import { ServicesStore } from '../../../stores/services.store';
+import { AbsenceService } from '../../../services/absence.service';
 
 class Slot {
   start!: string;
@@ -55,7 +56,8 @@ export class BookingPageComponent implements OnInit {
     public storeAppointments: StoreAppointments,
     private appointmentService: AppointmentService,
     private availabilitiesService: AvailabilityService,
-    private router: Router
+    private router: Router,
+    private absenceService: AbsenceService
   ) {}
 
   loading: boolean = true;
@@ -77,6 +79,8 @@ export class BookingPageComponent implements OnInit {
   appointments: any[] = [];
 
   today!: Date;
+
+  absences: any[] = [];
 
   ngOnInit(): void {
     this.today = new Date();
@@ -126,6 +130,7 @@ export class BookingPageComponent implements OnInit {
     this.availabilities = [];
     this.slots = [];
     this.appointments = [];
+    this.absences = [];
     const step = 15; // Intervallo in minuti per il calcolo degli slot
     this.avLoading = true;
 
@@ -144,12 +149,32 @@ export class BookingPageComponent implements OnInit {
         .getAppointments(formatDateToString(this.storeAppointments.currentDay))
         .toPromise();
 
+      // Recupera le assenze
+      if (this.selectedStaff.id) {
+        this.absences = await this.absenceService
+        .getAbsencesByStaffAndDay(+this.selectedStaff.id, formatDateToString(this.storeAppointments.currentDay))
+        .toPromise();
+      }
+      else {
+        this.absences = await this.absenceService
+        .getAbsencesByDay(formatDateToString(this.storeAppointments.currentDay))
+        .toPromise();
+      }
+      console.log(this.absences);
+
       // Genera gli slot occupati dagli appuntamenti
       const occupiedSlots: Slot[] = [];
       this.appointments.forEach((appointment) => {
         const slots = this.generateSlotFromAppointment(appointment, step);
         occupiedSlots.push(...slots);
       });
+
+      this.absences.forEach((abs) => {
+        const slots = this.generateSlotFromAbsence(abs, step);
+        occupiedSlots.push(...slots);
+      });
+
+      console.log(occupiedSlots);
 
       // Calcola gli slot disponibili per ogni availability
       this.availabilities.forEach((availability) => {
@@ -294,6 +319,53 @@ export class BookingPageComponent implements OnInit {
     return occupiedSlots;
   }
 
+  generateSlotFromAbsence(absence: any, step: number): Slot[] {
+    let startTime: Date;
+    let endTime: Date;
+  
+    // Se startTime o endTime sono stringhe vuote, considera l'intera giornata
+    if (!absence.startTime || absence.startTime === "") {
+      startTime = new Date();
+      startTime.setUTCHours(0, 0, 0, 0); // Imposta l'orario di inizio alla mezzanotte (00:00) in UTC
+    } else {
+      // Altrimenti, crea un oggetto Date utilizzando la stringa startTime
+      const [startHour, startMinute] = absence.startTime.split(":").map(Number);
+      startTime = new Date();
+      startTime.setUTCHours(startHour, startMinute, 0, 0); // Usa setUTCHours per evitare il fuso orario locale
+    }
+  
+    if (!absence.endTime || absence.endTime === "") {
+      endTime = new Date();
+      endTime.setUTCHours(23, 59, 59, 999); // Imposta l'orario di fine alla fine della giornata (23:59) in UTC
+    } else {
+      // Altrimenti, crea un oggetto Date utilizzando la stringa endTime
+      const [endHour, endMinute] = absence.endTime.split(":").map(Number);
+      endTime = new Date();
+      endTime.setUTCHours(endHour, endMinute, 0, 0); // Usa setUTCHours per evitare il fuso orario locale
+    }
+  
+    const durationMs = step * 60 * 1000; // Durata del passo in millisecondi
+    const occupiedSlots: Slot[] = [];
+  
+    let current = startTime;
+    while (current < endTime) {
+      const slotEnd = new Date(current.getTime() + durationMs);
+      if (slotEnd <= endTime) {
+        occupiedSlots.push({
+          start: current.toISOString().slice(11, 16),
+          end: slotEnd.toISOString().slice(11, 16),
+          staffId: [absence.staffId],
+        });
+      }
+      current = new Date(current.getTime() + durationMs);
+    }
+  
+    return occupiedSlots;
+  }
+  
+
+  
+
   getHourTime(minutes: number): string {
     const hours = Math.floor(minutes / 60);
     const min = minutes % 60;
@@ -319,6 +391,7 @@ export class BookingPageComponent implements OnInit {
 
   changeDate() {
     this.getAvailabilitiesByDay();
+    this.getStaff()
   }
 
   // Metodo per rimuovere duplicati dagli slot e riordinarli
