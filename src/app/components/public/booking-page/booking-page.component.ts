@@ -86,6 +86,7 @@ export class BookingPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.today = new Date();
+    this.today.setHours(23, 59, 59, 999);
     this.extractServiceIdFromUrl();
     this.getShop();
     this.getService();
@@ -183,15 +184,13 @@ export class BookingPageComponent implements OnInit {
               ...abs,
               date: localDate,
             };
+            
           });
-
-          console.log(this.absences);
-          console.log(absences);
+          
+          console.log(absences)
+          console.log(this.absences)
         }
 
-        console.log(formatDateToString(this.storeAppointments.currentDay))
-        console.log(formatDateToString(convertLocalToUTC(this.storeAppointments.currentDay)))
-        
         // Genera gli slot occupati dagli appuntamenti
         const occupiedSlots: Slot[] = [];
         this.appointments.forEach((appointment) => {
@@ -199,13 +198,10 @@ export class BookingPageComponent implements OnInit {
           occupiedSlots.push(...slots);
         });
         
-        console.log(this.absences);
       this.absences.forEach((abs) => {
         const slots = this.generateSlotFromAbsence(abs, step);
         occupiedSlots.push(...slots);
       });
-
-      console.log(occupiedSlots);
 
       // Calcola gli slot disponibili per ogni availability
       this.availabilities.forEach((availability) => {
@@ -405,7 +401,7 @@ export class BookingPageComponent implements OnInit {
     if (this.isToday() && days == -1) return;
     const newDate = new Date(this.storeAppointments.currentDay);
     newDate.setDate(newDate.getDate() + days);
-    newDate.setHours(0, 0, 0, 0);
+    newDate.setHours(23, 59, 59, 999);
     this.storeAppointments.currentDay = newDate;
     this.changeDate();
   }

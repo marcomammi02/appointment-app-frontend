@@ -44,9 +44,8 @@ export class AppointmentService {
   }
 
   setCurretDayToToday() {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    this.storeAppointment.currentDay = today;
+    this.storeAppointment.currentDay = new Date();
+    this.storeAppointment.currentDay.setHours(23, 59, 59, 999);
   }
 }
 
