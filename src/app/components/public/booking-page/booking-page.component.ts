@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ShopStore } from '../../../stores/shop.store';
 import {
   capitalizeFirstLetter,
+  convertLocalToUTC,
   convertUTCToLocal,
   formatDateToString,
   getDayOfWeek,
@@ -138,6 +139,10 @@ export class BookingPageComponent implements OnInit {
     const step = 15; // Intervallo in minuti per il calcolo degli slot
     this.avLoading = true;
 
+    console.log(
+      'localTime: ' + formatDateToString(this.storeAppointments.currentDay)
+    );
+
     try {
       // Recupera le availabilities
       this.availabilities = await this.availabilitiesService
@@ -147,59 +152,57 @@ export class BookingPageComponent implements OnInit {
           this.storeAppointments.currentDay.getDay()
         )
         .toPromise();
-        
-        // Recupera gli appuntamenti
-        this.appointments = await this.appointmentService
+
+      // Recupera gli appuntamenti
+      this.appointments = await this.appointmentService
         .getAppointments(formatDateToString(this.storeAppointments.currentDay))
         .toPromise();
-        console.log(formatDateToString(this.storeAppointments.currentDay))
 
-        // Recupera le assenze
-        if (this.selectedStaff.id) {
-          const absences = await this.absenceService
+      // Recupera le assenze
+      if (this.selectedStaff.id) {
+        const absences = await this.absenceService
           .getAbsencesByStaffAndDay(
             +this.selectedStaff.id,
-            formatDateToString(convertUTCToLocal(this.storeAppointments.currentDay))
+            formatDateToString(this.storeAppointments.currentDay)
           )
           .toPromise();
-          this.absences = absences.map((abs: any) => {
-            // Converte abs.date da UTC a locale
-            const localDate = convertUTCToLocal(new Date(abs.date));
-            
-            return {
-              ...abs,
-              date: localDate,
-            };
-          });
-        } else {
-          const absences = await this.absenceService
-          .getAbsencesByDay(
-            formatDateToString(convertUTCToLocal(this.storeAppointments.currentDay))
-          )
-          .toPromise();
-          
-          this.absences = absences.map((abs: any) => {
-            // Converte abs.date da UTC a locale
-            const localDate = convertUTCToLocal(new Date(abs.date));
-            
-            return {
-              ...abs,
-              date: localDate,
-            };
-            
-          });
-          
-          console.log(absences)
-          console.log(this.absences)
-        }
+          console.log('absences from server', absences);
+        this.absences = absences.map((abs: any) => {
+          // Converte abs.date da UTC a locale
+          const localDate = convertUTCToLocal(new Date(abs.date));
 
-        // Genera gli slot occupati dagli appuntamenti
-        const occupiedSlots: Slot[] = [];
-        this.appointments.forEach((appointment) => {
-          const slots = this.generateSlotFromAppointment(appointment, step);
-          occupiedSlots.push(...slots);
+          return {
+            ...abs,
+            date: localDate,
+          };
         });
-        
+      } else {
+        const absences = await this.absenceService
+          .getAbsencesByDay(
+            formatDateToString(this.storeAppointments.currentDay)
+            )
+          .toPromise();
+
+        this.absences = absences.map((abs: any) => {
+          // Converte abs.date da UTC a locale
+          const localDate = convertUTCToLocal(new Date(abs.date));
+
+          return {
+            ...abs,
+            date: localDate,
+          };
+        });
+        console.log('absences from server', absences);
+      }
+      console.log('absences to local', this.absences);
+
+      // Genera gli slot occupati dagli appuntamenti
+      const occupiedSlots: Slot[] = [];
+      this.appointments.forEach((appointment) => {
+        const slots = this.generateSlotFromAppointment(appointment, step);
+        occupiedSlots.push(...slots);
+      });
+
       this.absences.forEach((abs) => {
         const slots = this.generateSlotFromAbsence(abs, step);
         occupiedSlots.push(...slots);
