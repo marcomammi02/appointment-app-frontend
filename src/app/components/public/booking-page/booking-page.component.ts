@@ -405,6 +405,7 @@ export class BookingPageComponent implements OnInit {
     if (this.isToday() && days == -1) return;
     const newDate = new Date(this.storeAppointments.currentDay);
     newDate.setDate(newDate.getDate() + days);
+    newDate.setHours(0, 0, 0, 0);
     this.storeAppointments.currentDay = newDate;
     this.changeDate();
   }
