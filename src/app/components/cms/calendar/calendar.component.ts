@@ -75,6 +75,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   @ViewChild('time-marker', { static: false }) timeMarker?: ElementRef;
 
   ngOnInit() {
+    this.storeAppointments.currentDay.setHours(0, 0, 0, 0);
     this.getStaff();
     this.getHours();
     this.getAvailabilitiesByDay();
@@ -134,6 +135,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
           )
           .toPromise()
       );
+      console.log(convertLocalToUTC(this.storeAppointments.currentDay))
 
       // Attendi tutte le promesse per le assenze
       const absences: any[] = await Promise.all(absenceRequests);
@@ -395,7 +397,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   goToToday() {
-    this.storeAppointments.currentDay = new Date();
+    this.storeAppointments.currentDay = new Date()
+    this.storeAppointments.currentDay.setHours(0, 0, 0, 0);
     this.ngOnInit();
   }
 
