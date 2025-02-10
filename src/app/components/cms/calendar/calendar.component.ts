@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { AppointmentService } from '../../../services/appointment.service';
 import {
   capitalizeFirstLetter,
+  convertLocalToUTC,
   firstLetter,
   formatDateToString,
   getDayOfWeek,
@@ -129,7 +130,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         this.absenceService
           .getAbsencesByStaffAndDay(
             +staff.id,
-            formatDateToString(this.storeAppointments.currentDay)
+            convertLocalToUTC(this.storeAppointments.currentDay)
           )
           .toPromise()
       );

@@ -163,7 +163,7 @@ export class BookingPageComponent implements OnInit {
         const absences = await this.absenceService
           .getAbsencesByStaffAndDay(
             +this.selectedStaff.id,
-            formatDateToString(this.storeAppointments.currentDay)
+            convertLocalToUTC(this.storeAppointments.currentDay)
           )
           .toPromise();
           console.log('absences from server', absences);
@@ -179,7 +179,7 @@ export class BookingPageComponent implements OnInit {
       } else {
         const absences = await this.absenceService
           .getAbsencesByDay(
-            formatDateToString(this.storeAppointments.currentDay)
+            convertLocalToUTC(this.storeAppointments.currentDay)
             )
           .toPromise();
 
