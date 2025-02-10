@@ -51,6 +51,8 @@ export class AbsencesComponent {
 
   absences: any[] = [];
 
+  absLoading: boolean = false;
+
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('staffId');
@@ -77,12 +79,13 @@ export class AbsencesComponent {
   }
 
   async getAbsences(id: number) {
-    this.loading = true;
+    this.absLoading = true;
     this.absences = [];
     this.absenceService.getAbsencesByStaffId(id).subscribe((res) => {
       this.absences = res.sort((a: any, b: any) => b.id - a.id); // Ordina per ID decrescente
       console.log(this.absences);
       this.loading = false;
+      this.absLoading = false;
     });
   }
 

@@ -67,7 +67,9 @@
       </ng-template>
     </p-table>
 
-    <p *ngIf="absences.length <= 0" class="text-center my-8">
+    <i class="pi pi-spin pi-spinner" *ngIf="absLoading" style="font-size: 2rem"></i>
+
+    <p *ngIf="absences.length <= 0 && !absLoading" class="text-center my-8">
       Non ci sono assenze pianificate
     </p>
   </div>
