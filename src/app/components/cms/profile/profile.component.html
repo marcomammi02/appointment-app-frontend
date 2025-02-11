@@ -6,6 +6,7 @@
     <app-primary-btn
       class="absolute top-0 right-0 p-3"
       label="Pagina pubblica"
+      (click)="cancelStoredShop()"
       [routerLink]="'/' + shopStore.slug"
     />
   </div>

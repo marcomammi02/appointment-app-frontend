@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingComponent } from "../../global/loading/loading.component";
+import { LoadingComponent } from '../../global/loading/loading.component';
 import { NgIf } from '@angular/common';
 import { PrimaryBtnComponent } from '../../global/primary-btn/primary-btn.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -30,36 +30,35 @@ import { ToastModule } from 'primeng/toast';
     PrimaryBtnComponent,
     RouterLink,
     FileUploadModule,
-    ToastModule
+    ToastModule,
   ],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss'
+  styleUrl: './profile.component.scss',
 })
 export class ProfileComponent implements OnInit {
-
   constructor(
     private formBuilder: FormBuilder,
     public shopStore: ShopStore,
     private shopService: ShopService,
-    private errorService: ErrorService,
+    private errorService: ErrorService
   ) {}
 
-  loading: boolean = false
+  loading: boolean = false;
 
-  form!: FormGroup
+  form!: FormGroup;
 
-  selectedLogo: File | null = null
-  selectedCover: File | null = null
+  selectedLogo: File | null = null;
+  selectedCover: File | null = null;
 
-  downloadLogoURL?: string
-  downloadCoverURL?: string
+  downloadLogoURL?: string;
+  downloadCoverURL?: string;
 
-  logoPreview?: string
-  coverPreview?: string
+  logoPreview?: string;
+  coverPreview?: string;
 
-  editing: boolean = false
+  editing: boolean = false;
   ngOnInit(): void {
-    this.buildForm()
+    this.buildForm();
   }
 
   buildForm() {
@@ -72,8 +71,8 @@ export class ProfileComponent implements OnInit {
       shop = storedShop ? JSON.parse(storedShop) : null;
     }
 
-    this.logoPreview = shop.logo
-    this.coverPreview = shop.cover
+    this.logoPreview = shop.logo;
+    this.coverPreview = shop.cover;
 
     // Ensure shop is initialized to prevent errors
     if (!shop) {
@@ -81,7 +80,7 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    console.log(shop)
+    console.log(shop);
 
     // Build form with shop data
     this.form = this.formBuilder.group({
@@ -143,10 +142,14 @@ export class ProfileComponent implements OnInit {
 
   triggerFileInput(type: 'logo' | 'cover') {
     if (type === 'logo') {
-      const fileInput = document.getElementById('logo-upload') as HTMLInputElement;
+      const fileInput = document.getElementById(
+        'logo-upload'
+      ) as HTMLInputElement;
       fileInput.click();
     } else if (type === 'cover') {
-      const fileInput = document.getElementById('cover-upload') as HTMLInputElement;
+      const fileInput = document.getElementById(
+        'cover-upload'
+      ) as HTMLInputElement;
       fileInput.click();
     }
   }
@@ -170,7 +173,7 @@ export class ProfileComponent implements OnInit {
     if (this.editing) return;
 
     this.editing = true;
-    this.shopStore.transparentLoading = true
+    this.shopStore.transparentLoading = true;
 
     try {
       // Aspetta il completamento degli upload
@@ -190,28 +193,31 @@ export class ProfileComponent implements OnInit {
         instagramUrl: v.instagramUrl,
         tiktokUrl: v.tiktokUrl,
         publicBgColor: v.publicBgColor,
-        publicCardColor: v.publicCardColor
+        publicCardColor: v.publicCardColor,
       };
 
       // Effettua l'update
       this.shopService.update(shop).subscribe(
-        res => {
-          this.shopStore.currentShop = res
+        (res) => {
+          this.shopStore.currentShop = res;
 
           // Salva lo store aggiornato nel localStorage
-          localStorage.setItem('currentShop', JSON.stringify(this.shopStore.currentShop));
+          localStorage.setItem(
+            'currentShop',
+            JSON.stringify(this.shopStore.currentShop)
+          );
 
           this.editing = false;
-          this.shopStore.transparentLoading = false
+          this.shopStore.transparentLoading = false;
         },
-        err => {
+        (err) => {
           let error: MyError = {
             label: 'Errore',
             message: err.message,
           };
           this.errorService.showError(error);
           this.editing = false;
-          this.shopStore.transparentLoading = false
+          this.shopStore.transparentLoading = false;
         }
       );
     } catch (error) {
@@ -225,5 +231,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-
+  cancelStoredShop() {
+    this.shopStore.currentShop = {};
+  }
 }

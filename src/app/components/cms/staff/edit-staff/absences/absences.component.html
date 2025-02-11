@@ -46,7 +46,7 @@
     </p>
 
     <!-- Absences table -->
-    <p-table *ngIf="absences.length > 0" [value]="absences">
+    <p-table *ngIf="absences.length > 0 && !absLoading" [value]="absences">
       <ng-template pTemplate="header">
         <tr>
           <th>Giorno</th>
@@ -57,7 +57,7 @@
       <ng-template pTemplate="body" let-abs>
         <tr>
           <td class="text-sm">{{ createAbsString(abs) }}</td>
-          <td class="text-sm">{{ abs.reason }}</td>
+          <td class="text-sm">{{ capitalizeFirstLetter(abs.reason) }}</td>
           <td class="w-1rem text-center">
             <p class="delete-btn" (click)="confirmDelete(abs)">
               <i class="pi pi-trash"></i>
@@ -67,7 +67,9 @@
       </ng-template>
     </p-table>
 
-    <i class="pi pi-spin pi-spinner" *ngIf="absLoading" style="font-size: 2rem"></i>
+    <div class="flex justify-content-center my-8">
+      <i class="pi pi-spin pi-spinner mt-8" *ngIf="absLoading" style="font-size: 2rem"></i>
+    </div>
 
     <p *ngIf="absences.length <= 0 && !absLoading" class="text-center my-8">
       Non ci sono assenze pianificate
