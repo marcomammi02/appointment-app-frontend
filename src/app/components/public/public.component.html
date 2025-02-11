@@ -1,4 +1,4 @@
-<app-loading *ngIf="!shopStore.currentShop.logo && shopStore.currentShop.logo != '' && !loading" />
+<app-loading *ngIf="!isShopDataReady()" />
 
 <div class="container pb-5" *ngIf="!loading" [ngStyle]="{ background: shopStore.currentShop.publicBgColor}">
     <div class="cover-box">

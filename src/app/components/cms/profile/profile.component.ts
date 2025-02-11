@@ -153,6 +153,7 @@ export class ProfileComponent implements OnInit {
       fileInput.click();
     }
   }
+  
 
   onFileSelected(event: Event, type: 'logo' | 'cover') {
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -229,9 +230,5 @@ export class ProfileComponent implements OnInit {
       this.errorService.showError(myError);
       this.editing = false;
     }
-  }
-
-  cancelStoredShop() {
-    this.shopStore.currentShop = {};
   }
 }
