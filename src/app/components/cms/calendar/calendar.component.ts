@@ -109,9 +109,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.availabilities = [];
     try {
       this.availabilities = await this.availabilitiesService
-        .findAll(
+        .findByShopId(
           this.shopStore.shopId,
-          undefined,
           this.storeAppointments.currentDay.getDay()
         )
         .toPromise();
@@ -130,7 +129,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       const absenceRequests = res.map((staff: Staff) =>
         this.absenceService
           .getAbsencesByStaffAndDay(
-            +staff.id,
+            [+staff.id],
             convertLocalToUTC(this.storeAppointments.currentDay)
           )
           .toPromise()

@@ -7,7 +7,7 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {DropdownModule} from "primeng/dropdown";
 import {PrimaryBtnComponent} from "../../../global/primary-btn/primary-btn.component";
 import {CancelBtnComponent} from "../../../global/cancel-btn/cancel-btn.component";
-import {NgClass} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 import {CreateServiceDto} from "../../../../dtos/services.dto";
 import {ServicesService} from "../../../../services/services.service";
 import {ErrorService, MyError} from "../../../../services/error.service";
@@ -15,6 +15,8 @@ import {Router, RouterLink} from "@angular/router";
 import {ServicesStore} from "../../../../stores/services.store";
 import {ShopStore} from "../../../../stores/shop.store";
 import {ColorPickerModule} from "primeng/colorpicker";
+import { MultiSelectModule } from 'primeng/multiselect';
+import { StaffService } from '../../../../services/staff.service';
 
 
 @Component({
@@ -31,7 +33,9 @@ import {ColorPickerModule} from "primeng/colorpicker";
     PrimaryBtnComponent,
     CancelBtnComponent,
     RouterLink,
-    ColorPickerModule
+    ColorPickerModule,
+    MultiSelectModule,
+    NgIf
   ],
   templateUrl: './create-service.component.html',
   styleUrl: './create-service.component.scss'
@@ -44,7 +48,8 @@ export class CreateServiceComponent implements OnInit {
     private errorService: ErrorService,
     public servicesStore: ServicesStore,
     private router: Router,
-    public shopStore: ShopStore
+    public shopStore: ShopStore,
+    private staffService: StaffService
   ) {
   }
 
@@ -52,7 +57,10 @@ export class CreateServiceComponent implements OnInit {
 
   creating: boolean = false
 
+  staff: any = []
+
   ngOnInit() {
+    this.getStaff()
     this.buildForm()
   }
 
@@ -62,7 +70,18 @@ export class CreateServiceComponent implements OnInit {
       description: ['', Validators.required],
       duration: [null, Validators.required],
       price: [null, [Validators.required, Validators.min(0)]],
-      color: ['#feb64a']
+      color: ['#feb64a'],
+      staff: [[], Validators.required]
+    })
+  }
+
+  get staffInvalid() {
+    return this.form.get('staff')?.invalid && this.form.get('staff')?.touched;
+  }
+
+  getStaff() {
+    this.staffService.getStaff().subscribe((res: any) => {
+      this.staff = res
     })
   }
 
@@ -87,7 +106,8 @@ export class CreateServiceComponent implements OnInit {
       duration: v.duration.minutes,
       price: v.price,
       shopId: this.shopStore.shopId,
-      color: v.color
+      color: v.color,
+      staffIds: v.staff.map((s: any) => s.id)
     }
 
     this.servicesService.create(service).subscribe(

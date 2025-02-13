@@ -1,13 +1,23 @@
 @import "../../../../../styles";
 
 :host ::ng-deep {
-  .p-dropdown, .p-inputnumber-input {
+  .p-dropdown, .p-inputnumber-input, .p-multiselect {
     border-radius: 10px !important;
     width: 100% !important;
 
     &:hover {
       border-color: #d1d5db;
     }
+  }
+
+  .p-multiselect {
+    @media screen and (min-width: $lg) {
+      width: 50% !important;
+    }
+  }
+
+  .p-multiselect-panel .p-multiselect-header {
+    display: none;
   }
 
   p-inputnumber, .p-inputnumber {

@@ -21,6 +21,8 @@ import {ConfirmationService, MessageService} from "primeng/api";
 import {ShopStore} from "../../../../stores/shop.store";
 import {ColorPickerModule} from "primeng/colorpicker";
 import { LoadingComponent } from "../../../global/loading/loading.component";
+import { StaffService } from '../../../../services/staff.service';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 
 @Component({
@@ -42,7 +44,8 @@ import { LoadingComponent } from "../../../global/loading/loading.component";
     ToastModule,
     ConfirmDialogModule,
     ColorPickerModule,
-    LoadingComponent
+    LoadingComponent,
+    MultiSelectModule
 ],
   templateUrl: './edit-service.component.html',
   styleUrl: './edit-service.component.scss',
@@ -58,7 +61,8 @@ export class EditServiceComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private confirmationService: ConfirmationService,
-    public shopStore: ShopStore
+    public shopStore: ShopStore,
+    private staffService: StaffService
   ) {
   }
 
@@ -72,11 +76,14 @@ export class EditServiceComponent implements OnInit {
 
   serviceId!: number
 
+  staff: any = []
+
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const id = params.get('serviceId');
       this.serviceId = +id!
       if (id) {
+        this.getStaff()
         this.getDetail(+id)
       }
     });
@@ -96,14 +103,25 @@ export class EditServiceComponent implements OnInit {
     });
   }
 
+  getStaff() {
+    this.staffService.getStaff().subscribe((res: any) => {
+      this.staff = res
+    })
+  }
+
   buildForm() {
     this.form = this.formBuilder.group({
       name: [capitalizeFirstLetter(this.currentService.name), Validators.required],
       description: [capitalizeFirstLetter(this.currentService.description), Validators.required],
       duration: [this.findDuration(this.currentService.duration), Validators.required],
       price: [this.currentService.price, [Validators.required, Validators.min(0)]],
-      color: [this.currentService.color]
-    })
+      color: [this.currentService.color],
+      staff: [this.currentService.staffIds ? [...this.currentService.staffIds] : [], Validators.required] // Assicura un array di ID
+    });
+  }
+
+  get staffInvalid() {
+    return this.form.get('staff')?.invalid && this.form.get('staff')?.touched;
   }
 
   findDuration(duration: number) {
@@ -115,6 +133,7 @@ export class EditServiceComponent implements OnInit {
 
     
     if (this.form.invalid) {
+      this.form.markAllAsTouched(); // Fa apparire i messaggi di errore
       let error: MyError = {
         label: 'Attenzione',
         message: 'Inserire tutti i campi'
@@ -131,7 +150,8 @@ export class EditServiceComponent implements OnInit {
       description: v.description,
       duration: v.duration.minutes,
       price: v.price,
-      color: v.color
+      color: v.color,
+      staffIds: v.staff
     }
 
     this.servicesService.update(this.currentService.id, service).subscribe(

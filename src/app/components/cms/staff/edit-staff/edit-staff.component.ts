@@ -93,7 +93,7 @@ export class EditStaffComponent implements OnInit {
 
       if (id) {
         this.getDetail(+id);
-        this.availabilityService.findAll(this.shopStore.shopId, this.staffId).subscribe((res: AvailabilityDayDto[]) => {
+        this.availabilityService.findAllByStaffIds([+this.staffId]).subscribe((res: AvailabilityDayDto[]) => {
           res.forEach(av => {
             this.week[av.dayOfWeek] = {
               id: av.id,

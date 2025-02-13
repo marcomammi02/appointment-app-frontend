@@ -102,10 +102,19 @@ export class BookingPageComponent implements OnInit {
   }
 
   getStaff() {
+
     this.staffService.getStaff().subscribe((res) => {
       this.originalStaffList = res;
+
+      // Filtra solo gli staff presenti in this.service.staffIds
+      let filteredStaff = this.originalStaffList.filter((staff: any) =>
+        this.service?.staffIds?.includes(staff.id)
+      );
+
+      // Aggiungi "Qualsiasi" in cima alla lista
       let whoever = { name: 'Qualsiasi' };
-      this.staffStore.staffList = [whoever, ...this.originalStaffList];
+      this.staffStore.staffList = [whoever, ...filteredStaff];
+
       this.selectedStaff = whoever;
     });
   }
@@ -139,19 +148,22 @@ export class BookingPageComponent implements OnInit {
     const step = 15; // Intervallo in minuti per il calcolo degli slot
     this.avLoading = true;
 
-    console.log(
-      'localTime: ' + formatDateToString(this.storeAppointments.currentDay)
-    );
-
     try {
       // Recupera le availabilities
+      const staffIds = this.selectedStaff.id
+        ? [this.selectedStaff.id]
+        : this.service.staffIds;
+
+        console.log(staffIds)
+
       this.availabilities = await this.availabilitiesService
-        .findAll(
-          this.shopStore.currentShop.id,
-          this.selectedStaff.id,
+        .findAllByStaffIds(
+          staffIds,
           this.storeAppointments.currentDay.getDay()
         )
         .toPromise();
+
+        console.log(this.availabilities)
 
       // Recupera gli appuntamenti
       this.appointments = await this.appointmentService
@@ -159,42 +171,23 @@ export class BookingPageComponent implements OnInit {
         .toPromise();
 
       // Recupera le assenze
-      if (this.selectedStaff.id) {
-        const absences = await this.absenceService
-          .getAbsencesByStaffAndDay(
-            +this.selectedStaff.id,
-            convertLocalToUTC(this.storeAppointments.currentDay)
-          )
-          .toPromise();
-          console.log('absences from server', absences);
-        this.absences = absences.map((abs: any) => {
-          // Converte abs.date da UTC a locale
-          const localDate = convertUTCToLocal(new Date(abs.date));
+      const staffIds2 = this.selectedStaff.id
+        ? [this.selectedStaff.id]
+        : this.service.staffIds;
 
-          return {
-            ...abs,
-            date: localDate,
-          };
-        });
-      } else {
-        const absences = await this.absenceService
-          .getAbsencesByDay(
-            convertLocalToUTC(this.storeAppointments.currentDay)
-            )
-          .toPromise();
+      const absences = await this.absenceService
+        .getAbsencesByStaffAndDay(
+          staffIds2,
+          convertLocalToUTC(this.storeAppointments.currentDay)
+        )
+        .toPromise();
 
-        this.absences = absences.map((abs: any) => {
-          // Converte abs.date da UTC a locale
-          const localDate = convertUTCToLocal(new Date(abs.date));
+      this.absences = absences.map((abs: any) => {
+        const localDate = convertUTCToLocal(new Date(abs.date));
+        return { ...abs, date: localDate };
+      });
 
-          return {
-            ...abs,
-            date: localDate,
-          };
-        });
-        console.log('absences from server', absences);
-      }
-      console.log('absences to local', this.absences);
+      console.log(this.absences);
 
       // Genera gli slot occupati dagli appuntamenti
       const occupiedSlots: Slot[] = [];
@@ -207,6 +200,8 @@ export class BookingPageComponent implements OnInit {
         const slots = this.generateSlotFromAbsence(abs, step);
         occupiedSlots.push(...slots);
       });
+
+      console.log(occupiedSlots);
 
       // Calcola gli slot disponibili per ogni availability
       this.availabilities.forEach((availability) => {
@@ -223,6 +218,7 @@ export class BookingPageComponent implements OnInit {
             'Service duration is undefined. Skipping slot generation.'
           );
         }
+        console.log(this.slots);
       });
 
       // Rimuove duplicati dagli slot
