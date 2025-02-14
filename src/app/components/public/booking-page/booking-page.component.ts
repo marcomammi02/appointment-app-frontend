@@ -60,7 +60,7 @@ export class BookingPageComponent implements OnInit {
     private availabilitiesService: AvailabilityService,
     private router: Router,
     private absenceService: AbsenceService
-  ) {}
+  ) { }
 
   loading: boolean = true;
 
@@ -154,7 +154,7 @@ export class BookingPageComponent implements OnInit {
         ? [this.selectedStaff.id]
         : this.service.staffIds;
 
-        console.log(staffIds)
+      console.log(staffIds)
 
       this.availabilities = await this.availabilitiesService
         .findAllByStaffIds(
@@ -163,7 +163,7 @@ export class BookingPageComponent implements OnInit {
         )
         .toPromise();
 
-        console.log(this.availabilities)
+      console.log(this.availabilities)
 
       // Recupera gli appuntamenti
       this.appointments = await this.appointmentService
@@ -415,8 +415,11 @@ export class BookingPageComponent implements OnInit {
   }
 
   changeDate() {
-    this.getAvailabilitiesByDay();
-    this.getStaff();
+    this.avLoading = true; // Attiva lo stato di caricamento
+    this.getStaff(); // Assicura che lo staff sia aggiornato
+    this.getAvailabilitiesByDay().then(() => {
+      this.avLoading = false; // Disattiva lo stato di caricamento dopo aver ottenuto i dati
+    });
   }
 
   // Metodo per rimuovere duplicati dagli slot e riordinarli
