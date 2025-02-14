@@ -76,11 +76,11 @@ section > p {
 }
 
 .popular {
-  border: 1.5px solid #ff7f50;
+  border: 1.5px solid $color1;
 }
 
 .popular-tag {
-  background: #ff7f50;
+  background: $color1;
   width: min-content;
   padding: 2px 8px;
   border-radius: 20px;
