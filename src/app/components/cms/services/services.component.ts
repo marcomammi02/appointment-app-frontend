@@ -38,16 +38,17 @@ export class ServicesComponent implements OnInit {
 
   getServices() {
     this.servicesService.getServices().subscribe({
-      next: (res) => {
-        this.servicesStore.services = res
-        this.loading = false
+      next: (res: any) => {
+        this.servicesStore.services = res.sort((a: any, b: any) => a.id - b.id); // Ordinamento crescente per ID
+        this.loading = false;
       },
       error: (err) => {
-        console.error(err)
-        this.loading = false
+        console.error(err);
+        this.loading = false;
       }
-    })
-  }
+    });
+}
+
 
   getHourTime(minutes: number): string {
     const hours = Math.floor(minutes / 60);

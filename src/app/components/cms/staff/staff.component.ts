@@ -36,8 +36,8 @@ export class StaffComponent implements OnInit{
 
   getStaff() {
     this.staffService.getStaff().subscribe({
-      next: (res) => {
-      this.staffStore.staffList = res
+      next: (res: any) => {
+      this.staffStore.staffList = res.sort((a: any, b: any) => a.id - b.id)
       this.loading = false
       },
       error: (err) => {
