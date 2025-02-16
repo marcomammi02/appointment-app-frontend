@@ -26,3 +26,11 @@ p > a {
 .social-box > a {
   text-decoration: none;
 }
+
+.bg-bluegray {
+  background: #cacbcc;
+
+  &:hover {
+    background: #b3b5b7;
+  }
+}
