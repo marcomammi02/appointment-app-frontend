@@ -40,15 +40,25 @@ export class ShopService {
           (error) => reject(error)
         );
       });
-      this.shopStore.currentShop = res;
-      this.shopStore.shopId = res.id;
   
-      // Set currentShop in localStorage
-      localStorage.setItem('currentShopPublic', JSON.stringify(res));
+      // Se la risposta è vuota o non contiene dati validi, considera che lo slug non esiste
+      if (!res || !res.id) {
+        console.log('Shop not found for slug:', this.shopStore.slug);
+        // Puoi fare qualche logica per generare un nuovo slug o restituire un errore
+      } else {
+        this.shopStore.currentShop = res;
+        this.shopStore.shopId = res.id;
+  
+        // Salva currentShop in localStorage
+        localStorage.setItem('currentShopPublic', JSON.stringify(res));
+      }
+  
     } catch (error) {
       console.error('Failed to fetch shop:', error);
+      // In caso di errore nell'API, puoi considerare che lo slug non esista o gestire l'errore specificamente
     }
   }
+  
 
   update(shop: editShop) {
     return this.http.patch(`${this.apiUrl}/${this.shopStore.shopId}`, shop).pipe(

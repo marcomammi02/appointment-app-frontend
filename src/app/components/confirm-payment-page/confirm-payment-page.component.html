@@ -4,7 +4,7 @@
     <h1 class="mb-2 title">Bookami</h1>
     <p class="mb-2">Ci sei quasi! Compila i seguenti campi per completare il tuo account</p>
     <p class="mb-4 text-sm text-gray-500">Tutti i campi sono obligatori *</p>
-    <form [formGroup]="form" (keyup.enter)="create()" class="flex flex-column gap-5">
+    <form [formGroup]="form" (keyup.enter)="update()" class="flex flex-column gap-5">
 
       <p-floatLabel>
         <input pInputText id="name" formControlName="name"/>
@@ -26,7 +26,7 @@
         <label for="confirmPassword">Conferma Password *</label>
       </p-floatLabel>
 
-      <app-primary-btn (click)="create()" label="Registrati e Accedi"/>
+      <app-primary-btn (click)="update()" label="Registrati e Accedi"/>
     </form>
   </div>
 </section>
