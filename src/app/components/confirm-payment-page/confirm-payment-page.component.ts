@@ -16,6 +16,7 @@ import { Observable } from 'rxjs';
 import { ErrorService } from '../../services/error.service';
 import { ShopService } from '../../services/shop.service';
 import { ShopStore } from '../../stores/shop.store';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-confirm-payment-page',
@@ -40,8 +41,8 @@ export class ConfirmPaymentPageComponent {
     private router: Router,
     private errorService: ErrorService,
     private shopService: ShopService,
-    private shopStore: ShopStore
-
+    private shopStore: ShopStore,
+    private authService: AuthService
   ) {}
 
   form!: FormGroup;
@@ -49,6 +50,8 @@ export class ConfirmPaymentPageComponent {
   paymentData: any;
 
   updating: boolean = false;
+
+  currentShopId: number = 0
 
   ngOnInit() {
     this.buildForm();
@@ -64,14 +67,16 @@ export class ConfirmPaymentPageComponent {
       // Chiamata per verificare il pagamento
       this.verifyPayment(sessionId);
     });
-    
   }
-  
+
   async verifyPayment(sessionId: string) {
     this.paymentService.verifyPayment(sessionId).subscribe(
       (res: any) => {
         // Gestisci la risposta, ad esempio crea un account o mostra un errore
         this.paymentData = res;
+        this.currentShopId = res.shopId
+        this.shopStore.shopId = res.shopId
+        console.log('set shopId: ', this.currentShopId)
         console.log('Pagamento verificato con successo', res);
         this.form.patchValue({
           email: res.email || '',
@@ -89,7 +94,7 @@ export class ConfirmPaymentPageComponent {
     this.form = this.formBuilder.group(
       {
         name: ['', [Validators.required]],
-        email: [this.paymentData? this.paymentData.email : '', [Validators.required, ValidationService.emailValidator]],
+        email: ['', [Validators.required, ValidationService.emailValidator]],
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', Validators.required],
       },
@@ -98,45 +103,46 @@ export class ConfirmPaymentPageComponent {
   }
 
   async generateSlug(name: string): Promise<string> {
-    let slug = this.createSlugFromName(name); // Crea lo slug di base dal nome
-    let isSlugAvailable = await this.isSlugAvailable(slug); // Verifica se lo slug è disponibile
-  
-    if (!isSlugAvailable) {
-      // Aggiungi numeri finché non trovi uno slug disponibile
-      let counter = 1;
-      while (!isSlugAvailable) {
-        slug = `${slug}-${counter}`;
-        isSlugAvailable = await this.isSlugAvailable(slug);
-        counter++;
-      }
+    let baseSlug = this.createSlugFromName(name); // Crea lo slug base dal nome
+    let slug = baseSlug;
+    let counter = 1;
+
+    while (!(await this.isSlugAvailable(slug))) {
+      slug = `${baseSlug}-${counter}`; // Usa sempre il baseSlug con il counter
+      counter++;
     }
-  
+
     return slug; // Ritorna lo slug unico
   }
-  
+
   // Funzione per creare lo slug a partire dal nome
   createSlugFromName(name: string): string {
-    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); // Forma lo slug
+    return name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-') // Sostituisce caratteri non validi con '-'
+      .replace(/(^-|-$)/g, ''); // Rimuove '-' iniziali e finali
   }
-  
+
   // Funzione per verificare se lo slug è disponibile
   async isSlugAvailable(slug: string): Promise<boolean> {
     try {
-      const response: any = await this.shopService.getShopPublic(); // Usa il servizio per verificare lo slug
-      return !response || !response.id; // Se non esiste, è disponibile
+      this.shopStore.slug = slug; // Imposta lo slug nello store
+      const response: any = await this.shopService.getShopPublic(); // Verifica lo slug
+
+      return !(response && response.id); // Ritorna false se esiste, true se non trovato
     } catch (error) {
-      return true; // Se c'è un errore, considera lo slug disponibile
+      console.error('Errore durante la verifica dello slug:', error);
+      return true; // Se c'è un errore, lo consideriamo disponibile
     }
   }
-  
-  
 
-  update() {
+  async update() {
+    // Preveniamo richieste multiple se già in aggiornamento
     if (this.updating) return;
-  
+
     let v = this.form.value;
-  
-    // Controllo se ci sono campi vuoti
+
+    // Controllo che tutti i campi siano compilati
     if (!v.name || !v.email || !v.password || !v.confirmPassword) {
       this.errorService.showError({
         label: 'Attenzione',
@@ -144,8 +150,17 @@ export class ConfirmPaymentPageComponent {
       });
       return;
     }
-  
-    // Controllo se le password coincidono
+
+    // Verifica che la password sia lunga almeno 8 caratteri
+    if (v.password.length < 8) {
+      this.errorService.showError({
+        label: 'Errore Password',
+        message: 'La password deve essere di almeno 8 caratteri',
+      });
+      return;
+    }
+
+    // Verifica che le password coincidano
     if (v.password !== v.confirmPassword) {
       this.errorService.showError({
         label: 'Errore Password',
@@ -153,25 +168,49 @@ export class ConfirmPaymentPageComponent {
       });
       return;
     }
-  
-    this.updating = true;
-  
-    const shop = {
-      name: v.name,
-      email: v.email,
-      password: v.password,
-      slug: this.generateSlug(v.name),
-    }
 
-    console.log(shop)
+    this.updating = true; // Imposta lo stato a "in aggiornamento"
 
-    this.shopStore.shopId = this.paymentData.shopId;
-    this.shopService.update(shop).subscribe()
-  
-    setTimeout(() => {
+    try {
+      // Crea l'oggetto con i dati per l'update
+      const shop = {
+        name: v.name,
+        email: v.email,
+        password: v.password,
+        slug: await this.generateSlug(v.name), // Genera lo slug
+      };
+
+      this.shopStore.currentShop = this.currentShopId
+      console.log('call with: ', this.shopStore.shopId)
+
+      // Esegui la chiamata all'API per l'update
+      await this.shopService.update(shop, this.currentShopId).toPromise()
+
+      // Esegui il login con i nuovi dati
+      const res = await this.authService.login(v.email, v.password).toPromise();
+
+      // Aggiorna lo store con i dati restituiti dal login
+      this.shopStore.shopId = res.shopId;
+      this.shopStore.slug = res.slug;
+
+      // Salva i dati nel localStorage
+      localStorage.setItem('shopId', this.shopStore.shopId.toString());
+      localStorage.setItem('slug', this.shopStore.slug);
+
+      // Reindirizza alla pagina privata
+      this.router.navigate([`private/${this.shopStore.slug}`]);
+
+    } catch (error: any) {
+      // Gestione dell'errore se qualcosa va storto
+      console.error('Errore durante l\'aggiornamento:', error);
+      this.errorService.showError({
+        label: 'Errore',
+        message: `Si è verificato un errore: ${error.message || 'Errore sconosciuto'}`,
+      });
+    } finally {
+      // Ritorna lo stato a "non in aggiornamento"
       this.updating = false;
-      console.log('Aggiornamento completato!');
-    }, 2000);
+    }
   }
-  
+
 }
