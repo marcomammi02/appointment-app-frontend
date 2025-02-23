@@ -1,0 +1,24 @@
+@import "../../../../styles.scss";
+
+section {
+  background-color: $bg-color;
+
+  div {
+    max-width: 40rem;
+  }
+}
+
+h2 {
+  font-size: 1.3rem;
+}
+
+li {
+  margin-left: 20px !important;
+  margin-bottom: 5px !important;
+}
+
+.email-a {
+  text-decoration: none;
+  color: #ff7f50;
+  font-weight: bold;
+}

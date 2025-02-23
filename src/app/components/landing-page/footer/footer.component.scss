@@ -34,3 +34,13 @@ p > a {
     background: #b3b5b7;
   }
 }
+
+.policy a {
+  color: #b3b5b7;
+  transition: all .2s ease;
+  text-decoration: none;
+
+  &:hover {
+    color: #fff;
+  }
+}

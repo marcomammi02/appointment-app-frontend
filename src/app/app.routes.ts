@@ -23,9 +23,13 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { ConfirmPaymentPageComponent } from './components/confirm-payment-page/confirm-payment-page.component';
 import { AbsencesComponent } from './components/cms/staff/edit-staff/absences/absences.component';
 import { CreateAbsComponent } from './components/cms/staff/edit-staff/absences/create-abs/create-abs.component';
+import { PrivacyPolicyComponent } from './components/landing-page/privacy-policy/privacy-policy.component';
+import { TermsAndConditionsComponent } from './components/landing-page/terms-and-conditions/terms-and-conditions.component';
 
 export const routes: Routes = [
   {path: '', component: LandingPageComponent},
+  {path: 'privacy-policy', component: PrivacyPolicyComponent},
+  {path: 'terms-of-services', component: TermsAndConditionsComponent},
   {path: 'create-account', component: ConfirmPaymentPageComponent},
   {path: 'login', component: LoginPageComponent},
   {path: ':slug', component: PublicComponent},
