@@ -15,4 +15,7 @@ import { RouterModule } from '@angular/router';
 export class PrivacyPolicyComponent {
   email: string = 'bookami.app@gmail.com'
 
+  ngOnInit(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }

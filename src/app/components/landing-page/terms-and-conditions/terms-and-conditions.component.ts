@@ -7,8 +7,12 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CancelBtnComponent, RouterModule],
   templateUrl: './terms-and-conditions.component.html',
-  styleUrl: './terms-and-conditions.component.scss'
+  styleUrl: './terms-and-conditions.component.scss',
 })
 export class TermsAndConditionsComponent {
- email: string = 'bookami.app@gmail.com'
+  email: string = 'bookami.app@gmail.com';
+
+  ngOnInit(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
