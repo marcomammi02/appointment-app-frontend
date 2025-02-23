@@ -5,7 +5,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {InputTextModule} from "primeng/inputtext";
 import {PrimaryBtnComponent} from "../global/primary-btn/primary-btn.component";
 import {AuthService} from "../../services/auth.service";
-import {Router} from "@angular/router";
+import {Router, RouterModule} from "@angular/router";
 import {ShopStore} from "../../stores/shop.store";
 import { ErrorService, MyError } from '../../services/error.service';
 import { ShopService } from '../../services/shop.service';
@@ -18,7 +18,8 @@ import { ShopService } from '../../services/shop.service';
     PasswordModule,
     ReactiveFormsModule,
     InputTextModule,
-    PrimaryBtnComponent
+    PrimaryBtnComponent,
+    RouterModule
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss'

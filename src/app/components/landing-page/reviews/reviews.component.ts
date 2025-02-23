@@ -29,10 +29,10 @@ export class ReviewsComponent {
       shopType: "Salone"
     },
     {
-      text: "Finalmente un'app intuitiva per gestire i miei clienti! Grazie a Bookami non ho più tempi morti e riesco a organizzarmi meglio.",
+      text: "Finalmente un'app intuitiva per gestire i miei clienti! Grazie a Bookami non ho più tempi morti e riesco a organizzarmi meglio. E la mia pagina online è tutta rosaaa! <3",
       avatar: "app/assets/images/avatar/avatar2.jpg",
-      username: "Sofia R.",
-      shopType: "Centro Estetico"
+      username: "Valentina U.",
+      shopType: "Onicotecnica"
     },
     {
       text: "Con Bookami ho aumentato i clienti e ridotto le cancellazioni. Il sistema di notifiche è incredibile. Super consigliato!",

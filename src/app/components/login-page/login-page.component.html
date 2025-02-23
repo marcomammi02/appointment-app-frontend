@@ -1,7 +1,7 @@
 <section>
   <div class="login-container text-center p-5 shadow-8">
-    <img src="app/assets/images/logo-app.png" class="logo" alt="Logo">
-    <h1 class="mb-5 title">Bookami</h1>
+    <img src="app/assets/images/logo-app.png" routerLink="/" class="logo cursor-pointer" alt="Logo">
+    <h1 class="mb-5 title cursor-pointer" routerLink="/">Bookami</h1>
     <form [formGroup]="form" (keyup.enter)="submit()" class="flex flex-column gap-5">
 
       <p-floatLabel>
