@@ -2,5 +2,17 @@
     "name": "Bookami",
     "short_name": "Bookami",
     "display": "fullscreen",
-    "start_url": "https://appointment-app-a53b0.web.app/login"
+    "start_url": "https://appointment-app-a53b0.web.app/login",
+    "icons": [
+    {
+      "src": "app/assets/images/logo-app.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "app/assets/images/logo-app.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
   }
