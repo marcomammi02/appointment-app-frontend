@@ -8,6 +8,7 @@ import { PricingComponent } from "./pricing/pricing.component";
 import { FeaturesComponent } from "./features/features.component";
 import { ReviewsComponent } from "./reviews/reviews.component";
 import { FooterComponent } from "./footer/footer.component";
+import { CustomProfileComponent } from './custom-profile/custom-profile.component';
 
 @Component({
   selector: 'app-landing-page',
@@ -16,6 +17,7 @@ import { FooterComponent } from "./footer/footer.component";
     NavbarComponent,
     HeroComponent,
     AnnouncementBarComponent,
+    CustomProfileComponent,
     ComparisionComponent,
     FaqsComponent,
     PricingComponent,
