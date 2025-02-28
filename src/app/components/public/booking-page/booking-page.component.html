@@ -56,6 +56,10 @@
       </ul>
   </div>
 
+
+  <!-- Not staff found -->
+  <div class="mt-8" *ngIf="staffStore.staffList.length <= 1 && !avLoading">Questo servizio non ha staff associati</div>
+
   <!-- Not availability found -->
-  <div class="mt-8" *ngIf="slots.length <= 0 && !avLoading">Nessuna disponibilità</div>
+  <div class="mt-8" *ngIf="slots.length <= 0 && !avLoading && staffStore.staffList.length > 1">Nessuna disponibilità</div>
 </div>

@@ -102,7 +102,6 @@ export class BookingPageComponent implements OnInit {
   }
 
   getStaff() {
-
     this.staffService.getStaff().subscribe((res) => {
       this.originalStaffList = res;
 
@@ -147,6 +146,9 @@ export class BookingPageComponent implements OnInit {
     this.absences = [];
     const step = 15; // Intervallo in minuti per il calcolo degli slot
     this.avLoading = true;
+
+    console.log('OriginalStaffList: ', this.originalStaffList)
+
 
     try {
       // Recupera le availabilities
@@ -228,6 +230,7 @@ export class BookingPageComponent implements OnInit {
       this.avLoading = false;
     } catch (error) {
       this.loading = false;
+      this.avLoading = false
       console.error(error);
     }
   }
