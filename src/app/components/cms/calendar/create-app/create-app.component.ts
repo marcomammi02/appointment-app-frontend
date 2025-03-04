@@ -221,6 +221,12 @@ export class CreateAppComponent implements OnInit {
             shopId: this.shopStore.shopId,
           };
 
+          return this.appointmentService.create(appointment);
+        })
+      )
+      .subscribe(
+        (res: any) => {
+
           this.emailData = {
             type: 'CONFIRM_APP_FOR_CLIENT',
             recipientEmail: v.email,
@@ -234,14 +240,11 @@ export class CreateAppComponent implements OnInit {
               businessEmail: this.shopStore.currentShop.email,
               businessPhone: this.shopStore.currentShop.phoneNumber,
               staffName: this.appointmentStore.currentStaff.name,
+              businessSlug: this.shopStore.slug,
+              appointmentId: res.id
             },
           };
-
-          return this.appointmentService.create(appointment);
-        })
-      )
-      .subscribe(
-        () => {
+          console.log(res)
           this.emailService.sendEmail(this.emailData!).subscribe();
           this.router.navigate([
             `/private/${this.shopStore.slug}/appointments`,

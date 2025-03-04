@@ -25,6 +25,9 @@ import { AbsencesComponent } from './components/cms/staff/edit-staff/absences/ab
 import { CreateAbsComponent } from './components/cms/staff/edit-staff/absences/create-abs/create-abs.component';
 import { PrivacyPolicyComponent } from './components/landing-page/privacy-policy/privacy-policy.component';
 import { TermsAndConditionsComponent } from './components/landing-page/terms-and-conditions/terms-and-conditions.component';
+import { Component } from '@angular/core';
+import { DeleteAppComponent } from './components/public/booking-page/data-page/delete-app/delete-app.component';
+import { EditAppPublicComponent } from './components/public/booking-page/data-page/edit-app-public/edit-app-public.component';
 
 export const routes: Routes = [
   {path: '', component: LandingPageComponent},
@@ -33,6 +36,8 @@ export const routes: Routes = [
   {path: 'create-account', component: ConfirmPaymentPageComponent},
   {path: 'login', component: LoginPageComponent},
   {path: ':slug', component: PublicComponent},
+  {path: ':slug/edit-appointment/:appointmentId', component: EditAppPublicComponent},
+  {path: ':slug/delete-appointment/:appointmentId', component: DeleteAppComponent},
   {path: ':slug/service/:serviceId', component: BookingPageComponent},
   {path: ':slug/service/:serviceId/datas', component: DataPageComponent},
   {path: ':slug/service/:serviceId/datas/confirm', component: ConfirmAppComponent},
