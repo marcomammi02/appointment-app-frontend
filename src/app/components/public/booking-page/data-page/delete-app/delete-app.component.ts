@@ -45,7 +45,7 @@ export class DeleteAppComponent implements OnInit {
   staff: any = {};
 
   ngOnInit() {
-
+    this.extractAppointmentIdFromUrl();
   }
 
   extractAppointmentIdFromUrl() {
@@ -118,7 +118,7 @@ export class DeleteAppComponent implements OnInit {
             },
           };
           this.emailService.sendEmail(emailData).subscribe();
-          this.router.navigate([`/private/${this.shopStore.slug}/appointments`]);
+          this.router.navigate([`/${this.shopStore.slug}`]);
         });
     }
 

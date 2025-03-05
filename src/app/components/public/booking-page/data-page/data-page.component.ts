@@ -162,24 +162,29 @@ export class DataPageComponent implements OnInit {
         shopId: this.shopStore.shopId,
       };
 
-      const variablesForCustomer = {
-        customerName: v.name,
-        businessName: this.shopStore.currentShop.name,
-        appointmentDate: formatDateToStringDayFirst(
-          this.storeAppointments.currentDay
-        ),
-        appointmentTime: this.storeAppointments.currentHour,
-        serviceName: this.storeService.currentService.name,
-        businessEmail: this.shopStore.currentShop.email,
-        businessPhone: this.shopStore.currentShop.phoneNumber,
-        staffName: staffName,
-      };
+      // Creazione appuntamento
+      const createdAppointment: any = await this.appointmentService.create(appointment).toPromise();
+      console.log('Appointment created');
+      const appointmentId = createdAppointment!.id; // Assumendo che la risposta contenga l'ID
 
       const emailData: EmailData = {
         type: 'CONFIRM_APP_FOR_CLIENT',
         recipientEmail: v.email,
         subject: 'Appuntamento confermato!',
-        variables: variablesForCustomer,
+        variables: {
+          customerName: v.name,
+          businessName: this.shopStore.currentShop.name,
+          appointmentDate: formatDateToStringDayFirst(
+            this.storeAppointments.currentDay
+          ),
+          appointmentTime: this.storeAppointments.currentHour,
+          serviceName: this.storeService.currentService.name,
+          businessEmail: this.shopStore.currentShop.email,
+          businessPhone: this.shopStore.currentShop.phoneNumber,
+          staffName: staffName,
+          businessSlug: this.shopStore.slug,
+          appointmentId: appointmentId
+        }
       };
 
       const emailDataForShop: EmailData = {
@@ -201,11 +206,6 @@ export class DataPageComponent implements OnInit {
           customerPhone: v.phone,
         },
       };
-
-      // Creazione appuntamento
-      const createdAppointment: any = await this.appointmentService.create(appointment).toPromise();
-      console.log('Appointment created');
-      const appointmentId = createdAppointment!.id; // Assumendo che la risposta contenga l'ID
 
       // Invio email
       this.emailService.sendEmail(emailData).subscribe();
