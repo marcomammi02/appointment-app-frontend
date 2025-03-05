@@ -1,1 +1,19 @@
-<p>Elimina app {{app.id}}</p>
+<div class="page w-screen h-screen flex flex-column gap-5 justify-content-center align-items-center" [ngStyle]="{ background: shopStore.currentShop.publicBgColor}">
+
+  <div class="container p-3 shadow-4 h-min text-center" [ngStyle]="{ background: shopStore.currentShop.publicCardColor}">
+      <div class="logo-box">
+          <img [src]="shopStore.currentShop.logo ? shopStore.currentShop.logo : 'app/assets/images/default-logo.png'" alt="Cover">
+      </div>
+
+      <h2 class="my-3">Il tuo appuntamento</h2>
+
+      <p>{{formatDateToStringDayFirst(app.startTime)}}</p>
+      <h2 class="my-2">{{getDayOfWeek(app.startTime)}}</h2>
+      <p>{{getTime(app.startTime)}}</p>
+      <h3 class="mt-3">"{{capitalizeFirstLetter(app.serviceName)}}"</h3>
+  </div>
+
+  <app-delete-btn (click)="confirm2($event)"/>
+</div>
+
+<p-confirmDialog />

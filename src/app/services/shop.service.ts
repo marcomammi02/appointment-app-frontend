@@ -28,6 +28,8 @@ export class ShopService {
       (res: any) => {
         this.shopStore.currentShop = res;
 
+        console.log(res)
+
         // Set currentShop in localStorage
         localStorage.setItem('currentShop', JSON.stringify(res));
       },

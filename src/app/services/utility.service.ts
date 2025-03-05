@@ -69,7 +69,7 @@ export function firstLetter(str: string): string {
   return str.charAt(0).toUpperCase();
 }
 
-export function getDayOfWeek(date: Date): string {
+export function getDayOfWeek(dateInput: Date): string {
   const weekDays = [
     'Domenica',
     'Lunedì',
@@ -79,21 +79,25 @@ export function getDayOfWeek(date: Date): string {
     'Venerdì',
     'Sabato',
   ];
+  const date = new Date(dateInput)
   const day = date.getDay();
 
   return weekDays[day];
 }
 
 // This function extract time like "12:00" from a date string like "2024-10-19T08:00:00.000Z"
-export function getTime(date: Date) {
-  let hours: number | string = date.getHours();
-  let minutes: number | string = date.getMinutes();
+export function getTime(dateInput: Date) {
+  const date = new Date(dateInput);
+  let hours: number | string = date.getUTCHours(); // Usa UTC per evitare cambiamenti di fuso orario
+  let minutes: number | string = date.getUTCMinutes();
+
   if (hours < 10) {
     hours = '0' + hours;
   }
-  if (minutes == 0) {
-    minutes = '00';
+  if (minutes < 10) { // Migliorato per garantire sempre due cifre nei minuti
+    minutes = '0' + minutes;
   }
+
   return `${hours}:${minutes}`;
 }
 
