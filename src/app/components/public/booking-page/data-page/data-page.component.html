@@ -8,7 +8,8 @@
       <img [src]="shopStore.currentShop.logo ? shopStore.currentShop.logo : 'app/assets/images/default-logo.png'" alt="Logo">
     </div>
     <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
-    <h2>Dati personali</h2>
+    <h2 *ngIf="!storeAppointments.appToEdit.id">Dati personali</h2>
+    <h2 *ngIf="storeAppointments.appToEdit.id">Ripianifica Prenotazione</h2>
   </div>
 
   <!-- Date -->
@@ -57,6 +58,6 @@
       </p-floatLabel>
     </div>
 
-    <app-primary-btn class="w-min align-self-center" (click)="create()" icon="pi pi-check" label="Prenota"/>
+    <app-primary-btn class="w-min align-self-center" (click)="create()" icon="pi pi-check" [label]="storeAppointments.appToEdit.id ? 'Ripianifica' : 'Prenota'"/>
 </form>
 </div>

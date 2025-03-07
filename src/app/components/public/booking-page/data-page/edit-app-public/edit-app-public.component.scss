@@ -1,0 +1,93 @@
+@import "../../../../../../styles";
+
+:host ::ng-deep {
+  .p-dropdown {
+    width: 100%;
+  }
+
+  .p-calendar .p-inputtext {
+    text-align: center;
+    border: none;
+    background: transparent;
+    &:hover {
+      cursor: pointer;
+      border-color: transparent;
+    }
+  }
+
+  .p-calendar:not(.p-calendar-disabled).p-focus > .p-inputtext {
+    box-shadow: none;
+    border-color: transparent;
+  }
+
+  .p-calendar .p-datepicker {
+    left: -100px !important;
+  }
+}
+
+.container {
+  min-height: 100vh;
+  padding: 0 1rem;
+  margin: 0 auto !important;
+  @media screen and (min-width: $lg) {
+    padding: 0 10vw;
+  }
+  @media screen and (min-width: $xl) {
+    padding: 0 15vw;
+  }
+  @media screen and (min-width: $xxl) {
+    padding: 0 25vw;
+  }
+}
+
+.img-container {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #000;
+
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.card {
+  border-radius: $border-radius;
+  background: #fcf8f7;
+}
+
+.calendar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-arrow {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.nav-arrow:hover i{
+  @media screen and (min-width: $lg) {
+    transition: color .1s ease;
+    color: #ff6200;
+  }
+}
+
+.slot {
+  list-style: none;
+  border-radius: 8px;
+  transition: all .2s ease;
+  background: #fcf8f7;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+  }
+}

@@ -7,6 +7,7 @@ import { NgFor, NgIf, NgStyle } from '@angular/common';
 import { ServicesService } from '../../services/services.service';
 import { ServicesStore } from '../../stores/services.store';
 import {capitalizeFirstLetter} from "../../services/utility.service";
+import { StoreAppointments } from '../../stores/appointment.store';
 
 
 @Component({
@@ -29,13 +30,15 @@ export class PublicComponent implements OnInit {
     private shopService: ShopService,
     public shopStore: ShopStore,
     private servicesService: ServicesService,
-    public servicesStore: ServicesStore
+    public servicesStore: ServicesStore,
+    private storeAppointments: StoreAppointments
   ) {}
 
   loading: boolean = true
 
   ngOnInit(): void {
     this.extractSlugFromUrl()
+    this.storeAppointments.appToEdit = {}
   }
 
   async extractSlugFromUrl() {

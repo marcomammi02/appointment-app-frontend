@@ -39,7 +39,7 @@ import { ValidationService } from '../../../../services/validation.service';
     FloatLabelModule,
     InputTextModule,
     PrimaryBtnComponent,
-    NgStyle
+    NgStyle,
   ],
   templateUrl: './data-page.component.html',
   styleUrl: './data-page.component.scss',
@@ -84,6 +84,17 @@ export class DataPageComponent implements OnInit {
       phone: ['', [Validators.required, ValidationService.phoneValidator]],
       email: ['', [Validators.required, ValidationService.emailValidator]],
     });
+
+    console.log(this.storeAppointments.appToEdit);
+
+    if (this.storeAppointments.appToEdit.id) {
+      this.form.patchValue({
+        name: this.storeAppointments.appToEdit.customerName,
+        lastName: this.storeAppointments.appToEdit.customerLastName,
+        phone: this.storeAppointments.appToEdit.customerPhone,
+        email: this.storeAppointments.appToEdit.customerEmail,
+      });
+    }
   }
 
   goBack() {
@@ -162,54 +173,90 @@ export class DataPageComponent implements OnInit {
         shopId: this.shopStore.shopId,
       };
 
-      // Creazione appuntamento
-      const createdAppointment: any = await this.appointmentService.create(appointment).toPromise();
-      console.log('Appointment created');
-      const appointmentId = createdAppointment!.id; // Assumendo che la risposta contenga l'ID
+      if (!this.storeAppointments.appToEdit.id) {
+        // Creazione appuntamento
+        const createdAppointment: any = await this.appointmentService
+          .create(appointment)
+          .toPromise();
+        console.log('Appointment created');
+        const appointmentId = createdAppointment!.id; // Assumendo che la risposta contenga l'ID
 
-      const emailData: EmailData = {
-        type: 'CONFIRM_APP_FOR_CLIENT',
-        recipientEmail: v.email,
-        subject: 'Appuntamento confermato!',
-        variables: {
-          customerName: v.name,
-          businessName: this.shopStore.currentShop.name,
-          appointmentDate: formatDateToStringDayFirst(
-            this.storeAppointments.currentDay
-          ),
-          appointmentTime: this.storeAppointments.currentHour,
-          serviceName: this.storeService.currentService.name,
-          businessEmail: this.shopStore.currentShop.email,
-          businessPhone: this.shopStore.currentShop.phoneNumber,
-          staffName: staffName,
-          businessSlug: this.shopStore.slug,
-          appointmentId: appointmentId
-        }
-      };
+        const emailData: EmailData = {
+          type: 'CONFIRM_APP_FOR_CLIENT',
+          recipientEmail: v.email,
+          subject: 'Appuntamento confermato!',
+          variables: {
+            customerName: v.name,
+            businessName: this.shopStore.currentShop.name,
+            appointmentDate: formatDateToStringDayFirst(
+              this.storeAppointments.currentDay
+            ),
+            appointmentTime: this.storeAppointments.currentHour,
+            serviceName: this.storeService.currentService.name,
+            businessEmail: this.shopStore.currentShop.email,
+            businessPhone: this.shopStore.currentShop.phoneNumber,
+            staffName: staffName,
+            businessSlug: this.shopStore.slug,
+            appointmentId: appointmentId,
+          },
+        };
 
-      const emailDataForShop: EmailData = {
-        type: 'CONFIRM_APP_FOR_SHOP',
-        recipientEmail: this.shopStore.currentShop.email,
-        subject: 'Nuovo appuntamento prenotato!',
-        variables: {
-          customerName: `${v.lastName} ${v.name}`,
-          businessName: this.shopStore.currentShop.name,
-          appointmentDate: formatDateToStringDayFirst(
-            this.storeAppointments.currentDay
-          ),
-          appointmentTime: this.storeAppointments.currentHour,
-          serviceName: this.storeService.currentService.name,
-          businessEmail: this.shopStore.currentShop.email,
-          businessPhone: this.shopStore.currentShop.phoneNumber,
-          staffName: staffName,
-          customerEmail: v.email,
-          customerPhone: v.phone,
-        },
-      };
+        const emailDataForShop: EmailData = {
+          type: 'CONFIRM_APP_FOR_SHOP',
+          recipientEmail: this.shopStore.currentShop.email,
+          subject: 'Nuovo appuntamento prenotato!',
+          variables: {
+            customerName: `${v.lastName} ${v.name}`,
+            businessName: this.shopStore.currentShop.name,
+            appointmentDate: formatDateToStringDayFirst(
+              this.storeAppointments.currentDay
+            ),
+            appointmentTime: this.storeAppointments.currentHour,
+            serviceName: this.storeService.currentService.name,
+            businessEmail: this.shopStore.currentShop.email,
+            businessPhone: this.shopStore.currentShop.phoneNumber,
+            staffName: staffName,
+            customerEmail: v.email,
+            customerPhone: v.phone,
+          },
+        };
 
-      // Invio email
-      this.emailService.sendEmail(emailData).subscribe();
-      this.emailService.sendEmail(emailDataForShop).subscribe();
+        // Invio email
+        this.emailService.sendEmail(emailData).subscribe();
+        this.emailService.sendEmail(emailDataForShop).subscribe();
+      }
+
+      if (this.storeAppointments.appToEdit.id) {
+        const updatedAppointment: any = await this.appointmentService
+          .update(this.storeAppointments.appToEdit.id, appointment)
+          .toPromise();
+        console.log('Appointment edited');
+        const appointmentId = updatedAppointment!.id; // Assumendo che la risposta contenga l'ID
+
+        const editEmailData: EmailData = {
+          type: 'EDIT_APP_FOR_CLIENT',
+          recipientEmail: v.email,
+          subject: 'Appuntamento modificato!',
+          variables: {
+            customerName: v.name,
+            businessName: this.shopStore.currentShop.name,
+            appointmentDate: formatDateToStringDayFirst(
+              this.storeAppointments.currentDay
+            ),
+            appointmentTime: this.storeAppointments.currentHour,
+            serviceName: this.storeService.currentService.name,
+            businessEmail: this.shopStore.currentShop.email,
+            businessPhone: this.shopStore.currentShop.phoneNumber,
+            staffName: staffName,
+            customerEmail: v.email,
+            customerPhone: v.phone,
+            businessSlug: this.shopStore.slug,
+            appointmentId: appointmentId,
+          },
+        };
+
+        this.emailService.sendEmail(editEmailData).subscribe();
+      }
 
       this.router.navigate([
         '/' +
@@ -230,7 +277,6 @@ export class DataPageComponent implements OnInit {
       this.shopStore.transparentLoading = false;
     }
   }
-
 
   async getStaffName(staffId: number): Promise<string> {
     const res: any = await this.staffService.getDetail(staffId).toPromise();

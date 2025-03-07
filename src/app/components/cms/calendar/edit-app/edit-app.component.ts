@@ -295,7 +295,9 @@ export class EditAppComponent implements OnInit {
               serviceName: v.service.name,
               businessEmail: this.shopStore.currentShop.email,
               businessPhone: this.shopStore.currentShop.phoneNumber,
-              staffName: v.staff.name
+              staffName: v.staff.name,
+              businessSlug: this.shopStore.slug,
+              appointmentId: this.appointmentStore.currentApp.id,
             },
           };
 

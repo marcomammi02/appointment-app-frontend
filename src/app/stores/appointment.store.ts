@@ -8,6 +8,8 @@ export class StoreAppointments {
 
   appointments: any[] = []
 
+  appToEdit: any = {}
+
   currentStaff: any = {}
   currentStaffId!: number
   currentDay: Date = new Date

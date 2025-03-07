@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AppointmentService } from '../../../../../services/appointment.service';
 import { catchError, of } from 'rxjs';
-import { NgStyle } from '@angular/common';
+import { NgIf, NgStyle } from '@angular/common';
 import { ShopStore } from '../../../../../stores/shop.store';
 import { capitalizeFirstLetter, formatDateToStringDayFirst, getDayOfWeek, getTime } from '../../../../../services/utility.service';
 import { ShopService } from '../../../../../services/shop.service';
@@ -11,6 +11,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { EmailData, EmailService } from '../../../../../services/email.service';
 import { StaffService } from '../../../../../services/staff.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { LoadingComponent } from "../../../../global/loading/loading.component";
 
 @Component({
   selector: 'app-delete-app',
@@ -20,7 +21,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     DeleteBtnComponent,
     RouterModule,
     DeleteBtnComponent,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    LoadingComponent,
+    NgIf
 ],
   templateUrl: './delete-app.component.html',
   styleUrl: './delete-app.component.scss',
@@ -43,6 +46,8 @@ export class DeleteAppComponent implements OnInit {
   app: any = {};
 
   staff: any = {};
+
+  loading: boolean = true
 
   ngOnInit() {
     this.extractAppointmentIdFromUrl();
@@ -73,6 +78,7 @@ export class DeleteAppComponent implements OnInit {
         this.shopService.getShop()
         this.staffService.getDetail(res.staffId).subscribe((res: any) => {
           this.staff = res
+          this.loading = false
         })
 
       });

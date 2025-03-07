@@ -1,46 +1,514 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { AppointmentService } from '../../../../../services/appointment.service';
+import { LoadingComponent } from '../../../../global/loading/loading.component';
+import { NgIf, CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { AbsenceService } from '../../../../../services/absence.service';
+import { AvailabilityService } from '../../../../../services/availability.service';
+import { ServicesService } from '../../../../../services/services.service';
+import { StaffService } from '../../../../../services/staff.service';
+import { StoreAppointments } from '../../../../../stores/appointment.store';
+import { ServicesStore } from '../../../../../stores/services.store';
+import { ShopStore } from '../../../../../stores/shop.store';
+import { StaffStore } from '../../../../../stores/staff.store';
+import {
+  capitalizeFirstLetter,
+  convertUTCToLocal,
+  formatDateToString,
+  formatDateToStringDayFirst,
+  getDayOfWeek,
+  getTime,
+  convertLocalToUTC
+} from '../../../../../services/utility.service';
+import { ShopService } from '../../../../../services/shop.service';
+
+class Slot {
+  start!: string;
+  end!: string;
+  staffId!: number[];
+}
 
 @Component({
   selector: 'app-edit-app-public',
   standalone: true,
-  imports: [],
+  imports: [
+    LoadingComponent,
+    NgIf,
+    RouterModule,
+    FloatLabelModule,
+    DropdownModule,
+    FormsModule,
+    CalendarModule,
+    CommonModule,
+  ],
   templateUrl: './edit-app-public.component.html',
-  styleUrl: './edit-app-public.component.scss'
+  styleUrl: './edit-app-public.component.scss',
 })
-export class EditAppPublicComponent implements OnInit{
-
+export class EditAppPublicComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private appointmentService: AppointmentService
+    private appointmentService: AppointmentService,
+    private servicesService: ServicesService,
+    private storeService: ServicesStore,
+    public shopStore: ShopStore,
+    public staffStore: StaffStore,
+    private staffService: StaffService,
+    public storeAppointments: StoreAppointments,
+    private availabilitiesService: AvailabilityService,
+    private absenceService: AbsenceService,
+    private shopService: ShopService
   ) {}
 
-  app: any = {}
+  appToEdit: any = {};
+
+  loading: boolean = true;
+
+  avLoading: boolean = true;
+
+  serviceId!: number;
+
+  service?: any;
+
+  originalStaffList: any = [];
+
+  selectedStaff: any = {};
+
+  availabilities: any[] = [];
+
+  slots: Slot[] = [];
+
+  appointments: any[] = [];
+
+  today!: Date;
+
+  absences: any[] = [];
+
+  now: Date = new Date();
 
   ngOnInit() {
-    this.extractAppointmentIdFromUrl()
+    this.extractAppointmentIdFromUrl();
+    this.today = new Date();
+    this.today.setHours(0, 0, 0, 0);
+    this.appointmentService.setCurretDayToToday();
   }
 
-  extractAppointmentIdFromUrl() {
+  async extractAppointmentIdFromUrl() {
     const appId = this.route.snapshot.paramMap.get('appointmentId');
-    
+
     if (!appId) {
       console.error('Nessun appointmentId trovato nella route');
       return;
     }
 
-    this.appointmentService.getDetail(+appId).pipe(
-      catchError(error => {
-        console.error('Errore durante il recupero dell\'appuntamento', error);
-        this.router.navigate(['/'])
-        return of(null); // Restituisce un valore nullo per evitare che il flusso si interrompa
-      })
-    ).subscribe(res => {
-      this.app = res;
-      console.log(this.app)
+    try {
+      this.loading = true;
+      this.appToEdit = await this.appointmentService.getDetail(+appId).toPromise();
+      this.storeAppointments.appToEdit = this.appToEdit
+
+      if (this.appToEdit) {
+        this.serviceId = this.appToEdit.serviceId;
+        this.shopStore.shopId = this.appToEdit.shopId;
+        this.shopService.getShop();
+        this.getService();
+      }
+    } catch (error) {
+      console.error("Errore durante il recupero dell'appuntamento", error);
+      this.router.navigate(['/']);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  getStaff() {
+    this.staffService.getStaff().subscribe((res) => {
+      this.originalStaffList = res;
+
+      // Filtra solo gli staff presenti in this.service.staffIds
+      let filteredStaff = this.originalStaffList.filter((staff: any) =>
+        this.service?.staffIds?.includes(staff.id)
+      );
+
+      // Aggiungi "Qualsiasi" in cima alla lista
+      let whoever = { name: 'Qualsiasi' };
+      this.staffStore.staffList = [whoever, ...filteredStaff];
+
+      this.selectedStaff = whoever;
     });
   }
+
+  extractServiceIdFromUrl(): void {
+    // Estrapola il parametro `serviceId` dall'URL e lo converte in numero
+    const serviceIdParam = this.route.snapshot.paramMap.get('serviceId');
+    this.serviceId = serviceIdParam ? +serviceIdParam : 0;
+  }
+
+  async getService() {
+    return this.servicesService.getDetail(this.serviceId).subscribe(
+      (res) => {
+        this.service = res;
+        console.log('Service: ', this.service);
+        this.storeService.currentService = res;
+        this.getStaff();
+        this.getAvailabilitiesByDay();
+      },
+      (err) => {
+        this.loading = false;
+        console.error(err);
+      }
+    );
+  }
+
+  async getAvailabilitiesByDay() {
+    this.availabilities = [];
+    this.slots = [];
+    this.appointments = [];
+    this.absences = [];
+    const step = 15; // Intervallo in minuti per il calcolo degli slot
+    this.avLoading = true;
+
+    console.log('OriginalStaffList: ', this.originalStaffList);
+
+    try {
+      // Recupera le availabilities
+      const staffIds = this.selectedStaff.id
+        ? [this.selectedStaff.id]
+        : this.service.staffIds;
+
+      console.log(staffIds);
+
+      this.availabilities = await this.availabilitiesService
+        .findAllByStaffIds(staffIds, this.storeAppointments.currentDay.getDay())
+        .toPromise();
+
+      console.log(this.availabilities);
+
+      // Recupera gli appuntamenti
+      this.appointments = await this.appointmentService
+        .getAppointments(formatDateToString(this.storeAppointments.currentDay))
+        .toPromise();
+
+        if (this.appToEdit) {
+          this.appointments = this.appointments.filter(app => app.id !== this.appToEdit.id)
+        }
+        console.log('AppointmentsList: ', this.appointments)
+
+      // Recupera le assenze
+      const staffIds2 = this.selectedStaff.id
+        ? [this.selectedStaff.id]
+        : this.service.staffIds;
+
+      const absences = await this.absenceService
+        .getAbsencesByStaffAndDay(
+          staffIds2,
+          convertLocalToUTC(this.storeAppointments.currentDay)
+        )
+        .toPromise();
+
+      this.absences = absences.map((abs: any) => {
+        const localDate = convertUTCToLocal(new Date(abs.date));
+        return { ...abs, date: localDate };
+      });
+
+      console.log(this.absences);
+
+      // Genera gli slot occupati dagli appuntamenti
+      const occupiedSlots: Slot[] = [];
+      this.appointments.forEach((appointment) => {
+        const slots = this.generateSlotFromAppointment(appointment, step);
+        occupiedSlots.push(...slots);
+      });
+
+      this.absences.forEach((abs) => {
+        const slots = this.generateSlotFromAbsence(abs, step);
+        occupiedSlots.push(...slots);
+      });
+
+      console.log(occupiedSlots);
+
+      // Calcola gli slot disponibili per ogni availability
+      this.availabilities.forEach((availability) => {
+        if (this.service?.duration) {
+          const availableSlots = this.generateSlotsFromAvailability(
+            availability,
+            this.service.duration,
+            step,
+            occupiedSlots // Passa gli slot occupati
+          );
+          this.slots.push(...availableSlots);
+        } else {
+          console.warn(
+            'Service duration is undefined. Skipping slot generation.'
+          );
+        }
+        console.log(this.slots);
+      });
+
+      // Rimuove duplicati dagli slot
+      this.slots = this.removeDuplicateSlots(this.slots);
+
+      this.loading = false;
+      this.avLoading = false;
+    } catch (error) {
+      this.loading = false;
+      this.avLoading = false;
+      console.error(error);
+    }
+  }
+
+  generateSlotsFromAvailability(
+    availability: any,
+    serviceDuration: number,
+    step: number,
+    occupiedSlots: Slot[]
+  ): Slot[] {
+    const { startTime, endTime, startBreak, endBreak, staffId } = availability;
+    const slots: Slot[] = [];
+    const stepMs = step * 60 * 1000; // Step in millisecondi
+    const durationMs = serviceDuration * 60 * 1000; // Durata del servizio in millisecondi
+    const now = new Date(); // Ottieni l'orario corrente
+
+    const parseTime = (time: string) => {
+      const [hours, minutes] = time.split(':').map(Number);
+      const date = new Date(); // Usa la data corrente
+      date.setHours(hours, minutes, 0, 0);
+      return date;
+    };
+
+    const addSlots = (start: Date, end: Date) => {
+      let current = start;
+      while (current < end) {
+        const slotEnd = new Date(current.getTime() + durationMs);
+        if (slotEnd <= end) {
+          const slot = {
+            start: current.toTimeString().slice(0, 5),
+            end: slotEnd.toTimeString().slice(0, 5),
+            staffId: [staffId],
+          };
+          // Verifica che lo slot non si sovrapponga agli slot occupati
+          if (!this.isSlotOccupied(slot, occupiedSlots)) {
+            // Se è oggi, mostra solo gli slot futuri
+            if (this.isToday() && current >= now) {
+              slots.push(slot);
+            }
+            // Altrimenti, aggiungi tutti gli slot
+            else if (!this.isToday()) {
+              slots.push(slot);
+            }
+          }
+        }
+        current = new Date(current.getTime() + stepMs);
+      }
+    };
+
+    // Genera slot prima della pausa
+    addSlots(parseTime(startTime), parseTime(startBreak || endTime));
+
+    // Genera slot dopo la pausa
+    if (startBreak && endBreak) {
+      addSlots(parseTime(endBreak), parseTime(endTime));
+    }
+
+    return slots;
+  }
+
+  // Controlla se il giorno corrente è oggi
+  isToday(): boolean {
+    const today = new Date();
+    const selectedDay = this.storeAppointments.currentDay;
+    return (
+      today.getDate() === selectedDay.getDate() &&
+      today.getMonth() === selectedDay.getMonth() &&
+      today.getFullYear() === selectedDay.getFullYear()
+    );
+  }
+
+  // Metodo che verifica se uno slot è occupato, tenendo conto della presenza di più membri dello staff
+  isSlotOccupied(slot: Slot, occupiedSlots: Slot[]): boolean {
+    const slotStart = new Date(`1970-01-01T${slot.start}:00`);
+    const slotEnd = new Date(`1970-01-01T${slot.end}:00`);
+
+    // Verifica per ogni slot occupato
+    return occupiedSlots.some((occupied) => {
+      const occupiedStart = new Date(`1970-01-01T${occupied.start}:00`);
+      const occupiedEnd = new Date(`1970-01-01T${occupied.end}:00`);
+
+      // Controlla la sovrapposizione tra lo slot e gli slot occupati
+      const isOverlapping = slotStart < occupiedEnd && slotEnd > occupiedStart; // Se sovrappone in qualsiasi modo
+
+      // Se lo slot si sovrappone con uno degli slot occupati e contiene tutti gli stessi staffId
+      if (isOverlapping) {
+        // Verifica che tutti i membri dello staff nello slot siano già occupati
+        return slot.staffId.every((staffId) =>
+          occupied.staffId.includes(staffId)
+        );
+      }
+
+      return false;
+    });
+  }
+
+  generateSlotFromAppointment(appointment: any, step: number): Slot[] {
+    const startTime = new Date(appointment.startTime);
+    const endTime = new Date(appointment.endTime);
+    const durationMs = step * 60 * 1000;
+    const occupiedSlots: Slot[] = [];
+
+    let current = startTime;
+    while (current < endTime) {
+      const slotEnd = new Date(current.getTime() + durationMs);
+      if (slotEnd <= endTime) {
+        occupiedSlots.push({
+          start: current.toISOString().slice(11, 16),
+          end: slotEnd.toISOString().slice(11, 16),
+          staffId: [appointment.staffId],
+        });
+      }
+      current = new Date(current.getTime() + durationMs);
+    }
+
+    return occupiedSlots;
+  }
+
+  generateSlotFromAbsence(absence: any, step: number): Slot[] {
+    let startTime: Date;
+    let endTime: Date;
+
+    // Se startTime o endTime sono stringhe vuote, considera l'intera giornata
+    if (!absence.startTime || absence.startTime === '') {
+      startTime = new Date();
+      startTime.setUTCHours(0, 0, 0, 0); // Imposta l'orario di inizio alla mezzanotte (00:00) in UTC
+    } else {
+      // Altrimenti, crea un oggetto Date utilizzando la stringa startTime
+      const [startHour, startMinute] = absence.startTime.split(':').map(Number);
+      startTime = new Date();
+      startTime.setUTCHours(startHour, startMinute, 0, 0); // Usa setUTCHours per evitare il fuso orario locale
+    }
+
+    if (!absence.endTime || absence.endTime === '') {
+      endTime = new Date();
+      endTime.setUTCHours(23, 59, 59, 999); // Imposta l'orario di fine alla fine della giornata (23:59) in UTC
+    } else {
+      // Altrimenti, crea un oggetto Date utilizzando la stringa endTime
+      const [endHour, endMinute] = absence.endTime.split(':').map(Number);
+      endTime = new Date();
+      endTime.setUTCHours(endHour, endMinute, 0, 0); // Usa setUTCHours per evitare il fuso orario locale
+    }
+
+    const durationMs = step * 60 * 1000; // Durata del passo in millisecondi
+    const occupiedSlots: Slot[] = [];
+
+    let current = startTime;
+    while (current < endTime) {
+      const slotEnd = new Date(current.getTime() + durationMs);
+      if (slotEnd <= endTime) {
+        occupiedSlots.push({
+          start: current.toISOString().slice(11, 16),
+          end: slotEnd.toISOString().slice(11, 16),
+          staffId: [absence.staffId],
+        });
+      }
+      current = new Date(current.getTime() + durationMs);
+    }
+
+    return occupiedSlots;
+  }
+
+  getHourTime(minutes: number): string {
+    const hours = Math.floor(minutes / 60);
+    const min = minutes % 60;
+    if (hours == 0 && min > 0) return `${minutes} min`;
+    if (hours > 0 && min == 0) return `${hours} h`;
+    return `${hours} h ${min} min`;
+  }
+
+  navigateDay(days: number) {
+    if (this.isToday() && days == -1) return;
+    const newDate = new Date(this.storeAppointments.currentDay);
+    newDate.setDate(newDate.getDate() + days);
+    newDate.setHours(0, 0, 0, 0);
+    this.storeAppointments.currentDay = newDate;
+    this.changeDate();
+  }
+
+  openCalendar(calendar: any) {
+    if (!calendar.overlayVisible) {
+      calendar.showOverlay();
+      calendar.cd.detectChanges();
+    }
+  }
+
+  changeDate() {
+    this.avLoading = true; // Attiva lo stato di caricamento
+    this.getAvailabilitiesByDay().then(() => {
+      this.avLoading = false; // Disattiva lo stato di caricamento dopo aver ottenuto i dati
+    });
+  }
+
+  // Metodo per rimuovere duplicati dagli slot e riordinarli
+  removeDuplicateSlots(slots: Slot[]): Slot[] {
+    const uniqueSlots = new Map<string, Slot>(); // Mappa per tenere traccia degli slot unici
+
+    slots.forEach((slot) => {
+      const key = `${slot.start}-${slot.end}`; // Crea una chiave unica basata su start e end
+
+      if (uniqueSlots.has(key)) {
+        // Se la chiave esiste, aggiungi l'ID dello staff all'array esistente
+        const existingSlot = uniqueSlots.get(key);
+        if (existingSlot) {
+          // Aggiungi lo staffId solo se non è già presente nell'array
+          slot.staffId.forEach((id) => {
+            if (!existingSlot.staffId.includes(id)) {
+              existingSlot.staffId.push(id);
+            }
+          });
+        }
+      } else {
+        // Se la chiave non esiste, aggiungi il nuovo slot
+        uniqueSlots.set(key, { ...slot });
+      }
+    });
+
+    return Array.from(uniqueSlots.values()).sort((a, b) => {
+      // Aggiungi una data fittizia per interpretare le ore come date
+      const timeA: any = new Date('1970-01-01T' + a.start + ':00Z');
+      const timeB: any = new Date('1970-01-01T' + b.start + ':00Z');
+      return timeA - timeB;
+    });
+  }
+
+  goToDataPage(slot: any) {
+    this.storeAppointments.currentHour = slot.start;
+    this.storeAppointments.currentEndHour = slot.end;
+    if (!this.selectedStaff.id) {
+      this.storeAppointments.currentStaffId = this.getCasualStaff(slot.staffId);
+    } else {
+      this.storeAppointments.currentStaffId = this.selectedStaff.id;
+    }
+    this.router.navigate([
+      '/' + this.shopStore.slug + '/service/' + this.service.id + '/datas',
+    ]);
+  }
+
+  // Return casual staff member
+  getCasualStaff(staffList: number[]): any {
+    if (!staffList || staffList.length === 0) {
+      return null; // Restituisce null se la lista è vuota o non valida
+    }
+    const randomIndex = Math.floor(Math.random() * staffList.length);
+    return staffList[randomIndex];
+  }
+
+  protected readonly capitalizeFirstLetter = capitalizeFirstLetter;
+  protected readonly formatDateToString = formatDateToString;
+  protected readonly convertUTCToLocal = convertUTCToLocal;
+  protected readonly getDayOfWeek = getDayOfWeek;
+  protected readonly formatDateToStringDayFirst = formatDateToStringDayFirst;
+  protected readonly getTime = getTime;
 }
+

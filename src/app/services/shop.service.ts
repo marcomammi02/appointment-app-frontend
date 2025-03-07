@@ -27,6 +27,7 @@ export class ShopService {
     return this.http.get(`${this.apiUrl}/${this.shopStore.shopId}`).subscribe(
       (res: any) => {
         this.shopStore.currentShop = res;
+        this.shopStore.slug = res.slug
 
         console.log(res)
 

@@ -1,4 +1,6 @@
-<div class="page w-screen h-screen flex flex-column gap-5 justify-content-center align-items-center" [ngStyle]="{ background: shopStore.currentShop.publicBgColor}">
+<app-loading *ngIf="loading" />
+
+<div *ngIf="!loading" class="page w-screen h-screen flex flex-column gap-5 justify-content-center align-items-center" [ngStyle]="{ background: shopStore.currentShop.publicBgColor}">
 
   <div class="container p-3 shadow-4 h-min text-center" [ngStyle]="{ background: shopStore.currentShop.publicCardColor}">
       <div class="logo-box">

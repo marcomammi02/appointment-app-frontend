@@ -1,1 +1,65 @@
-<p>Edit app {{app.id}}</p>
+<app-loading *ngIf="loading" />
+
+<div class="container text-center py-3" [ngStyle]="{ background: shopStore.currentShop.publicBgColor}" *ngIf="!loading && selectedStaff && selectedStaff.name && service && service.duration">
+
+  <!-- Header -->
+  <div class="flex align-items-center gap-2 mb-5">
+    <div class="img-container mr-2 cursor-pointer" [routerLink]="'/' + shopStore.slug">
+      <img [src]="shopStore.currentShop.logo ? shopStore.currentShop.logo : 'app/assets/images/default-logo.png'" alt="Logo">
+    </div>
+    <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
+    <h2>Ripianifica Prenotazione</h2>
+  </div>
+
+  <!-- Service info -->
+  <div *ngIf="service.id" class="card p-3 mx-3 shadow-4 mb-5" [ngStyle]="{ background: shopStore.currentShop.publicCardColor}">
+    <h1>{{capitalizeFirstLetter(service.name)}}</h1>
+    <p class="mt-3">{{service.description}}</p>
+    <div class="flex justify-content-between mt-3">
+      <p><i class="pi pi-clock mr-1"></i> {{getHourTime(service.duration)}}</p>
+      <p><i class="pi pi-wallet mr-1"></i> {{service.price}} €</p>
+    </div>
+  </div>
+
+ <!-- Staff selection -->
+  <div class="text-left mb-5">
+    <label for="staffId" class="block mb-1">Seleziona un membro dello staff</label>
+    <p-dropdown
+      class="w-full"
+      [(ngModel)]="selectedStaff"
+      [options]="staffStore.staffList"
+      optionLabel="name"
+      id="staffId"
+      (onChange)="getAvailabilitiesByDay()"
+    ></p-dropdown>
+  </div>
+
+  <!-- Day selector -->
+  <div class="w-full flex align-items-center justify-content-center">
+    <button (click)="navigateDay(-1)" class="nav-arrow">
+      <i class="pi pi-chevron-left"></i>
+    </button>
+    <div class="flex align-items-center justify-content-center cursor-pointer w-15rem" (click)="openCalendar(calendar)">
+      <p class="ml-5 font-medium">{{ getDayOfWeek(storeAppointments.currentDay) }}</p>
+      <p-calendar #calendar [minDate]="today" [(ngModel)]="storeAppointments.currentDay" readonlyInput dateFormat="dd/mm/yy" class="w-10rem" (onSelect)="changeDate()"></p-calendar>
+    </div>
+    <button (click)="navigateDay(1)" class="nav-arrow">
+      <i class="pi pi-chevron-right"></i>
+    </button>
+  </div>
+
+  <!-- Slots container -->
+   <app-loading *ngIf="avLoading" [small]="true"/>
+  <div *ngIf="slots.length > 0 && !avLoading">
+      <ul class="flex flex-wrap w-full mx-auto justify-content-center">
+        <li class="slot px-3 py-2 m-2 shadow-4" (click)="goToDataPage(slot)" *ngFor="let slot of slots" [ngStyle]="{ background: shopStore.currentShop.publicCardColor}">{{ slot.start }}</li>
+      </ul>
+  </div>
+
+
+  <!-- Not staff found -->
+  <div class="mt-8" *ngIf="staffStore.staffList.length <= 1 && !avLoading">Questo servizio non ha staff associati</div>
+
+  <!-- Not availability found -->
+  <div class="mt-8" *ngIf="slots.length <= 0 && !avLoading && staffStore.staffList.length > 1">Nessuna disponibilità</div>
+</div>

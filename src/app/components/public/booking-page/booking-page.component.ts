@@ -419,7 +419,6 @@ export class BookingPageComponent implements OnInit {
 
   changeDate() {
     this.avLoading = true; // Attiva lo stato di caricamento
-    this.getStaff(); // Assicura che lo staff sia aggiornato
     this.getAvailabilitiesByDay().then(() => {
       this.avLoading = false; // Disattiva lo stato di caricamento dopo aver ottenuto i dati
     });
