@@ -1,50 +1,110 @@
 <app-loading *ngIf="!isShopDataReady()" />
 
-<div class="container pb-5" *ngIf="!loading" [ngStyle]="{ background: shopStore.currentShop.publicBgColor}">
-    <div class="cover-box">
-        <img [src]="shopStore.currentShop.cover ? shopStore.currentShop.cover : 'app/assets/images/default-cover.png'" alt="Cover">
+<div
+  class="container pb-3"
+  *ngIf="!loading"
+  [ngStyle]="{ background: shopStore.currentShop.publicBgColor }"
+>
+  <div class="cover-box">
+    <img
+      [src]="
+        shopStore.currentShop.cover
+          ? shopStore.currentShop.cover
+          : 'app/assets/images/default-cover.png'
+      "
+      alt="Cover"
+    />
+  </div>
+
+  <div class="logo-box">
+    <img
+      [src]="
+        shopStore.currentShop.logo
+          ? shopStore.currentShop.logo
+          : 'app/assets/images/default-logo.png'
+      "
+      alt="Cover"
+    />
+  </div>
+
+  <h1 class="text-center mt-1 mb-2">{{ shopStore.currentShop.name }}</h1>
+
+  <div class="info text-center flex flex-column gap-2 px-5">
+    <p>{{ shopStore.currentShop.description }}</p>
+    <p *ngIf="shopStore.currentShop.address">
+      <i class="pi mr-2">📍</i>{{ shopStore.currentShop.address }}
+    </p>
+    <a
+      class="phone-number"
+      [href]="'tel:' + shopStore.currentShop.phoneNumber"
+      *ngIf="shopStore.currentShop.phoneNumber"
+      ><i class="pi mr-2">📞</i>{{ shopStore.currentShop.phoneNumber }}</a
+    >
+    <div
+      *ngIf="
+        shopStore.currentShop.facebookUrl ||
+        shopStore.currentShop.instagramUrl ||
+        shopStore.currentShop.tiktokUrl
+      "
+      class="flex align-content-center justify-content-center mt-2 gap-5"
+    >
+      <!-- facebook url -->
+      <a
+        class="social-btn shadow-2"
+        *ngIf="shopStore.currentShop.facebookUrl"
+        [href]="shopStore.currentShop.facebookUrl"
+      >
+        <i class="pi pi-facebook" style="font-size: 1.5rem"></i>
+      </a>
+
+      <!-- instagram url -->
+      <a
+        class="social-btn shadow-2"
+        *ngIf="shopStore.currentShop.instagramUrl"
+        [href]="shopStore.currentShop.instagramUrl"
+      >
+        <i class="pi pi-instagram" style="font-size: 1.5rem"></i>
+      </a>
+
+      <!-- tiktok url -->
+      <a
+        class="social-btn shadow-2"
+        *ngIf="shopStore.currentShop.tiktokUrl"
+        [href]="shopStore.currentShop.tiktokUrl"
+      >
+        <i class="pi pi-tiktok" style="font-size: 1.5rem"></i>
+      </a>
     </div>
+  </div>
 
-    <div class="logo-box">
-        <img [src]="shopStore.currentShop.logo ? shopStore.currentShop.logo : 'app/assets/images/default-logo.png'" alt="Cover">
-    </div>
+  <h2 class="text-center mt-3 mb-2">Servizi</h2>
 
-    <h1 class="text-center mt-1 mb-2">{{ shopStore.currentShop.name }}</h1>
-
-    <div class="info text-center flex flex-column gap-2 px-5">
-        <p>{{shopStore.currentShop.description}}</p>
-        <p *ngIf="shopStore.currentShop.address"><i class="pi mr-2">📍</i>{{shopStore.currentShop.address}}</p>
-        <a class="phone-number" [href]="'tel:' + shopStore.currentShop.phoneNumber" *ngIf="shopStore.currentShop.phoneNumber"><i class="pi mr-2">📞</i>{{shopStore.currentShop.phoneNumber}}</a>
-        <div *ngIf="shopStore.currentShop.facebookUrl || shopStore.currentShop.instagramUrl || shopStore.currentShop.tiktokUrl" class="flex align-content-center justify-content-center mt-2 gap-5">
-          <!-- facebook url -->
-          <a class="social-btn shadow-2" *ngIf="shopStore.currentShop.facebookUrl" [href]="shopStore.currentShop.facebookUrl">
-            <i class="pi pi-facebook" style="font-size: 1.5rem"></i>
-          </a>
-
-           <!-- instagram url -->
-          <a class="social-btn shadow-2" *ngIf="shopStore.currentShop.instagramUrl" [href]="shopStore.currentShop.instagramUrl">
-            <i class="pi pi-instagram" style="font-size: 1.5rem"></i>
-          </a>
-
-          <!-- tiktok url -->
-          <a class="social-btn shadow-2" *ngIf="shopStore.currentShop.tiktokUrl" [href]="shopStore.currentShop.tiktokUrl">
-            <i class="pi pi-tiktok" style="font-size: 1.5rem"></i>
-          </a>
-        </div>
-    </div>
-
-    <h2 class="text-center mt-3 mb-2">Servizi</h2>
-
-    <div class="grid" *ngIf="servicesStore.services.length > 0">
-        <div class="col-12 md:col-6 xl:col-4" *ngFor="let service of servicesStore.services">
-          <div class="card p-3 mx-3 my-2 text-center shadow-4" [routerLink]="'/' + shopStore.slug + '/service/' + service.id" [ngStyle]="{ background: shopStore.currentShop.publicCardColor}">
-            <h3>{{capitalizeFirstLetter(service.name)}}</h3>
-            <div class="flex justify-content-evenly mt-3">
-              <p><i class="pi pi-clock mr-1"></i> {{getHourTime(service.duration)}}</p>
-              <p><i class="pi pi-wallet mr-1"></i> {{service.price}} €</p>
-            </div>
-          </div>
+  <div class="grid" *ngIf="servicesStore.services.length > 0">
+    <div
+      class="col-12 md:col-6 xl:col-4"
+      *ngFor="let service of servicesStore.services"
+    >
+      <div
+        class="card p-3 mx-3 my-2 text-center shadow-4"
+        [routerLink]="'/' + shopStore.slug + '/service/' + service.id"
+        [ngStyle]="{ background: shopStore.currentShop.publicCardColor }"
+      >
+        <h3>{{ capitalizeFirstLetter(service.name) }}</h3>
+        <div class="flex justify-content-evenly mt-3">
+          <p>
+            <i class="pi pi-clock mr-1"></i> {{ getHourTime(service.duration) }}
+          </p>
+          <p><i class="pi pi-wallet mr-1"></i> {{ service.price }} €</p>
         </div>
       </div>
-      <div *ngIf="servicesStore.services.length <= 0" class="w-full my-8 flex align-items-center justify-content-center">Questo profilo non ha servizi disponibili</div>
+    </div>
+  </div>
+  <div
+    *ngIf="servicesStore.services.length <= 0"
+    class="w-full my-8 flex align-items-center justify-content-center"
+  >
+    Questo profilo non ha servizi disponibili
+  </div>
+
+  <p class="copyright mt-5 text-right mr-3">Powered with ❤️ by <a href="https://bookami.it">Bookami</a></p>
 </div>

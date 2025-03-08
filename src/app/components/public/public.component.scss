@@ -75,3 +75,19 @@
     transform: scale(1.05);
   }
 }
+
+.copyright {
+  font-size: 14px;
+
+  a {
+    color: #000;
+    text-decoration: none;
+    padding-bottom: 2px;
+    border-bottom: 2px solid $color1;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: $color1 !important;
+    }
+  }
+}
