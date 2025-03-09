@@ -85,7 +85,7 @@ export class ConfirmPaymentPageComponent {
       (err: any) => {
         // Gestisci l'errore, ad esempio mostra un messaggio di errore
         console.error('Errore nella verifica del pagamento', err);
-        this.router.navigate(['/']);
+        // this.router.navigate(['/']);
       }
     );
   }
@@ -205,7 +205,7 @@ export class ConfirmPaymentPageComponent {
       console.error('Errore durante l\'aggiornamento:', error);
       this.errorService.showError({
         label: 'Errore',
-        message: `Si è verificato un errore: ${error.message || 'Errore sconosciuto'}`,
+        message: `Esiste già un profilo con questo indirizzo email`,
       });
     } finally {
       // Ritorna lo stato a "non in aggiornamento"
