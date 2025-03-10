@@ -19,14 +19,13 @@
             Progettato per dare alle imprese il pieno controllo sui loro appuntamenti
           </p>
 
-          <p class="mb-3 gray"><i class="pi pi-check green mr-3" style="font-weight: bold;"></i>Paghi una volta, lo hai per sempre</p>
           <p class="mb-3 gray"><i class="pi pi-check green mr-3" style="font-weight: bold;"></i>Zero commissioni, più guadagni</p>
           <p class="mb-3 gray"><i class="pi pi-check green mr-3" style="font-weight: bold;"></i>Profilo personalizzabile</p>
-          <p class="mb-3 gray"><i class="pi pi-check green mr-3" style="font-weight: bold;"></i>Esperienza cliente facile e intuitiva</p>
-          <p class="mb-5 gray"><i class="pi pi-check green mr-3" style="font-weight: bold;"></i>Controllo completo sugli appuntamenti</p>
-
+          <p class="mb-3 gray"><i class="pi pi-check green mr-3" style="font-weight: bold;"></i>14 giorni di prova gratuita</p>
+          <p class="mb-5 gray"><i class="pi pi-check green mr-3" style="font-weight: bold;"></i>Paghi una volta, lo hai per sempre</p>
+          
           <!-- CTA Button to start now -->
-          <app-primary-btn label="Inizia ora!" (click)="checkout('monthly')" class="mx-auto xl:mx-0 block w-8rem"/>
+          <app-primary-btn label="Provalo Gratis!" [routerLink]="['/create-free-trial-account']" routerLinkActive="router-link-active"  class="mx-auto xl:mx-0 block w-11rem"/>
         </div>
       </div>
       <div class="img-container text-center col-12 xl:col-6">

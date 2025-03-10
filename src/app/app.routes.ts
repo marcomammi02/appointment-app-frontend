@@ -28,11 +28,13 @@ import { TermsAndConditionsComponent } from './components/landing-page/terms-and
 import { Component } from '@angular/core';
 import { DeleteAppComponent } from './components/public/booking-page/data-page/delete-app/delete-app.component';
 import { EditAppPublicComponent } from './components/public/booking-page/data-page/edit-app-public/edit-app-public.component';
+import { CreateShopComponent } from './components/create-shop/create-shop.component';
 
 export const routes: Routes = [
   {path: '', component: LandingPageComponent},
   {path: 'privacy-policy', component: PrivacyPolicyComponent},
   {path: 'terms-of-services', component: TermsAndConditionsComponent},
+  {path: 'create-free-trial-account', component: CreateShopComponent},
   {path: 'create-account', component: ConfirmPaymentPageComponent},
   {path: 'login', component: LoginPageComponent},
   {path: ':slug', component: PublicComponent},

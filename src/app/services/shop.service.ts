@@ -66,6 +66,14 @@ export class ShopService {
       );
   }
 
+  create(shop: any) {
+    return this.http
+      .post(`${this.apiUrl}`, shop)
+      .pipe(
+        finalize(() => this.getShop()) // get shop data after the creation
+      );
+  }
+
   uploadFile(file: File, path: string): Observable<string> {
     const fileRef = ref(this.storage, path);
     const uploadTask = uploadBytesResumable(fileRef, file);

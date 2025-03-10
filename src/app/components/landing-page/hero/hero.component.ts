@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 import { PrimaryBtnComponent } from "../../global/primary-btn/primary-btn.component";
 import { PaymentService } from '../../../services/payment.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [PrimaryBtnComponent],
+  imports: [
+    PrimaryBtnComponent,
+    RouterModule
+  ],
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.scss'
 })

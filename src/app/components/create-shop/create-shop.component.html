@@ -1,0 +1,32 @@
+<section class="flex align-items-center justify-content-center w-full">
+    <div class="login-container text-center my-5 xl:my-8 p-5 shadow-8">
+      <img src="app/assets/images/logo-app.png" class="logo" alt="Logo">
+      <h1 class="mb-2 title">Bookami</h1>
+      <p class="mb-5">Inizia subito creando il tuo account !</p>
+      <form [formGroup]="form" (keyup.enter)="create()" class="flex flex-column gap-5">
+  
+        <p-floatLabel>
+          <input pInputText id="name" formControlName="name"/>
+          <label for="name">Nome attività *</label>
+        </p-floatLabel>
+  
+        <p-floatLabel>
+          <input pInputText id="email" formControlName="email"/>
+          <label for="email">Email *</label>
+        </p-floatLabel>
+  
+        <p-floatLabel>
+          <p-password id="password" formControlName="password" [feedback]="true" [toggleMask]="true" [minlength]="8"/>
+          <label for="password">Password *</label>
+        </p-floatLabel>
+  
+        <p-floatLabel>
+          <p-password id="confirmPassword" formControlName="confirmPassword" [feedback]="false" [toggleMask]="true"/>
+          <label for="confirmPassword">Conferma Password *</label>
+        </p-floatLabel>
+  
+        <app-primary-btn (click)="create()" label="Registrati e Accedi"/>
+      </form>
+    </div>
+  </section>
+  
