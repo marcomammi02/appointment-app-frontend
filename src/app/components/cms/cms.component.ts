@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {SidebarComponent} from "./sidebar/sidebar.component";
-import {RouterOutlet} from "@angular/router";
+import {RouterOutlet, Router} from "@angular/router";
 import {ShopService} from "../../services/shop.service";
 import {ShopStore} from "../../stores/shop.store";
+import {SubscriptionService} from "../../services/subscription.service";
 
 @Component({
   selector: 'app-cms',
@@ -19,6 +20,8 @@ export class CmsComponent implements OnInit {
   constructor(
     private shopService: ShopService,
     private shopStore: ShopStore,
+    private router: Router,
+    private subscriptionService: SubscriptionService
   ) {}
 
   ngOnInit() {
@@ -43,6 +46,8 @@ export class CmsComponent implements OnInit {
     // Se manca lo shop, recuperiamo i dati dal backend
     if (!this.shopStore.currentShop.id || !this.shopStore.shopId) {
       this.fetchShopFromService();
+    } else {
+      this.checkTrialStatus();
     }
   }
 
@@ -59,7 +64,31 @@ export class CmsComponent implements OnInit {
   }
 
   // Recupera i dati dello shop dal servizio
-  private fetchShopFromService() {
-    this.shopService.getShop()
-  };
+  private async fetchShopFromService() {
+    try {
+      await this.shopService.getShop();
+      this.checkTrialStatus();
+    } catch (error) {
+      console.error('Errore nel recupero dello shop:', error);
+    }
+  }
+
+  private checkTrialStatus() {
+    this.subscriptionService.getShopSubscription().subscribe({
+      next: (subscription) => {
+        if (!subscription?.trialExpirationDate) return;
+        console.log(subscription)
+
+        const trialExpiration = new Date(subscription.trialExpirationDate);
+        const now = new Date();
+
+        if (trialExpiration < now && !subscription.isActive) {
+          this.router.navigate(['/dashboard-blocked']);
+        }
+      },
+      error: (error) => {
+        console.error('Errore nel recupero della subscription:', error);
+      }
+    });
+  }
 }

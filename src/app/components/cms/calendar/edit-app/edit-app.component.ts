@@ -21,7 +21,7 @@ import { ErrorService } from '../../../../services/error.service';
 import { Router, RouterLink } from '@angular/router';
 import { AppointmentService } from '../../../../services/appointment.service';
 import { map, Observable, of, switchMap } from 'rxjs';
-import { CreateAppointmentDto } from '../../../../dtos/appointments.dto';
+import { CreateAppointmentDto, UpdateAppointmentDto } from '../../../../dtos/appointments.dto';
 import {
   capitalizeFirstLetter,
   formatDateToStringDayFirst,
@@ -267,7 +267,7 @@ export class EditAppComponent implements OnInit {
     this.getEndtime(v.startTime, v.service, v.duration)
       .pipe(
         switchMap((endTime) => {
-          const appointment: CreateAppointmentDto = {
+          const appointment: UpdateAppointmentDto = {
             customerName: v.name,
             customerLastName: v.lastName,
             customerPhone: v.phone,
@@ -275,7 +275,6 @@ export class EditAppComponent implements OnInit {
             notes: v.notes,
             startTime: toDateTime(v.day, v.startTime),
             endTime: toDateTime(v.day, endTime),
-            status: 'BOOKED',
             serviceName: v.service.name,
             serviceId: v.service.id,
             serviceColor: v.service.color,

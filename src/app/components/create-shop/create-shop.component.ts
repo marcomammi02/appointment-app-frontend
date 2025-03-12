@@ -137,7 +137,7 @@ export class CreateShopComponent {
       };
 
       // Esegui la chiamata all'API per la create
-      await this.shopService.create(shop).toPromise()
+      await this.shopService.createFreeTrial(shop).toPromise()
 
       // Esegui il login con i nuovi dati
       const res = await this.authService.login(v.email, v.password).toPromise();

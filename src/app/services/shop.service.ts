@@ -74,6 +74,10 @@ export class ShopService {
       );
   }
 
+  createFreeTrial(shop: any) {
+    return this.http.post(`${this.apiUrl}/free-trial`, shop)
+  }
+
   uploadFile(file: File, path: string): Observable<string> {
     const fileRef = ref(this.storage, path);
     const uploadTask = uploadBytesResumable(fileRef, file);
