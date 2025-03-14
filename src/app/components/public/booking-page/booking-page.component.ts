@@ -23,6 +23,7 @@ import { AvailabilityService } from '../../../services/availability.service';
 import { AppointmentService } from '../../../services/appointment.service';
 import { ServicesStore } from '../../../stores/services.store';
 import { AbsenceService } from '../../../services/absence.service';
+import { ErrorService } from '../../../services/error.service';
 
 class Slot {
   start!: string;
@@ -59,7 +60,8 @@ export class BookingPageComponent implements OnInit {
     private appointmentService: AppointmentService,
     private availabilitiesService: AvailabilityService,
     private router: Router,
-    private absenceService: AbsenceService
+    private absenceService: AbsenceService,
+    private errorService: ErrorService
   ) { }
 
   loading: boolean = true;
@@ -457,16 +459,39 @@ export class BookingPageComponent implements OnInit {
   }
 
   goToDataPage(slot: any) {
-    this.storeAppointments.currentHour = slot.start;
-    this.storeAppointments.currentEndHour = slot.end;
-    if (!this.selectedStaff.id) {
-      this.storeAppointments.currentStaffId = this.getCasualStaff(slot.staffId);
-    } else {
-      this.storeAppointments.currentStaffId = this.selectedStaff.id;
-    }
-    this.router.navigate([
-      '/' + this.shopStore.slug + '/service/' + this.service.id + '/datas',
-    ]);
+    // Prima di procedere, ricontrolliamo che lo slot sia ancora disponibile
+    this.appointmentService.checkSlotAvailability({
+      date: formatDateToString(this.storeAppointments.currentDay),
+      startTime: slot.start,
+      endTime: slot.end,
+      staffId: slot.staffId
+    }).subscribe({
+      next: (isAvailable: boolean) => {
+        console.log(isAvailable)
+        if (isAvailable) {
+          this.storeAppointments.currentHour = slot.start;
+          this.storeAppointments.currentEndHour = slot.end;
+          if (!this.selectedStaff.id) {
+            this.storeAppointments.currentStaffId = this.getCasualStaff(slot.staffId);
+          } else {
+            this.storeAppointments.currentStaffId = this.selectedStaff.id;
+          }
+          this.router.navigate([
+            '/' + this.shopStore.slug + '/service/' + this.service.id + '/datas',
+          ]);
+        } else {
+          // Mostra messaggio di errore: slot non più disponibile
+          this.errorService.showError({
+            label: 'Attenzione',
+            message: 'Questo orario non è più disponibile. Per favore, seleziona un altro orario.',
+          });          // Ricarica gli slot disponibili
+          this.getAvailabilitiesByDay();
+        }
+      },
+      error: (error: any) => {
+        console.error('Errore nel controllo disponibilità:', error);
+      }
+    });
   }
 
   // Return casual staff member

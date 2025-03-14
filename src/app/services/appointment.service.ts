@@ -48,6 +48,10 @@ export class AppointmentService {
     today.setHours(0, 0, 0, 0); // Imposta a mezzanotte locale
     this.storeAppointment.currentDay = today;
   }
+
+  checkSlotAvailability(data: { date: string, startTime: string, endTime: string, staffId: number }): Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}/check-availability`, data);
+  }
 }
 
 
